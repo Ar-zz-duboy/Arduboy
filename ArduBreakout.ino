@@ -681,7 +681,7 @@ void loop()
   display.display();
 
   //Title screen loop switches from title screen
-  //and high scores utill FIRE is pressed
+  //and high scores until FIRE is pressed
   while (!start)
   {
     start = titleScreen();
@@ -691,7 +691,7 @@ void loop()
     }
   }
 
-  //Inital level draw
+  //Initial level draw
   if (!initialDraw)
   {
     //Clears the screen 
