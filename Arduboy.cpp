@@ -21,7 +21,7 @@ void Arduboy::start()
 
   /**
    * Setup reset pin direction (used by both SPI and I2C)
-   */ 
+   */
   pinMode(RST, OUTPUT);
   digitalWrite(RST, HIGH);
   delay(1);           // VDD (3.3V) goes high at start, lets just chill for a ms
@@ -35,7 +35,7 @@ void Arduboy::start()
 
   SPI.transfer(0xAE);  // Display Off
   SPI.transfer(0XD5);  // Set Display Clock Divisor v
-  SPI.transfer(0xF0);  //   0x80 is default 
+  SPI.transfer(0xF0);  //   0x80 is default
   SPI.transfer(0xA8);  // Set Multiplex Ratio v
   SPI.transfer(0x3F);
   SPI.transfer(0xD3);  // Set Display Offset v
@@ -93,15 +93,15 @@ void Arduboy::clearDisplay()
   for (int a = 0; a < (HEIGHT*WIDTH)/8; a++) sBuffer[a] = 0x00;
 }
 
-void Arduboy::drawPixel(int x, int y, uint16_t value)
+void Arduboy::drawPixel(int x, int y, uint8_t color)
 {
   if (x < 0 || x > (WIDTH-1) || y < 0 || y > (HEIGHT-1))
   {
     return;
   }
 
-  int row = y / 8;
-  if (value)
+  uint8_t row = y / 8;
+  if (color)
   {
     sBuffer[(row*WIDTH) + x] |=   1 << (y % 8);
   }
@@ -111,7 +111,7 @@ void Arduboy::drawPixel(int x, int y, uint16_t value)
   }
 }
 
-void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -149,7 +149,7 @@ void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
 }
 
 void Arduboy::drawCircleHelper
-(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color)
+(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -174,7 +174,7 @@ void Arduboy::drawCircleHelper
     {
       drawPixel(x0 + x, y0 + y, color);
       drawPixel(x0 + y, y0 + x, color);
-    } 
+    }
     if (cornername & 0x2)
     {
       drawPixel(x0 + x, y0 - y, color);
@@ -193,7 +193,7 @@ void Arduboy::drawCircleHelper
   }
 }
 
-void Arduboy::fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+void Arduboy::fillCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
 {
   drawFastVLine(x0, y0-r, 2*r+1, color);
   fillCircleHelper(x0, y0, r, 3, 0, color);
@@ -206,7 +206,7 @@ void Arduboy::fillCircleHelper
  int16_t r,
  uint8_t cornername,
  int16_t delta,
- uint16_t color
+ uint8_t color
 )
 {
   // used to do circles and roundrects!
@@ -244,7 +244,7 @@ void Arduboy::fillCircleHelper
 }
 
 void Arduboy::drawLine
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
+(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color)
 {
   // bresenham's algorithm - thx wikpedia
   int16_t steep = abs(y1 - y0) > abs(x1 - x0);
@@ -279,7 +279,7 @@ void Arduboy::drawLine
     if (steep)
     {
       drawPixel(y0, x0, color);
-    } 
+    }
     else
     {
       drawPixel(x0, y0, color);
@@ -295,7 +295,7 @@ void Arduboy::drawLine
 }
 
 void Arduboy::drawRect
-(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
 {
   drawFastHLine(x, y, w, color);
   drawFastHLine(x, y+h-1, w, color);
@@ -304,7 +304,7 @@ void Arduboy::drawRect
 }
 
 void Arduboy::drawFastVLine
-(int16_t x, int16_t y, int16_t h, uint16_t color)
+(int16_t x, int16_t y, int16_t h, uint8_t color)
 {
   int end = y+h;
   for (int a = max(0,y); a < min(end,HEIGHT); a++)
@@ -314,7 +314,7 @@ void Arduboy::drawFastVLine
 }
 
 void Arduboy::drawFastHLine
-(int16_t x, int16_t y, int16_t w, uint16_t color)
+(int16_t x, int16_t y, int16_t w, uint8_t color)
 {
   int end = x+w;
   for (int a = max(0,x); a < min(end,WIDTH); a++)
@@ -324,22 +324,22 @@ void Arduboy::drawFastHLine
 }
 
 void Arduboy::fillRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t color)
+(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
 {
   // stupidest version - update in subclasses if desired!
   for (int16_t i=x; i<x+w; i++)
   {
-    drawFastVLine(i, y, h, color); 
+    drawFastVLine(i, y, h, color);
   }
 }
 
-void Arduboy::fillScreen(uint16_t color)
+void Arduboy::fillScreen(uint8_t color)
 {
   fillRect(0, 0, WIDTH, HEIGHT, color);
 }
 
 void Arduboy::drawRoundRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
+(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
 {
   // smarter version
   drawFastHLine(x+r, y, w-2*r, color); // Top
@@ -354,7 +354,7 @@ void Arduboy::drawRoundRect
 }
 
 void Arduboy::fillRoundRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
+(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
 {
   // smarter version
   fillRect(x+r, y, w-2*r, h, color);
@@ -365,7 +365,7 @@ void Arduboy::fillRoundRect
 }
 
 void Arduboy::drawTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
+(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
 {
   drawLine(x0, y0, x1, y1, color);
   drawLine(x1, y1, x2, y2, color);
@@ -373,7 +373,7 @@ void Arduboy::drawTriangle
 }
 
 void Arduboy::fillTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
+(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
 {
 
   int16_t a, b, y, last;
@@ -480,7 +480,7 @@ void Arduboy::drawBitmap
  const uint8_t *bitmap,
  int16_t w,
  int16_t h,
- uint16_t color
+ uint8_t color
 )
 {
   //bitmap is off screen
@@ -542,7 +542,7 @@ void Arduboy::drawBitmap
 }
 
 void Arduboy::drawChar
-(int16_t x, int16_t y, unsigned char c, uint16_t color, uint16_t bg, uint8_t size) 
+(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
 {
 
   if ((x >= WIDTH) ||         // Clip right
@@ -577,7 +577,7 @@ void Arduboy::drawChar
         else  // big size
         {
           fillRect(x+(i*size), y+(j*size), size, size, color);
-        } 
+        }
       }
       else if (bg != color)
       {
@@ -596,13 +596,13 @@ void Arduboy::drawChar
   }
 }
 
-void Arduboy::setCursor(int16_t x, int16_t y) 
+void Arduboy::setCursor(int16_t x, int16_t y)
 {
   cursor_x = x;
   cursor_y = y;
 }
 
-void Arduboy::setTextSize(uint8_t s) 
+void Arduboy::setTextSize(uint8_t s)
 {
   textsize = (s > 0) ? s : 1;
 }
@@ -643,8 +643,8 @@ void Arduboy::display()
 void Arduboy::drawScreen(const unsigned char *image)
 {
   for (int a = 0; a < (HEIGHT*WIDTH)/8; a++)
-  { 
-    SPI.transfer(pgm_read_byte(image + a)); 
+  {
+    SPI.transfer(pgm_read_byte(image + a));
   }
 }
 
