@@ -10,6 +10,20 @@
 #define DC 4
 #define RST 12
 
+#define LEFT_BUTTON _BV(5)
+#define RIGHT_BUTTON _BV(3)
+#define UP_BUTTON _BV(4)
+#define DOWN_BUTTON _BV(2)
+#define A_BUTTON _BV(1)
+#define B_BUTTON _BV(0)
+
+#define PIN_LEFT_BUTTON 9
+#define PIN_RIGHT_BUTTON 5
+#define PIN_UP_BUTTON 8
+#define PIN_DOWN_BUTTON 10
+#define PIN_A_BUTTON A1
+#define PIN_B_BUTTON A0
+
 #define WIDTH 128
 #define HEIGHT 64
 
@@ -18,6 +32,7 @@ class Arduboy : public Print
 public:
   Arduboy();
   uint8_t getInput();
+  boolean pressed(uint8_t buttons);
   void start();
   void blank();
   void clearDisplay();

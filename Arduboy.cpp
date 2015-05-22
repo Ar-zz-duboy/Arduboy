@@ -7,12 +7,12 @@ void Arduboy::start()
 {
   pinMode(DC, OUTPUT);
   pinMode(CS, OUTPUT);
-  pinMode(8, INPUT_PULLUP);
-  pinMode(9, INPUT_PULLUP);
-  pinMode(10, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
-  pinMode(A0, INPUT_PULLUP);
-  pinMode(A1, INPUT_PULLUP);
+  pinMode(PIN_LEFT_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_RIGHT_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_UP_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_A_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_B_BUTTON, INPUT_PULLUP);
 
   csport = portOutputRegister(digitalPinToPort(CS));
   cspinmask = digitalPinToBitMask(CS);
@@ -662,18 +662,24 @@ uint8_t Arduboy::width() { return WIDTH; }
 
 uint8_t Arduboy::height() { return HEIGHT; }
 
+boolean Arduboy::pressed(uint8_t buttons)
+{
+ uint8_t button_state = getInput();
+ return (button_state & buttons) == buttons;
+}
+
 uint8_t Arduboy::getInput()
 {
   // b00lurdab
-  uint8_t value = B00000000;
+  uint8_t buttons = B00000000;
 
-  if (digitalRead(9) == 0) { value = value | B00100000; }  // left
-  if (digitalRead(8) == 0) { value = value | B00010000; }  // up
-  if (digitalRead(5) == 0) { value = value | B00001000; }  // right
-  if (digitalRead(10) == 0) { value = value | B00000100; }  // down
-  if (digitalRead(A0) == 0) { value = value | B00000010; }  // a?
-  if (digitalRead(A1) == 0) { value = value | B00000001; }  // b?
-  return value;
+  if (!digitalRead(PIN_LEFT_BUTTON)) { buttons |= LEFT_BUTTON; }  // left
+  if (!digitalRead(PIN_RIGHT_BUTTON)) { buttons |= RIGHT_BUTTON; }  // right
+  if (!digitalRead(PIN_UP_BUTTON)) { buttons |= UP_BUTTON; }  // up
+  if (!digitalRead(PIN_DOWN_BUTTON)) { buttons |= DOWN_BUTTON; }  // down
+  if (!digitalRead(PIN_A_BUTTON)) { buttons |= A_BUTTON; }  // a?
+  if (!digitalRead(PIN_B_BUTTON)) { buttons |= B_BUTTON; }  // b?
+  return buttons;
 }
 
 void Arduboy::swap(int16_t& a, int16_t& b) {

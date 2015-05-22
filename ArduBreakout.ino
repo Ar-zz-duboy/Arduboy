@@ -100,7 +100,7 @@ void movePaddle()
   //Move right
   if(xPaddle < width - 12)
   {
-    if( !digitalRead(5) )
+    if (display.pressed(RIGHT_BUTTON))
     {
       xPaddle++;
     }
@@ -109,7 +109,7 @@ void movePaddle()
   //Move left
   if(xPaddle > 0)
   {
-    if( !digitalRead(9))
+    if (display.pressed(LEFT_BUTTON))
     {
       xPaddle--;
     }
@@ -242,7 +242,7 @@ void moveBall()
     xb=xPaddle + 5;
 
     //Release ball if FIRE pressed
-    pad3 = !digitalRead(A0);
+    pad3 = display.pressed(B_BUTTON);
     if (pad3 == 1 && oldpad3 == 0)
     {
       released=true;
@@ -323,7 +323,7 @@ void pause()
   {
     delay(150);
     //Unpause if FIRE is pressed
-    pad2 = !digitalRead(A0);
+    pad2 = display.pressed(B_BUTTON);
     if (pad2 > 1 && oldpad2 == 0 && released)
     {
         display.fillRect(52, 45, 30, 11, 0);
@@ -382,7 +382,7 @@ boolean pollFireButton(int n)
   for(int i = 0; i < n; i++)
   {
     delay(15);
-    pad = !digitalRead(A0);
+    pad = display.pressed(B_BUTTON);
     if(pad == 1 && oldpad == 0)
     {
       oldpad3 = 1; //Forces pad loop 3 to run once
@@ -525,7 +525,7 @@ void enterInitials()
     display.drawLine(56 + (index*8), 28, 56 + (index*8) + 6, 28, 1);
     delay(150);
 
-    if (!digitalRead(5))
+    if (display.pressed(RIGHT_BUTTON))
     {
       index--;
       if (index < 0)
@@ -537,7 +537,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(9))
+    if (display.pressed(LEFT_BUTTON))
     {
       index++;
       if (index > 2)
@@ -548,7 +548,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(8))
+    if (display.pressed(UP_BUTTON))
     {
       initials[index]++;
       tone(A2, 523, 250);
@@ -571,7 +571,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(10))
+    if (display.pressed(DOWN_BUTTON))
     {
       initials[index]--;
       tone(A2, 523, 250);
@@ -589,7 +589,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(A0))
+    if (display.pressed(B_BUTTON))
     {
       if (index < 2)
       {
@@ -707,7 +707,7 @@ void loop()
     drawPaddle();
 
     //Pause game if FIRE pressed
-    pad = !digitalRead(A0);
+    pad = display.pressed(B_BUTTON);
 
     if(pad >1 && oldpad==0 && released)
     {
