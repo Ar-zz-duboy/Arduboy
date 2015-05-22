@@ -10,7 +10,6 @@
  */
 
 #include <SPI.h>
-#include <Wire.h>
 #include "Arduboy.h"
 
 #include <EEPROM.h>
