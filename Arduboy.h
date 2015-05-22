@@ -31,6 +31,9 @@ class Arduboy : public Print
 {
 public:
   Arduboy();
+  void LCDDataMode();
+  void LCDCommandMode();
+
   uint8_t getInput();
   boolean pressed(uint8_t buttons);
   void start();

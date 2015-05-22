@@ -30,9 +30,7 @@ void Arduboy::start()
   delay(10);          // wait 10ms
   digitalWrite(RST, HIGH);  // bring out of reset
 
-  *csport |= cspinmask;
-  *dcport &= ~dcpinmask;
-  *csport &= ~cspinmask;
+  LCDCommandMode();
 
   SPI.transfer(0xAE);  // Display Off
   SPI.transfer(0XD5);  // Set Display Clock Divisor v
@@ -60,10 +58,7 @@ void Arduboy::start()
   SPI.transfer(0xA6);  // Set normal/inverse display
   SPI.transfer(0xAF);  // Display On
 
-  *csport |= cspinmask;
-  *csport |= cspinmask;
-  *dcport &= ~dcpinmask;
-  *csport &= ~cspinmask;
+  LCDCommandMode();
 
   SPI.transfer(0x20);     // set display mode
   SPI.transfer(0x00);     // horizontal addressing mode
@@ -80,7 +75,20 @@ void Arduboy::start()
   SPI.transfer(start & 0x07);
   SPI.transfer(end & 0x07);
 
+  LCDDataMode();
+}
+
+void Arduboy::LCDDataMode()
+{
   *dcport |= dcpinmask;
+  *csport &= ~cspinmask;
+}
+
+void Arduboy::LCDCommandMode()
+{
+  *csport |= cspinmask; // why are we doing this twice?
+  *csport |= cspinmask;
+  *dcport &= ~dcpinmask;
   *csport &= ~cspinmask;
 }
 
