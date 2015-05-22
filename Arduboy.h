@@ -73,9 +73,10 @@ private:
 
 // Adafruit stuff
 protected:
-  int16_t  cursor_x, cursor_y;
-  uint8_t  textsize;
-  boolean  wrap; // If set, 'wrap' text at right edge of display
+  int16_t cursor_x = 0;
+  int16_t cursor_y = 0;
+  uint8_t textsize = 1;
+  boolean wrap; // If set, 'wrap' text at right edge of display
 };
 
 #endif
