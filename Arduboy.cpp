@@ -5,6 +5,7 @@ Arduboy::Arduboy() { }
 
 void Arduboy::start()
 {
+  SPI.begin();
   pinMode(DC, OUTPUT);
   pinMode(CS, OUTPUT);
   pinMode(PIN_LEFT_BUTTON, INPUT_PULLUP);

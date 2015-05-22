@@ -86,7 +86,6 @@ void intro()
 
 void setup()
 {
-  SPI.begin();
   display.start();
   display.setTextSize(1);
   display.setCursor(0, 0);
