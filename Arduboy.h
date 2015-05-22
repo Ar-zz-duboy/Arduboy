@@ -4,6 +4,8 @@
 #include <SPI.h>
 #include <Print.h>
 
+#define PIXEL_SAFE_MODE
+
 #define CS 6
 #define DC 4
 #define RST 12

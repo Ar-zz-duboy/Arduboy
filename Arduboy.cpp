@@ -95,10 +95,12 @@ void Arduboy::clearDisplay()
 
 void Arduboy::drawPixel(int x, int y, uint8_t color)
 {
+  #ifdef PIXEL_SAFE_MODE
   if (x < 0 || x > (WIDTH-1) || y < 0 || y > (HEIGHT-1))
   {
     return;
   }
+  #endif
 
   uint8_t row = y / 8;
   if (color)
