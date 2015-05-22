@@ -2,7 +2,7 @@
   Breakout
  Copyright (C) 2011 Sebastian Goscik
  All rights reserved.
- 
+
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
  License as published by the Free Software Foundation; either
@@ -111,10 +111,10 @@ void movePaddle()
   if(xPaddle > 0)
   {
     if( !digitalRead(9))
-    {  
+    {
       xPaddle--;
     }
-  } 
+  }
 }
 
 void moveBall()
@@ -144,7 +144,7 @@ void moveBall()
     {
       display.drawRect(xPaddle, 63, 11, 1, 0);
       xPaddle = 54;
-      yb=60; 
+      yb=60;
       released = false;
       lives--;
       drawLives();
@@ -152,7 +152,7 @@ void moveBall()
       if (random(0, 2) == 0)
       {
         dx = 1;
-      } 
+      }
       else
       {
         dx = -1;
@@ -215,7 +215,7 @@ void moveBall()
                 yb += dy;
                 bounced = true;
                 tone(A2, 261, 250);
-              } 
+              }
             }
 
             //Hoizontal collision
@@ -228,7 +228,7 @@ void moveBall()
                 xb += dx;
                 bounced = true;
                 tone(A2, 261, 250);
-              } 
+              }
             }
           }
         }
@@ -245,22 +245,22 @@ void moveBall()
     //Release ball if FIRE pressed
     pad3 = !digitalRead(A0);
     if (pad3 == 1 && oldpad3 == 0)
-    {  
+    {
       released=true;
 
       //Apply random direction to ball on release
       if (random(0, 2) == 0)
       {
         dx = 1;
-      } 
+      }
       else
       {
         dx = -1;
       }
-      //Makes sure the ball heads upwards 
+      //Makes sure the ball heads upwards
       dy = -1;
     }
-    oldpad3 = pad3; 
+    oldpad3 = pad3;
   }
 }
 
@@ -331,7 +331,7 @@ void pause()
 
         paused=false;
     }
-    oldpad2=pad2; 
+    oldpad2=pad2;
   }
 }
 
@@ -340,7 +340,7 @@ void Score()
   score += (level*10);
   sprintf(text, "SCORE:%u", score);
   display.setCursor(80, 90);
-  display.print(text); 
+  display.print(text);
 }
 
 void newLevel(){
@@ -367,14 +367,14 @@ void newLevel(){
       display.drawRect(10*column, 2+6*row, 8, 4, 1);
     }
   }
-  
+
   //Draws the initial lives
   drawLives();
-  
+
   //Draws the initial score
   sprintf(text, "SCORE:%u", score);
   display.setCursor(80, 90);
-  display.print(text); 
+  display.print(text);
 }
 
 //Used to delay images while reading button input
@@ -438,7 +438,7 @@ boolean displayHighScores(byte file)
       display.display();
     }
   }
-  if (pollFireButton(300)) 
+  if (pollFireButton(300))
   {
     return true;
   }
@@ -502,7 +502,7 @@ void enterInitials()
   initials[1] = ' ';
   initials[2] = ' ';
 
-  while (true) 
+  while (true)
   {
     display.display();
     display.clearDisplay();
@@ -621,7 +621,7 @@ void enterHighScore(byte file)
     lo = EEPROM.read(address + (5*i) + 1);
     if ((hi == 0xFF) && (lo == 0xFF))
     {
-      // The values are uninitialized, so treat this entry 
+      // The values are uninitialized, so treat this entry
       // as a score of 0.
       tmpScore = 0;
     } else
@@ -639,7 +639,7 @@ void enterHighScore(byte file)
         if ((hi == 0xFF) && (lo == 0xFF))
         {
         tmpScore = 0;
-        } 
+        }
         else
         {
           tmpScore = (hi << 8) | lo;
@@ -676,7 +676,7 @@ void enterHighScore(byte file)
 
 
 
-void loop() 
+void loop()
 {
   display.display();
 
@@ -694,7 +694,7 @@ void loop()
   //Initial level draw
   if (!initialDraw)
   {
-    //Clears the screen 
+    //Clears the screen
     display.display();
     display.clearDisplay();
     //Selects Font
@@ -722,13 +722,13 @@ void loop()
     if(brickCount==60)
     {
       level++;
-      newLevel(); 
+      newLevel();
     }
   }
   else
   {
     drawGameOver();
-    if (score > 0) 
+    if (score > 0)
     {
       enterHighScore(2);
     }
