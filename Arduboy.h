@@ -5,6 +5,7 @@
 #include <Print.h>
 
 #define PIXEL_SAFE_MODE
+#define SAFE_MODE
 
 #define CS 6
 #define DC 4
@@ -69,6 +70,7 @@ public:
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
+  void safeMode();
   uint8_t readCapacitivePin(int pinToMeasure);
   uint8_t readCapXtal(int pinToMeasure);
   volatile uint8_t *mosiport, *clkport, *csport, *dcport;

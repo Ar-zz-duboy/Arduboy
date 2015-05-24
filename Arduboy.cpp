@@ -76,6 +76,23 @@ void Arduboy::start()
   SPI.transfer(end & 0x07);
 
   LCDDataMode();
+  #ifdef SAFE_MODE
+  if (pressed(LEFT_BUTTON+UP_BUTTON))
+    safeMode();
+  #endif
+}
+
+// Safe Mode is engaged by holding down both the LEFT button and UP button
+// when plugging the device into USB.  It puts your device into a tight
+// loop and allows it to be reprogrammed even if you have uploaded a very
+// broken sketch that interferes with the normal USB triggered auto-reboot
+// functionality of the device.
+void Arduboy::safeMode()
+{
+  display(); // too avoid random gibberish
+  while (true) {
+    asm volatile("nop \n");
+  }
 }
 
 void Arduboy::LCDDataMode()
