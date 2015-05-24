@@ -28,6 +28,9 @@
 #define WIDTH 128
 #define HEIGHT 64
 
+#define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F
+#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07
+
 class Arduboy : public Print
 {
 public:

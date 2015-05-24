@@ -51,6 +51,7 @@ void Arduboy::bootLCD()
   SPI.transfer(0x40);  // Set Start Line (0)
   SPI.transfer(0x8D);  // Charge Pump Setting v
   SPI.transfer(0x14);  //   Enable
+  // why are we running this next pair twice?
   SPI.transfer(0x20);  // Set Memory Mode v
   SPI.transfer(0x00);  //   Horizontal Addressing
   SPI.transfer(0xA1);  // Set Segment Re-map (A0) | (b0001)
@@ -68,21 +69,16 @@ void Arduboy::bootLCD()
   SPI.transfer(0xAF);  // Display On
 
   LCDCommandMode();
-
   SPI.transfer(0x20);     // set display mode
   SPI.transfer(0x00);     // horizontal addressing mode
+
   SPI.transfer(0x21);     // set col address
+  SPI.transfer(0x00);
+  SPI.transfer(COLUMN_ADDRESS_END);
 
-  unsigned char start = 0;
-  unsigned char end = WIDTH - 1;
-  SPI.transfer(start & 0x7F);
-  SPI.transfer(end & 0x7F);
   SPI.transfer(0x22); // set page address
-
-  start = 0;
-  end = (HEIGHT/8)-1;
-  SPI.transfer(start & 0x07);
-  SPI.transfer(end & 0x07);
+  SPI.transfer(0x00);
+  SPI.transfer(PAGE_ADDRESS_END);
 
   LCDDataMode();
 }
