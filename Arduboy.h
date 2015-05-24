@@ -70,7 +70,9 @@ public:
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
-  void safeMode();
+
+  void bootLCD() __attribute__((always_inline));
+  void safeMode() __attribute__((always_inline));
   uint8_t readCapacitivePin(int pinToMeasure);
   uint8_t readCapXtal(int pinToMeasure);
   volatile uint8_t *mosiport, *clkport, *csport, *dcport;

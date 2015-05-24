@@ -30,8 +30,17 @@ void Arduboy::start()
   delay(10);          // wait 10ms
   digitalWrite(RST, HIGH);  // bring out of reset
 
-  LCDCommandMode();
+  bootLCD();
 
+  #ifdef SAFE_MODE
+  if (pressed(LEFT_BUTTON+UP_BUTTON))
+    safeMode();
+  #endif
+}
+
+void Arduboy::bootLCD()
+{
+  LCDCommandMode();
   SPI.transfer(0xAE);  // Display Off
   SPI.transfer(0XD5);  // Set Display Clock Divisor v
   SPI.transfer(0xF0);  //   0x80 is default
@@ -76,10 +85,6 @@ void Arduboy::start()
   SPI.transfer(end & 0x07);
 
   LCDDataMode();
-  #ifdef SAFE_MODE
-  if (pressed(LEFT_BUTTON+UP_BUTTON))
-    safeMode();
-  #endif
 }
 
 // Safe Mode is engaged by holding down both the LEFT button and UP button
