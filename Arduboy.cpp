@@ -128,14 +128,14 @@ void Arduboy::drawPixel(int x, int y, uint8_t color)
   }
   #endif
 
-  uint8_t row = y / 8;
+  uint8_t row = (uint8_t)y / 8;
   if (color)
   {
-    sBuffer[(row*WIDTH) + x] |=   1 << (y % 8);
+    sBuffer[(row*WIDTH) + (uint8_t)x] |=   _BV((uint8_t)y % 8);
   }
   else
   {
-    sBuffer[(row*WIDTH) + x] &= ~(1 << (y % 8));
+    sBuffer[(row*WIDTH) + (uint8_t)x] &= ~ _BV((uint8_t)y % 8);
   }
 }
 
@@ -275,7 +275,7 @@ void Arduboy::drawLine
 (int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color)
 {
   // bresenham's algorithm - thx wikpedia
-  int16_t steep = abs(y1 - y0) > abs(x1 - x0);
+  boolean steep = abs(y1 - y0) > abs(x1 - x0);
   if (steep) {
     swap(x0, y0);
     swap(x1, y1);
@@ -291,7 +291,7 @@ void Arduboy::drawLine
   dy = abs(y1 - y0);
 
   int16_t err = dx / 2;
-  int16_t ystep;
+  int8_t ystep;
 
   if (y0 < y1)
   {
