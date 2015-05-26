@@ -3,6 +3,7 @@
 
 #include <SPI.h>
 #include <Print.h>
+#include <avr/sleep.h>
 
 #define PIXEL_SAFE_MODE
 #define SAFE_MODE
@@ -41,6 +42,7 @@ public:
   uint8_t getInput();
   boolean pressed(uint8_t buttons);
   void start();
+  void idle();
   void blank();
   void clearDisplay();
   void display();

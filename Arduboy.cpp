@@ -96,6 +96,12 @@ void Arduboy::safeMode()
   }
 }
 
+void Arduboy::idle()
+{
+  set_sleep_mode(SLEEP_MODE_IDLE);
+  sleep_mode();
+}
+
 void Arduboy::LCDDataMode()
 {
   *dcport |= dcpinmask;
