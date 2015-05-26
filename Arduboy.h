@@ -5,6 +5,8 @@
 #include <Print.h>
 #include <avr/sleep.h>
 
+#include "audio.h"
+
 #define PIXEL_SAFE_MODE
 #define SAFE_MODE
 
@@ -77,6 +79,8 @@ public:
   uint8_t height();
   virtual size_t write(uint8_t);
   void swap(int16_t& a, int16_t& b);
+
+  ArduboyTunes tunes;
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
