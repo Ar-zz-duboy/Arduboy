@@ -40,33 +40,35 @@ void ArduboyTunes::initChannel(byte pin) {
   byte timer_num;
   tune_playing = false;
 
-  if (_tune_num_chans < AVAILABLE_TIMERS) {
-    timer_num = pgm_read_byte(tune_pin_to_timer_PGM + _tune_num_chans);
-    _tune_pins[_tune_num_chans] = pin;
-    _tune_num_chans++;
-    pinMode(pin, OUTPUT);
-    switch (timer_num) {
-      case 1:
-        // 16 bit timer
-        TCCR1A = 0;
-        TCCR1B = 0;
-        bitWrite(TCCR1B, WGM12, 1);
-        bitWrite(TCCR1B, CS10, 1);
-        timer1_pin_port = portOutputRegister(digitalPinToPort(pin));
-        timer1_pin_mask = digitalPinToBitMask(pin);
-        break;
-      case 3:
-        // 16 bit timer
-        TCCR3A = 0;
-        TCCR3B = 0;
-        bitWrite(TCCR3B, WGM32, 1);
-        bitWrite(TCCR3B, CS30, 1);
-        timer3_pin_port = portOutputRegister(digitalPinToPort(pin));
-        timer3_pin_mask = digitalPinToBitMask(pin);
-        playNote(0, 60);  /* start and stop channel 0 (timer 3) on middle C so wait/delay works */
-        stopNote(0);
-        break;
-    }
+  // we are all out of timers
+  if (_tune_num_chans == AVAILABLE_TIMERS)
+    return;
+
+  timer_num = pgm_read_byte(tune_pin_to_timer_PGM + _tune_num_chans);
+  _tune_pins[_tune_num_chans] = pin;
+  _tune_num_chans++;
+  pinMode(pin, OUTPUT);
+  switch (timer_num) {
+    case 1:
+      // 16 bit timer
+      TCCR1A = 0;
+      TCCR1B = 0;
+      bitWrite(TCCR1B, WGM12, 1);
+      bitWrite(TCCR1B, CS10, 1);
+      timer1_pin_port = portOutputRegister(digitalPinToPort(pin));
+      timer1_pin_mask = digitalPinToBitMask(pin);
+      break;
+    case 3:
+      // 16 bit timer
+      TCCR3A = 0;
+      TCCR3B = 0;
+      bitWrite(TCCR3B, WGM32, 1);
+      bitWrite(TCCR3B, CS30, 1);
+      timer3_pin_port = portOutputRegister(digitalPinToPort(pin));
+      timer3_pin_mask = digitalPinToBitMask(pin);
+      playNote(0, 60);  /* start and stop channel 0 (timer 3) on middle C so wait/delay works */
+      stopNote(0);
+      break;
   }
 }
 
@@ -136,7 +138,7 @@ void ArduboyTunes::playScore(const byte *score) {
 }
 
 void ArduboyTunes::stopScore (void) {
-  for (int i = 0; i < _tune_num_chans; i+)
+  for (uint8_t i = 0; i < _tune_num_chans; i++)
     stopNote(i);
   tune_playing = false;
 }
@@ -198,9 +200,8 @@ void ArduboyTunes::delay (unsigned duration) {
 }
 
 void ArduboyTunes::closeChannels(void) {
-  byte chan;
   byte timer_num;
-  for (chan=0; chan<_tune_num_chans; ++chan) {
+  for (uint8_t chan=0; chan < _tune_num_chans; chan++) {
     timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
     switch (timer_num) {
       case 1:
