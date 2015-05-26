@@ -146,6 +146,13 @@ void Arduboy::drawPixel(int x, int y, uint8_t color)
   }
 }
 
+uint8_t Arduboy::getPixel(uint8_t x, uint8_t y)
+{
+  uint8_t row = y / 8;
+  uint8_t bit_position = y % 8;
+  return (sBuffer[(row*WIDTH) + x] & _BV(bit_position)) >> bit_position;
+}
+
 void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
 {
   int16_t f = 1 - r;

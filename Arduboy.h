@@ -29,6 +29,9 @@
 #define WIDTH 128
 #define HEIGHT 64
 
+#define WHITE 1
+#define BLACK 0
+
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F
 #define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07
 
@@ -49,6 +52,7 @@ public:
   void drawScreen(const unsigned char *image);
   void drawScreen(unsigned char image[]);
   void drawPixel(int x, int y, uint8_t color);
+  uint8_t getPixel(uint8_t x, uint8_t y);
   void drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color);
   void drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint8_t color);
   void fillCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color);
