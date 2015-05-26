@@ -5,10 +5,10 @@
 #include <avr/pgmspace.h>
 
 #define AVAILABLE_TIMERS 2
-#define CMD_PLAYNOTE	0x90	/* play a note: low nibble is generator #, note is next byte */
-#define CMD_STOPNOTE	0x80	/* stop a note: low nibble is generator # */
-#define CMD_RESTART	0xe0	/* restart the score from the beginning */
-#define CMD_STOP	0xf0	/* stop playing */
+#define TUNE_OP_PLAYNOTE	0x90	/* play a note: low nibble is generator #, note is next byte */
+#define TUNE_OP_STOPNOTE	0x80	/* stop a note: low nibble is generator # */
+#define TUNE_OP_RESTART	0xe0	/* restart the score from the beginning */
+#define TUNE_OP_STOP	0xf0	/* stop playing */
 
 
 
@@ -20,11 +20,11 @@ public:
 	void playScore(const byte *score);	// start playing a polyphonic score
 	void stopScore();			// stop playing the score
 	void delay(unsigned msec);		// delay in milliseconds
-	void stopAll();			// stop all timers
+	void closeChannels();			// stop all timers
 	bool playing();
 
 	// called via interrupt
-	void static tune_stepscore (void);
+	void static step();
 	void static soundOutput();
 
 

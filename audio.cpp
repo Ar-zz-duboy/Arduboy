@@ -24,6 +24,7 @@ volatile const byte *score_cursor = 0;
 //   They are times 2 for greater accuracy, yet still fits in a word.
 //   Generated from Excel by =ROUND(2*440/32*(2^((x-9)/12)),0) for 0<x<128
 // The lowest notes might not work, depending on the Arduino clock frequency
+// Ref: http://www.phy.mtu.edu/~suits/notefreqs.html
 const unsigned int PROGMEM _midi_note_frequencies[128] = {
 16,17,18,19,21,22,23,24,26,28,29,31,33,35,37,39,41,44,46,49,52,55,58,62,65,
 69,73,78,82,87,92,98,104,110,117,123,131,139,147,156,165,175,185,196,208,220,
@@ -70,48 +71,49 @@ void ArduboyTunes::initChannel(byte pin) {
 }
 
 
-void ArduboyTunes::playNote (byte chan, byte note) {
+void ArduboyTunes::playNote(byte chan, byte note) {
   byte timer_num;
-  byte prescalarbits = 0b001;
+  byte prescalar_bits;
   unsigned int frequency2; /* frequency times 2 */
   unsigned long ocr;
 
-  if (note>127)
+  // we can't plan on a channel that does not exist
+  if (chan >= _tune_num_chans)
+    return;
+
+  // we only have frequencies for 128 notes
+  if (note > 127)
     note = 127;
 
-  if (chan < _tune_num_chans) {
-    timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
-    frequency2 = pgm_read_word (_midi_note_frequencies + note);
+  timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
+  frequency2 = pgm_read_word(_midi_note_frequencies + note);
 
-    //******  16-bit timer  *********
-    // two choices for the 16 bit timers: ck/1 or ck/64
-    ocr = F_CPU / frequency2 - 1;
-    prescalarbits = 0b001;
-    if (ocr > 0xffff) {
-      ocr = F_CPU / frequency2 / 64 - 1;
-      prescalarbits = 0b011;
-    }
-    if (timer_num == 1)
-      TCCR1B = (TCCR1B & 0b11111000) | prescalarbits;
-    else if (timer_num == 3)
-      TCCR3B = (TCCR3B & 0b11111000) | prescalarbits;
-    // Set the OCR for the given timer, then turn on the interrupts
-    switch (timer_num) {
-      case 1:
-        OCR1A = ocr;
-        bitWrite(TIMSK1, OCIE1A, 1);
-        break;
-      case 3:
-        OCR3A = ocr;
-        wait_timer_frequency2 = frequency2;  // for "tune_delay" function
-        wait_timer_playing = true;
-        bitWrite(TIMSK3, OCIE3A, 1);
-        break;
-    }
+  //******  16-bit timer  *********
+  // two choices for the 16 bit timers: ck/1 or ck/64
+  ocr = F_CPU / frequency2 - 1;
+  prescalar_bits = 0b001;
+  if (ocr > 0xffff) {
+    ocr = F_CPU / frequency2 / 64 - 1;
+    prescalar_bits = 0b011;
+  }
+  // Set the OCR for the given timer, then turn on the interrupts
+  switch (timer_num) {
+    case 1:
+      TCCR1B = (TCCR1B & 0b11111000) | prescalar_bits;
+      OCR1A = ocr;
+      bitWrite(TIMSK1, OCIE1A, 1);
+      break;
+    case 3:
+      TCCR3B = (TCCR3B & 0b11111000) | prescalar_bits;
+      OCR3A = ocr;
+      wait_timer_frequency2 = frequency2;  // for "tune_delay" function
+      wait_timer_playing = true;
+      bitWrite(TIMSK3, OCIE3A, 1);
+      break;
   }
 }
 
-void ArduboyTunes::stopNote (byte chan) {
+void ArduboyTunes::stopNote(byte chan) {
   byte timer_num;
   timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
   switch (timer_num) {
@@ -126,16 +128,15 @@ void ArduboyTunes::stopNote (byte chan) {
   }
 }
 
-void ArduboyTunes::playScore (const byte *score) {
+void ArduboyTunes::playScore(const byte *score) {
   score_start = score;
-  score_cursor = score;
-  tune_stepscore();  /* execute initial commands */
+  score_cursor = score_start;
+  step();  /* execute initial commands */
   tune_playing = true;  /* release the interrupt routine */
 }
 
 void ArduboyTunes::stopScore (void) {
-  int i;
-  for (i = 0; i < _tune_num_chans; ++i)
+  for (int i = 0; i < _tune_num_chans; i+)
     stopNote(i);
   tune_playing = false;
 }
@@ -151,29 +152,30 @@ This is called initially from tune_playcore, but then is called
 from the interrupt routine when waits expire.
 */
 /* if CMD < 0x80, then the other 7 bits and the next byte are a 15-bit big-endian number of msec to wait */
-void ArduboyTunes::tune_stepscore (void) {
-  byte cmd, opcode, chan;
+void ArduboyTunes::step() {
+  byte command, opcode, chan;
   unsigned duration;
   while (1) {
-    cmd = pgm_read_byte(score_cursor++);
-    if (cmd < 0x80) { /* wait count in msec. */
-      duration = ((unsigned)cmd << 8) | (pgm_read_byte(score_cursor++));
+    command = pgm_read_byte(score_cursor++);
+    if (command < 0x80) { /* wait count in msec. */
+      duration = ((unsigned)command << 8) | (pgm_read_byte(score_cursor++));
       wait_toggle_count = ((unsigned long) wait_timer_frequency2 * duration + 500) / 1000;
       if (wait_toggle_count == 0) wait_toggle_count = 1;
       break;
     }
-    opcode = cmd & 0xf0;
-    chan = cmd & 0x0f;
-    if (opcode == CMD_STOPNOTE) { /* stop note */
+
+    opcode = command & 0xf0;
+    chan = command & 0x0f;
+    if (opcode == TUNE_OP_STOPNOTE) { /* stop note */
       stopNote(chan);
     }
-    else if (opcode == CMD_PLAYNOTE) { /* play note */
+    else if (opcode == TUNE_OP_PLAYNOTE) { /* play note */
       playNote(chan, pgm_read_byte(score_cursor++));
     }
-    else if (opcode == CMD_RESTART) { /* restart score */
+    else if (opcode == TUNE_OP_RESTART) { /* restart score */
       score_cursor = score_start;
     }
-    else if (opcode == CMD_STOP) { /* stop score */
+    else if (opcode == TUNE_OP_STOP) { /* stop score */
       tune_playing = false;
       break;
     }
@@ -195,7 +197,7 @@ void ArduboyTunes::delay (unsigned duration) {
   doing_delay = false;
 }
 
-void ArduboyTunes::stopAll(void) {
+void ArduboyTunes::closeChannels(void) {
   byte chan;
   byte timer_num;
   for (chan=0; chan<_tune_num_chans; ++chan) {
@@ -211,6 +213,7 @@ void ArduboyTunes::stopAll(void) {
     digitalWrite(_tune_pins[chan], 0);
   }
   _tune_num_chans = 0;
+  tune_playing = false;
 }
 
 void ArduboyTunes::soundOutput()
@@ -221,7 +224,7 @@ void ArduboyTunes::soundOutput()
   if (tune_playing && wait_toggle_count && --wait_toggle_count == 0) {
     // end of a score wait, so execute more score commands
     wait_timer_old_frequency2 = wait_timer_frequency2;  // save this timer's frequency
-    ArduboyTunes::tune_stepscore();  // execute commands
+    ArduboyTunes::step();  // execute commands
     // If this timer's frequency has changed and we're using it for a tune_delay(),
     // recompute the number of toggles to wait for
     if (doing_delay && wait_timer_old_frequency2 != wait_timer_frequency2) {
