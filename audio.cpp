@@ -1,10 +1,10 @@
 #include "audio.h"
 
 const byte PROGMEM tune_pin_to_timer_PGM[] = { 3, 1 };
-volatile byte *timer1_pin_port;
-volatile byte timer1_pin_mask;
-volatile byte *timer3_pin_port;
-volatile byte timer3_pin_mask;
+volatile byte *_tunes_timer1_pin_port;
+volatile byte _tunes_timer1_pin_mask;
+volatile byte *_tunes_timer3_pin_port;
+volatile byte _tunes_timer3_pin_mask;
 byte _tune_pins[AVAILABLE_TIMERS];
 byte _tune_num_chans = 0;
 volatile boolean tune_playing; // is the score still playing?
@@ -36,6 +36,34 @@ const unsigned int PROGMEM _midi_note_frequencies[128] = {
 22351,23680,25088 };
 
 
+/* AUDIO */
+
+void ArduboyAudio::on() {
+  audio_enabled = true;
+}
+
+bool ArduboyAudio::enabled() {
+  return audio_enabled;
+}
+
+void ArduboyAudio::off() {
+  audio_enabled = false;
+}
+
+void ArduboyAudio::setup() {
+  // get audio setting from EEPROM
+  audio_enabled = false;
+}
+
+void ArduboyAudio::tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
+{
+  // if (audio_enabled)
+    // ::tone(_pin, frequency, duration);
+}
+
+
+/* TUNES */
+
 void ArduboyTunes::initChannel(byte pin) {
   byte timer_num;
   tune_playing = false;
@@ -55,8 +83,8 @@ void ArduboyTunes::initChannel(byte pin) {
       TCCR1B = 0;
       bitWrite(TCCR1B, WGM12, 1);
       bitWrite(TCCR1B, CS10, 1);
-      timer1_pin_port = portOutputRegister(digitalPinToPort(pin));
-      timer1_pin_mask = digitalPinToBitMask(pin);
+      _tunes_timer1_pin_port = portOutputRegister(digitalPinToPort(pin));
+      _tunes_timer1_pin_mask = digitalPinToBitMask(pin);
       break;
     case 3:
       // 16 bit timer
@@ -64,8 +92,8 @@ void ArduboyTunes::initChannel(byte pin) {
       TCCR3B = 0;
       bitWrite(TCCR3B, WGM32, 1);
       bitWrite(TCCR3B, CS30, 1);
-      timer3_pin_port = portOutputRegister(digitalPinToPort(pin));
-      timer3_pin_mask = digitalPinToBitMask(pin);
+      _tunes_timer3_pin_port = portOutputRegister(digitalPinToPort(pin));
+      _tunes_timer3_pin_mask = digitalPinToBitMask(pin);
       playNote(0, 60);  /* start and stop channel 0 (timer 3) on middle C so wait/delay works */
       stopNote(0);
       break;
@@ -121,11 +149,11 @@ void ArduboyTunes::stopNote(byte chan) {
   switch (timer_num) {
     case 1:
       TIMSK1 &= ~(1 << OCIE1A);                 // disable the interrupt
-      *timer1_pin_port &= ~(timer1_pin_mask);   // keep pin low after stop
+      *_tunes_timer1_pin_port &= ~(_tunes_timer1_pin_mask);   // keep pin low after stop
       break;
     case 3:
       wait_timer_playing = false;
-      *timer3_pin_port &= ~(timer3_pin_mask);   // keep pin low after stop
+      *_tunes_timer3_pin_port &= ~(_tunes_timer3_pin_mask);   // keep pin low after stop
       break;
   }
 }
@@ -220,7 +248,7 @@ void ArduboyTunes::closeChannels(void) {
 void ArduboyTunes::soundOutput()
 {
   if (wait_timer_playing) { // toggle the pin if we're sounding a note
-    *timer3_pin_port ^= timer3_pin_mask;
+    *_tunes_timer3_pin_port ^= _tunes_timer3_pin_mask;
   }
   if (tune_playing && wait_toggle_count && --wait_toggle_count == 0) {
     // end of a score wait, so execute more score commands
@@ -242,7 +270,7 @@ void ArduboyTunes::soundOutput()
 }
 
 ISR(TIMER1_COMPA_vect) {  // TIMER 1
-  *timer1_pin_port ^= timer1_pin_mask;  // toggle the pin
+  *_tunes_timer1_pin_port ^= _tunes_timer1_pin_mask;  // toggle the pin
 }
 ISR(TIMER3_COMPA_vect) {  // TIMER 3
   // Timer 3 is the one assigned first, so we keep it running always

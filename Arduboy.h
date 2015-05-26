@@ -81,6 +81,7 @@ public:
   void swap(int16_t& a, int16_t& b);
 
   ArduboyTunes tunes;
+  ArduboyAudio audio;
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
