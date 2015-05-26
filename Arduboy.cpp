@@ -698,6 +698,10 @@ void Arduboy::drawScreen(unsigned char image[])
   }
 }
 
+inline unsigned char* Arduboy::getBuffer(){
+  return sBuffer;
+}
+
 uint8_t Arduboy::width() { return WIDTH; }
 
 uint8_t Arduboy::height() { return HEIGHT; }
