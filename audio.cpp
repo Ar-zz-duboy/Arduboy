@@ -53,12 +53,13 @@ void ArduboyAudio::off() {
 void ArduboyAudio::setup() {
   // get audio setting from EEPROM
   audio_enabled = false;
+  tune_playing = false;
 }
 
-void ArduboyAudio::tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
+void ArduboyAudio::tone(uint8_t channel, unsigned int frequency, unsigned long duration)
 {
   // if (audio_enabled)
-    // ::tone(_pin, frequency, duration);
+    // ::tone(channel, frequency, duration);
 }
 
 
@@ -66,7 +67,6 @@ void ArduboyAudio::tone(uint8_t _pin, unsigned int frequency, unsigned long dura
 
 void ArduboyTunes::initChannel(byte pin) {
   byte timer_num;
-  tune_playing = false;
 
   // we are all out of timers
   if (_tune_num_chans == AVAILABLE_TIMERS)
@@ -77,8 +77,7 @@ void ArduboyTunes::initChannel(byte pin) {
   _tune_num_chans++;
   pinMode(pin, OUTPUT);
   switch (timer_num) {
-    case 1:
-      // 16 bit timer
+    case 1: // 16 bit timer
       TCCR1A = 0;
       TCCR1B = 0;
       bitWrite(TCCR1B, WGM12, 1);
@@ -86,8 +85,7 @@ void ArduboyTunes::initChannel(byte pin) {
       _tunes_timer1_pin_port = portOutputRegister(digitalPinToPort(pin));
       _tunes_timer1_pin_mask = digitalPinToBitMask(pin);
       break;
-    case 3:
-      // 16 bit timer
+    case 3: // 16 bit timer
       TCCR3A = 0;
       TCCR3B = 0;
       bitWrite(TCCR3B, WGM32, 1);
@@ -185,15 +183,9 @@ from the interrupt routine when waits expire.
 void ArduboyTunes::step() {
   byte command, opcode, chan;
   unsigned duration;
+
   while (1) {
     command = pgm_read_byte(score_cursor++);
-    if (command < 0x80) { /* wait count in msec. */
-      duration = ((unsigned)command << 8) | (pgm_read_byte(score_cursor++));
-      wait_toggle_count = ((unsigned long) wait_timer_frequency2 * duration + 500) / 1000;
-      if (wait_toggle_count == 0) wait_toggle_count = 1;
-      break;
-    }
-
     opcode = command & 0xf0;
     chan = command & 0x0f;
     if (opcode == TUNE_OP_STOPNOTE) { /* stop note */
@@ -207,6 +199,12 @@ void ArduboyTunes::step() {
     }
     else if (opcode == TUNE_OP_STOP) { /* stop score */
       tune_playing = false;
+      break;
+    }
+    else if (opcode < 0x80) { /* wait count in msec. */
+      duration = ((unsigned)command << 8) | (pgm_read_byte(score_cursor++));
+      wait_toggle_count = ((unsigned long) wait_timer_frequency2 * duration + 500) / 1000;
+      if (wait_toggle_count == 0) wait_toggle_count = 1;
       break;
     }
   }

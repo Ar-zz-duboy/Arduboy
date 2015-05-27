@@ -10,6 +10,7 @@
 #define TUNE_OP_RESTART	0xe0	/* restart the score from the beginning */
 #define TUNE_OP_STOP	0xf0	/* stop playing */
 
+
 class ArduboyAudio
 {
 public:
@@ -17,7 +18,7 @@ public:
 	void on();
 	void off();
 	bool enabled();
-	void tone(uint8_t _pin, unsigned int frequency, unsigned long duration);
+	void tone(uint8_t channel, unsigned int frequency, unsigned long duration);
 private:
 	bool static audio_enabled;
 };
