@@ -14,6 +14,9 @@ void Arduboy::start()
   pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_A_BUTTON, INPUT_PULLUP);
   pinMode(PIN_B_BUTTON, INPUT_PULLUP);
+  tunes.initChannel(A2);  // Speaker Pin 1
+  tunes.initChannel(A3);  // Speaker Pin 2
+
 
   csport = portOutputRegister(digitalPinToPort(CS));
   cspinmask = digitalPinToBitMask(CS);
@@ -516,72 +519,61 @@ void Arduboy::fillTriangle
     drawFastHLine(a, y, b-a+1, color);
   }
 }
-void Arduboy::drawBitmap
-(int16_t x,
- int16_t y,
- const uint8_t *bitmap,
- int16_t w,
- int16_t h,
- uint8_t color
-)
-{
-  //bitmap is off screen
-  if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1) return;
+
+void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+  // no need to dar at all of we're offscreen
+  if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
+    return;
 
   int yOffset = abs(y) % 8;
   int sRow = y / 8;
-
-  if (y < 0)
-  {
+  if (y < 0) {
     sRow--;
     yOffset = 8 - yOffset;
   }
-
-  for (int a = 0; a < h/8; a++)
-  {
+  for (int a = 0; a < h/8; a++) {
     int bRow = sRow + a;
     if (bRow > (HEIGHT/8)-1) break;
     if (bRow > -2) {
-      for (int iCol = 0; iCol<w; iCol++)
-      {
-        if (iCol + x > (WIDTH-1))
-        {
-          break;
-        }
-
-        if (iCol + x > 0)
-        {
-          if (bRow >= 0)
-          {
-            if (color)
-            {
-              this->sBuffer[ (bRow*WIDTH) + x + iCol  ]
-                |= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
-            }
-            else
-            {
-              this->sBuffer[ (bRow*WIDTH) + x + iCol  ]
-                &= ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
-            }
+      for (int iCol = 0; iCol<w; iCol++) {
+        if (iCol + x > (WIDTH-1)) break;
+        if (iCol + x > 0) {
+          if (bRow >= 0) {
+            if (color) this->sBuffer[ (bRow*WIDTH) + x + iCol  ]  |= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
+            else this->sBuffer[ (bRow*WIDTH) + x + iCol  ]  &= ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
           }
-          if (yOffset && bRow<(HEIGHT/8)-1 && bRow > -2)
-          {
-            if (color)
-            {
-              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol  ]
-                |= pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
-            }
-            else
-            {
-              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol  ]
-                &= ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
-            }
+          if (yOffset && bRow<(HEIGHT/8)-1 && bRow > -2) {
+            if (color) this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol  ] |= pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
+            else this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol  ] &= ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
           }
         }
       }
     }
   }
 }
+
+
+// Draw images that are bit-oriented horizontally
+//
+// This requires a lot of additional CPU power and will draw images much
+// more slowly than drawBitmap where the images are stored in a format that
+// allows them to be directly written to the screen hardware fast. It is
+// recommended you use drawBitmap when possible.
+void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+  // no need to dar at all of we're offscreen
+  if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
+    return;
+
+  int16_t xi, yi, byteWidth = (w + 7) / 8;
+  for(yi = 0; yi < h; yi++) {
+    for(xi = 0; xi < w; x++ ) {
+      if(pgm_read_byte(bitmap + yi * byteWidth + xi / 8) & (128 >> (x & 7))) {
+        drawPixel(x + xi, y + yi, color);
+      }
+    }
+  }
+}
+
 
 void Arduboy::drawChar
 (int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
