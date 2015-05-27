@@ -78,9 +78,9 @@ void intro()
     arduboy.display();
   }
 
-  tone(A2, 987, 160);
+  arduboy.audio.tone(1, 987, 160);
   delay(160);
-  tone(A2, 1318, 400);
+  arduboy.audio.tone(1, 1318, 400);
   delay(2000);
 }
 
@@ -132,7 +132,7 @@ void moveBall()
     {
       yb = 2;
       dy = -dy;
-      tone(A2, 523, 250);
+      arduboy.audio.tone(1, 523, 250);
     }
 
     //Lose a life if bottom edge hit
@@ -144,7 +144,7 @@ void moveBall()
       released = false;
       lives--;
       drawLives();
-      tone(A2, 175, 250);
+      arduboy.audio.tone(1, 175, 250);
       if (random(0, 2) == 0)
       {
         dx = 1;
@@ -160,7 +160,7 @@ void moveBall()
     {
       xb = 2;
       dx = -dx;
-      tone(A2, 523, 250);
+      arduboy.audio.tone(1, 523, 250);
     }
 
     //Bounce off right side
@@ -168,7 +168,7 @@ void moveBall()
     {
       xb = width - 4;
       dx = -dx;
-      tone(A2, 523, 250);
+      arduboy.audio.tone(1, 523, 250);
     }
 
     //Bounce off paddle
@@ -176,7 +176,7 @@ void moveBall()
     {
       dy = -dy;
       dx = ((xb-(xPaddle+6))/3); //Applies spin on the ball
-      tone(A2, 200, 250);
+      arduboy.audio.tone(1, 200, 250);
     }
 
     //Bounce off Bricks
@@ -210,7 +210,7 @@ void moveBall()
                 dy =- dy;
                 yb += dy;
                 bounced = true;
-                tone(A2, 261, 250);
+                arduboy.audio.tone(1, 261, 250);
               }
             }
 
@@ -223,7 +223,7 @@ void moveBall()
                 dx =- dx;
                 xb += dx;
                 bounced = true;
-                tone(A2, 261, 250);
+                arduboy.audio.tone(1, 261, 250);
               }
             }
           }
@@ -530,7 +530,7 @@ void enterInitials()
         index = 0;
       } else
       {
-        tone(A2, 1046, 250);
+        arduboy.audio.tone(1, 1046, 250);
       }
     }
 
@@ -541,14 +541,14 @@ void enterInitials()
       {
         index = 2;
       }  else {
-        tone(A2, 1046, 250);
+        arduboy.audio.tone(1, 1046, 250);
       }
     }
 
     if (arduboy.pressed(UP_BUTTON))
     {
       initials[index]++;
-      tone(A2, 523, 250);
+      arduboy.audio.tone(1, 523, 250);
       // A-Z 0-9 :-? !-/ ' '
       if (initials[index] == '0')
       {
@@ -571,7 +571,7 @@ void enterInitials()
     if (arduboy.pressed(DOWN_BUTTON))
     {
       initials[index]--;
-      tone(A2, 523, 250);
+      arduboy.audio.tone(1, 523, 250);
       if (initials[index] == ' ') {
         initials[index] = '?';
       }
@@ -591,9 +591,9 @@ void enterInitials()
       if (index < 2)
       {
         index++;
-        tone(A2, 1046, 250);
+        arduboy.audio.tone(1, 1046, 250);
       } else {
-        tone(A2, 1046, 250);
+        arduboy.audio.tone(1, 1046, 250);
         return;
       }
     }
