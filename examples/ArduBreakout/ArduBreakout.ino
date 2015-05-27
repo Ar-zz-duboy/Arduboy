@@ -69,14 +69,6 @@ void intro()
   delay(2000);
 }
 
-void setup()
-{
-  arduboy.start();
-  arduboy.print("Hello World!");
-  arduboy.display();
-  intro();
-}
-
 void movePaddle()
 {
   //Move right
@@ -656,10 +648,21 @@ void enterHighScore(byte file)
 }
 
 
+void setup()
+{
+  arduboy.start();
+  arduboy.setFrameRate(30);
+  arduboy.print("Hello World!");
+  arduboy.display();
+  intro();
+}
+
 
 void loop()
 {
-  arduboy.display();
+  // pause render until it's time for the next frame
+  if (!(arduboy.nextFrame()))
+    return;
 
   //Title screen loop switches from title screen
   //and high scores until FIRE is pressed
@@ -721,6 +724,8 @@ void loop()
     score=0;
     newLevel();
   }
+
+  arduboy.display();
 }
 
 

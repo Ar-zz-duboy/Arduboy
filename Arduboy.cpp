@@ -156,6 +156,41 @@ void Arduboy::saveMuchPower()
 }
 
 
+/* Frame management */
+
+void Arduboy::setFrameRate(uint8_t rate)
+{
+  frameRate = rate;
+  eachFrameMillis = 1000/rate;
+}
+
+bool Arduboy::nextFrame()
+{
+  long now = millis();
+  int diff, remaining;
+
+  if (now > lastFrame) {
+    diff = now - lastFrame;
+  } else {
+    diff = now + (LONG_MAX - lastFrame);
+  }
+  if (diff < eachFrameMillis) {
+    remaining = eachFrameMillis - diff;
+    // if we have more than 1ms to spare, lets sleep
+    // we should be woken up by timer0 every 1ms, so this should be ok
+    if (remaining > 1)
+      idle();
+    return false;
+  }
+
+  lastFrame = now;
+  frameCount++;
+  return true;
+}
+
+
+/* Graphics */
+
 void Arduboy::blank()
 {
   for (int a = 0; a < (HEIGHT*WIDTH)/8; a++) SPI.transfer(0x00);

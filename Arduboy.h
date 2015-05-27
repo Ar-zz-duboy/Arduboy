@@ -5,6 +5,7 @@
 #include <Print.h>
 #include <avr/sleep.h>
 #include <avr/power.h>
+#include <limits.h>
 
 // EEPROM settings
 
@@ -99,6 +100,13 @@ public:
 
   ArduboyTunes tunes;
   ArduboyAudio audio;
+
+  void setFrameRate(uint8_t rate);
+  bool nextFrame();
+  uint8_t frameRate = 60;
+  uint16_t frameCount = 0;
+  uint16_t eachFrameMillis = 17;
+  long lastFrame = 0;
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];

@@ -3,7 +3,6 @@
 - voltage detection
 - EEPROM management
 - draw ops that don't require color as arg
-- frame management
 - button management (frame units)
 - button management (time units)
 - music with tracks and sequences
