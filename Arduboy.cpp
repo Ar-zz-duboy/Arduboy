@@ -525,7 +525,6 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
 
-  #if VERTICALIMAGES == 1
   int yOffset = abs(y) % 8;
   int sRow = y / 8;
   if (y < 0) {
@@ -551,17 +550,30 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
       }
     }
   }
-  #else
+}
+
+
+// Draw images that are bit-oriented horizontally
+//
+// This requires a lot of additional CPU power and will draw images much
+// more slowly than drawBitmap where the images are stored in a format that
+// allows them to be directly written to the screen hardware fast. It is
+// recommended you use drawBitmap when possible.
+void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+  // no need to dar at all of we're offscreen
+  if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
+    return;
+
   int16_t xi, yi, byteWidth = (w + 7) / 8;
   for(yi = 0; yi < h; yi++) {
     for(xi = 0; xi < w; x++ ) {
       if(pgm_read_byte(bitmap + yi * byteWidth + xi / 8) & (128 >> (x & 7))) {
-  drawPixel(x + xi, y + yi, color);
+        drawPixel(x + xi, y + yi, color);
       }
     }
   }
-  #endif
 }
+
 
 void Arduboy::drawChar
 (int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)

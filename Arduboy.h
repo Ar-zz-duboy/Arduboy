@@ -9,7 +9,6 @@
 
 #define PIXEL_SAFE_MODE
 #define SAFE_MODE
-#define VERTICALIMAGES 0
 
 #define CS 6
 #define DC 4
@@ -71,6 +70,7 @@ public:
   void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
   void fillTriangle (int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
   void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color);
+  void drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color);
   void drawChar(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size);
   void setCursor(int16_t x, int16_t y);
   void setTextSize(uint8_t s);
