@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <Print.h>
 #include <avr/sleep.h>
+#include <avr/power.h>
 
 // EEPROM settings
 
@@ -58,6 +59,7 @@ public:
   boolean pressed(uint8_t buttons);
   boolean not_pressed(uint8_t buttons);
   void start();
+  void saveMuchPower();
   void idle();
   void blank();
   void clearDisplay();

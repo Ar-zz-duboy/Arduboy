@@ -43,6 +43,9 @@ void Arduboy::start()
   if (pressed(LEFT_BUTTON+UP_BUTTON))
     safeMode();
   #endif
+
+  audio.setup();
+  saveMuchPower();
 }
 
 #if F_CPU == 8000000L
@@ -116,12 +119,6 @@ void Arduboy::safeMode()
   }
 }
 
-void Arduboy::idle()
-{
-  set_sleep_mode(SLEEP_MODE_IDLE);
-  sleep_mode();
-}
-
 void Arduboy::LCDDataMode()
 {
   *dcport |= dcpinmask;
@@ -135,6 +132,29 @@ void Arduboy::LCDCommandMode()
   *dcport &= ~dcpinmask;
   *csport &= ~cspinmask;
 }
+
+
+/* Power Management */
+
+void Arduboy::idle()
+{
+  set_sleep_mode(SLEEP_MODE_IDLE);
+  sleep_mode();
+}
+
+void Arduboy::saveMuchPower()
+{
+  power_adc_disable();
+  power_usart0_disable();
+  power_twi_disable();
+  // timer 0 is for millis()
+  // timers 1 and 3 are for music and sounds
+  power_timer2_disable();
+  power_usart1_disable();
+  // we need USB, for now (to allow triggered reboots to reprogram)
+  // power_usb_disable()
+}
+
 
 void Arduboy::blank()
 {

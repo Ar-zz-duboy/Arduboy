@@ -42,6 +42,8 @@ const unsigned int PROGMEM _midi_note_frequencies[128] = {
 /* AUDIO */
 
 void ArduboyAudio::on() {
+  power_timer1_enable();
+  power_timer3_enable();
   audio_enabled = true;
 }
 
@@ -51,6 +53,8 @@ bool ArduboyAudio::enabled() {
 
 void ArduboyAudio::off() {
   audio_enabled = false;
+  power_timer1_disable();
+  power_timer3_disable();
 }
 
 void ArduboyAudio::save_on_off() {

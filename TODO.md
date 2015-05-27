@@ -2,8 +2,6 @@
 - sprites and masking
 - voltage detection
 - EEPROM management
-- power saving
-- auto power saving
 - draw ops that don't require color as arg
 - frame management
 - button management (frame units)

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <avr/pgmspace.h>
+#include <avr/power.h>
 
 #define AVAILABLE_TIMERS 2
 #define TUNE_OP_PLAYNOTE	0x90	/* play a note: low nibble is generator #, note is next byte */
