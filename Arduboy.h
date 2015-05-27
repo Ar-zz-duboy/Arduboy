@@ -9,6 +9,7 @@
 
 #define PIXEL_SAFE_MODE
 #define SAFE_MODE
+#define VERTICALIMAGES 0
 
 #define CS 6
 #define DC 4
