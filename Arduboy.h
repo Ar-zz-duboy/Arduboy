@@ -25,8 +25,8 @@
 #define PIN_RIGHT_BUTTON 5
 #define PIN_UP_BUTTON 8
 #define PIN_DOWN_BUTTON 10
-#define PIN_A_BUTTON A1
-#define PIN_B_BUTTON A0
+#define PIN_A_BUTTON A0
+#define PIN_B_BUTTON A1
 
 #define WIDTH 128
 #define HEIGHT 64
