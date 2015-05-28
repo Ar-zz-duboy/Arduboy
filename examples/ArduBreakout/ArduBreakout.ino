@@ -15,16 +15,8 @@
 #include <EEPROM.h>
 #include "breakout_bitmaps.h"
 
-#define OLED_DC 8
-#define OLED_CS 10   // SPI slave-select
-#define OLED_CLK 13  // hardware SPI clock
-#define OLED_MOSI 11   // hardware SPI MOSI
-#define OLED_RESET 7
-
 Arduboy arduboy;
 
-const byte width = 128;   //Width of screen
-const byte height = 64;   //Hight of screen
 int dx = -1;        //Initial movement of ball
 int dy = -1;        //Initial movement of ball
 int xb;           //Balls starting possition
@@ -61,13 +53,6 @@ int ballclock = 0;
 
 #include "pins_arduino.h" // Arduino pre-1.0 needs this
 
-PROGMEM const unsigned char arduino [] =
-{
-  0x3F, 0xFF, 0xFF, 0xFC, 0x40, 0x00, 0x00, 0x02, 0x89, 0x99,0x54,
-  0x91, 0x95, 0x55, 0x56, 0xA9, 0x9D, 0x95, 0x55, 0xA9, 0x95, 0x59,
-  0xD4, 0x91, 0x40, 0x00, 0x00, 0x02, 0x3F, 0xFF, 0xFF, 0xFC
-};
-
 void intro()
 {
   for(int i = -8; i < 28; i = i + 2)
@@ -95,7 +80,7 @@ void setup()
 void movePaddle()
 {
   //Move right
-  if(xPaddle < width - 12)
+  if(xPaddle < WIDTH - 12)
   {
     if (arduboy.pressed(RIGHT_BUTTON))
     {
@@ -164,9 +149,9 @@ void moveBall()
     }
 
     //Bounce off right side
-    if (xb >= width - 2)
+    if (xb >= WIDTH - 2)
     {
-      xb = width - 4;
+      xb = WIDTH - 4;
       dx = -dx;
       arduboy.audio.tone(1, 523, 250);
     }
