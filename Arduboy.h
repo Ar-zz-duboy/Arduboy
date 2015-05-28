@@ -46,6 +46,7 @@ public:
 
   uint8_t getInput();
   boolean pressed(uint8_t buttons);
+  boolean not_pressed(uint8_t buttons);
   void start();
   void idle();
   void blank();

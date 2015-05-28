@@ -698,11 +698,24 @@ uint8_t Arduboy::width() { return WIDTH; }
 
 uint8_t Arduboy::height() { return HEIGHT; }
 
+// returns true if the button mask passed in is pressed
+//
+//   if (pressed(LEFT_BUTTON + A_BUTTON))
 boolean Arduboy::pressed(uint8_t buttons)
 {
  uint8_t button_state = getInput();
  return (button_state & buttons) == buttons;
 }
+
+// returns true if the button mask passed in not pressed
+//
+//   if (not_pressed(LEFT_BUTTON))
+boolean Arduboy::not_pressed(uint8_t buttons)
+{
+ uint8_t button_state = getInput();
+ return (button_state & buttons) == 0;
+}
+
 
 uint8_t Arduboy::getInput()
 {
