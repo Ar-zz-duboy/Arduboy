@@ -3,6 +3,7 @@
 const byte PROGMEM tune_pin_to_timer_PGM[] = { 3, 1 };
 volatile byte *_tunes_timer1_pin_port;
 volatile byte _tunes_timer1_pin_mask;
+volatile int32_t timer1_toggle_count;
 volatile byte *_tunes_timer3_pin_port;
 volatile byte _tunes_timer3_pin_mask;
 byte _tune_pins[AVAILABLE_TIMERS];
@@ -12,6 +13,7 @@ volatile unsigned wait_timer_frequency2;       /* its current frequency */
 volatile unsigned wait_timer_old_frequency2;   /* its previous frequency */
 volatile boolean wait_timer_playing = false;   /* is it currently playing a note? */
 volatile boolean doing_delay = false;          /* are we using it for a tune_delay()? */
+volatile boolean tonePlaying = false;
 volatile unsigned long wait_toggle_count;      /* countdown score waits */
 volatile unsigned long delay_toggle_count;     /* countdown tune_ delay() delays */
 
@@ -266,9 +268,52 @@ void ArduboyTunes::soundOutput()
   }
   if (doing_delay && delay_toggle_count) --delay_toggle_count;  // countdown for tune_delay()
 }
+void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
+  tonePlaying = true;
+  uint8_t prescalarbits = 0b001;
+  int32_t toggle_count = 0;
+  uint32_t ocr = 0;
+
+  // two choices for the 16 bit timers: ck/1 or ck/64
+  ocr = F_CPU / frequency / 2 - 1;
+  prescalarbits = 0b001;
+  if (ocr > 0xffff) {
+    ocr = F_CPU / frequency / 2 / 64 - 1;
+    prescalarbits = 0b011;
+  }
+  TCCR1B = (TCCR1B & 0b11111000) | prescalarbits;
+    
+  // Calculate the toggle count
+  if (duration > 0) {
+    toggle_count = 2 * frequency * duration / 1000;
+  }
+  else {
+    toggle_count = -1;
+  }
+  // Set the OCR for the given timer,
+  // set the toggle count,
+  // then turn on the interrupts
+  OCR1A = ocr;
+  timer1_toggle_count = toggle_count;
+  bitWrite(TIMSK1, OCIE1A, 1);
+}
 
 ISR(TIMER1_COMPA_vect) {  // TIMER 1
-  *_tunes_timer1_pin_port ^= _tunes_timer1_pin_mask;  // toggle the pin
+  if (tonePlaying) {
+    if (timer1_toggle_count != 0) {
+      // toggle the pin
+      *_tunes_timer1_pin_port ^= _tunes_timer1_pin_mask;
+      if (timer1_toggle_count > 0) timer1_toggle_count--;
+    }
+    else {
+      tonePlaying = false;
+      TIMSK1 &= ~(1 << OCIE1A);                 // disable the interrupt
+      *_tunes_timer1_pin_port &= ~(_tunes_timer1_pin_mask);   // keep pin low after stop
+    }
+  }
+  else {
+    *_tunes_timer1_pin_port ^= _tunes_timer1_pin_mask;  // toggle the pin
+  }
 }
 ISR(TIMER3_COMPA_vect) {  // TIMER 3
   // Timer 3 is the one assigned first, so we keep it running always

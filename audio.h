@@ -35,6 +35,8 @@ public:
 	void closeChannels();			// stop all timers
 	bool playing();
 
+    void tone(unsigned int frequency, unsigned long duration);
+
 	// called via interrupt
 	void static step();
 	void static soundOutput();
