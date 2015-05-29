@@ -5,6 +5,15 @@
 #include <Print.h>
 #include <avr/sleep.h>
 
+// EEPROM settings
+
+#define EEPROM_VERSION 0
+#define EEPROM_BRIGHTNESS 1
+#define EEPROM_AUDIO_ON_OFF 2
+// we reserve the first 16 byte of EEPROM for system use
+#define EEPROM_STORAGE_SPACE_START 16 // and onward
+
+// eeprom settings above are neded for audio
 #include "audio.h"
 
 #define PIXEL_SAFE_MODE
@@ -36,6 +45,7 @@
 
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F
 #define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07
+
 
 class Arduboy : public Print
 {

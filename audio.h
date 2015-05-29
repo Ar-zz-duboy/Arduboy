@@ -2,6 +2,7 @@
 #define ArduboyAudio_h
 
 #include <Arduino.h>
+#include <EEPROM.h>
 #include <avr/pgmspace.h>
 
 #define AVAILABLE_TIMERS 2
@@ -17,6 +18,7 @@ public:
 	void setup();
 	void on();
 	void off();
+	void save_on_off();
 	bool enabled();
 	void tone(uint8_t channel, unsigned int frequency, unsigned long duration);
 private:

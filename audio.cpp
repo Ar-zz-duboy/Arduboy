@@ -1,3 +1,4 @@
+#include "Arduboy.h"
 #include "audio.h"
 
 const byte PROGMEM tune_pin_to_timer_PGM[] = { 3, 1 };
@@ -52,9 +53,12 @@ void ArduboyAudio::off() {
   audio_enabled = false;
 }
 
+void ArduboyAudio::save_on_off() {
+  EEPROM.write(EEPROM_AUDIO_ON_OFF, audio_enabled);
+}
+
 void ArduboyAudio::setup() {
-  // get audio setting from EEPROM
-  audio_enabled = false;
+  audio_enabled = EEPROM.read(EEPROM_AUDIO_ON_OFF);
   tune_playing = false;
 }
 

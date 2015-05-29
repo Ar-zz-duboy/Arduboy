@@ -14,7 +14,7 @@
 - tone
 - CPU load / FPS display
 - brigtness set/edit/save
-- sound on/off set/edit/save
+- sound on/off set/edit
 - get repo added to Arduino official list
 - power down USB to save more power
 - run at 8MHZ, compile time setting (how?)
