@@ -9,23 +9,23 @@
 
 Arduboy display;
 
-int gameFPS = 1000/30; 
+int gameFPS = 1000/30;
 
 // Things that make the game work the way it do
-const int pipeArraySize = 4;	// For the for loops, at current settings only 3 sets of pipes can be onscreen at once
-int pipes[2][pipeArraySize];	// Row 0 for x values, row 1 for gap location
-int pipeWidth = 12;				
-int pipeGapHeight = 30;			
+const int pipeArraySize = 4;  // For the for loops, at current settings only 3 sets of pipes can be onscreen at once
+int pipes[2][pipeArraySize];  // Row 0 for x values, row 1 for gap location
+int pipeWidth = 12;
+int pipeGapHeight = 30;
 int pipeCapWidth = 2;
-int pipeCapHeight = 3;			// Caps push back into the pipe, it's not added length
-int pipeMinHeight = 8;			// Higher values center the gaps more
-int pipeGenTimer = 30;			// How many frames until a new pipe is generated
+int pipeCapHeight = 3;        // Caps push back into the pipe, it's not added length
+int pipeMinHeight = 8;        // Higher values center the gaps more
+int pipeGenTimer = 30;        // How many frames until a new pipe is generated
 
-int ballY = 32;					// Floaty's starting height
-int ballX = 64;					// Floaty's X Axis
+int ballY = 32;               // Floaty's starting height
+int ballX = 64;               // Floaty's X Axis
 int ballRadius = 4;
-int ballFlapper = ballRadius;	// Floaty's wing length
-int jumpHeight = -6;			// Jumping is negative because 0 is up
+int ballFlapper = ballRadius; // Floaty's wing length
+int jumpHeight = -6;          // Jumping is negative because 0 is up
 
 
 
@@ -37,7 +37,7 @@ int gameScoreY = 0;
 int gameScoreVY = 0;
 int gameScoreRiser = 0;
 int gameHighScore = 0;
-int pipeGenCount = 0;			// Frame counter to generate new pipes
+int pipeGenCount = 0;  // Frame counter to generate new pipes
 int ballVY = 0;
 unsigned long lTime;
 
