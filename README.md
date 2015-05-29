@@ -14,6 +14,14 @@ Using `git` clone the repository.  Preferably you should clone this into your Ar
 
 Open the any of the example .ino files in the Arduino IDE and select the **Leonardo** board as the target platform. Compile the source code, and upload to the Arduboy.
 
+### Developing on the core lib while having a "stable" version installed in your libraries folder
+
+I haven't found a great way to do this yet.  The scenario is you want to compile random sketches off the Internet using the installed core library but you also want to do your own development work on the core library - and compile some sketches against your modified version of the core lib.
+
+What I've done for now is just rename the stable version in `libraries` to `ArduinoStable` and keep the library I'm developing against in `Arduboy`.  Most everything I'm doing is compiling against the development version.  If I had to switch back and forth a lot I'd probably write a helper script to symlink in whichever library I needed.
+
+If anyone else has a better idea here please let us know.
+
 ### Using sketches that include arduboy.h and arduboy.cpp files
 
 These likely will not compile because Arduino will try and also link in the Arduboy library you installed in `libraries`.  This will result in a bunch of errors during compile.
