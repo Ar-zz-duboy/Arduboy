@@ -167,15 +167,17 @@ void Arduboy::setFrameRate(uint8_t rate)
 bool Arduboy::nextFrame()
 {
   long now = millis();
-  int diff, remaining;
+  uint8_t remaining;
 
-  if (now > lastFrame) {
-    diff = now - lastFrame;
-  } else {
-    diff = now + (LONG_MAX - lastFrame);
+  // post render
+  if (post_render) {
+    lastFrameDurationMs = now - lastFrameStart;
+    frameCount++;
   }
-  if (diff < eachFrameMillis) {
-    remaining = eachFrameMillis - diff;
+
+  // if it's not time for the next frame yet
+  if (now < nextFrameStart) {
+    remaining = nextFrameStart - now;
     // if we have more than 1ms to spare, lets sleep
     // we should be woken up by timer0 every 1ms, so this should be ok
     if (remaining > 1)
@@ -183,9 +185,25 @@ bool Arduboy::nextFrame()
     return false;
   }
 
-  lastFrame = now;
-  frameCount++;
-  return true;
+  // pre-render
+
+  // technically next frame should be last frame + each frame but if we're
+  // running a slow render we would constnatly be behind the clock
+  // keep an eye on this and see how it works.  If it works well the
+  // lastFrameStart variable could be eliminated completely
+  nextFrameStart = now + eachFrameMillis;
+  lastFrameStart = now;
+  post_render = true;
+  return post_render;
+}
+
+// returns the load on the CPU as a percentage
+// this is based on how much of the time your app is spends rendering
+// frames.  This number can be higher than 100 if your app is rendering
+// really slowly.
+int Arduboy::cpuLoad()
+{
+  return lastFrameDurationMs*100 / eachFrameMillis;
 }
 
 

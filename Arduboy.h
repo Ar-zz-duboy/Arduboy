@@ -103,10 +103,14 @@ public:
 
   void setFrameRate(uint8_t rate);
   bool nextFrame();
+  int cpuLoad();
   uint8_t frameRate = 60;
-  uint16_t frameCount = 0;
-  uint16_t eachFrameMillis = 17;
-  long lastFrame = 0;
+  uint8_t frameCount = 0;
+  uint8_t eachFrameMillis = 1000/60;
+  long lastFrameStart = 0;
+  long nextFrameStart = 0;
+  bool post_render = false;
+  uint8_t lastFrameDurationMs = 0;
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
