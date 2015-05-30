@@ -38,6 +38,9 @@
 #define PIN_A_BUTTON A0
 #define PIN_B_BUTTON A1
 
+#define PIN_SPEAKER_1 A2
+#define PIN_SPEAKER_2 A3
+
 #define WIDTH 128
 #define HEIGHT 64
 
