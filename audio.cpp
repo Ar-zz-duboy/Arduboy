@@ -62,8 +62,9 @@ void ArduboyAudio::save_on_off() {
 }
 
 void ArduboyAudio::setup() {
-  audio_enabled = EEPROM.read(EEPROM_AUDIO_ON_OFF);
   tune_playing = false;
+  if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
+    on();
 }
 
 void ArduboyAudio::tone(uint8_t channel, unsigned int frequency, unsigned long duration)
@@ -290,7 +291,7 @@ void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
     prescalarbits = 0b011;
   }
   TCCR1B = (TCCR1B & 0b11111000) | prescalarbits;
-    
+
   // Calculate the toggle count
   if (duration > 0) {
     toggle_count = 2 * frequency * duration / 1000;
