@@ -5,6 +5,10 @@ Arduboy::Arduboy() { }
 
 void Arduboy::start()
 {
+  #if F_CPU == 8000000L
+  slowCPU();
+  #endif
+
   SPI.begin();
   pinMode(DC, OUTPUT);
   pinMode(CS, OUTPUT);
@@ -40,6 +44,19 @@ void Arduboy::start()
     safeMode();
   #endif
 }
+
+#if F_CPU == 8000000L
+// if we're compiling for 8Mhz we need to slow the CPU down because the
+// hardware clock on the Arduboy is 16MHz
+void Arduboy::slowCPU()
+{
+  uint8_t oldSREG = SREG;
+  cli();                // suspend interrupts
+  CLKPR = _BV(CLKPCE);  // allow reprogramming clock
+  CLKPR = 1;            // set clock divisor to 2 (0b0001)
+  SREG = oldSREG;       // restore interrupts
+}
+#endif
 
 void Arduboy::bootLCD()
 {

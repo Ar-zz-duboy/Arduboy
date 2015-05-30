@@ -17,7 +17,6 @@
 - sound on/off set/edit
 - get repo added to Arduino official list
 - power down USB to save more power
-- run at 8MHZ, compile time setting (how?)
 - image toolchain for local development work
 - ability to show/determine library version used to compile sketch
 - boot logo in core lib
