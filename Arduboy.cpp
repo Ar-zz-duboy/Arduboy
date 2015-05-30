@@ -173,6 +173,7 @@ bool Arduboy::nextFrame()
   if (post_render) {
     lastFrameDurationMs = now - lastFrameStart;
     frameCount++;
+    post_render = false;
   }
 
   // if it's not time for the next frame yet
