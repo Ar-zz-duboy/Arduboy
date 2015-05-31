@@ -7,9 +7,7 @@
 - button management (time units)
 - music with tracks and sequences
 - music with instruments and variable duty cycle
-- random seed generator
 - tone
-- CPU load / FPS display
 - brigtness set/edit/save
 - sound on/off set/edit
 - get repo added to Arduino official list

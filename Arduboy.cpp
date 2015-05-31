@@ -207,6 +207,33 @@ int Arduboy::cpuLoad()
   return lastFrameDurationMs*100 / eachFrameMillis;
 }
 
+// seed the random number generator with entropy from the temperature,
+// voltage reading, and microseconds since boot.
+// this method is still most effective when called semi-randomly such
+// as after a user hits a button to start a game or other semi-random
+// events
+void Arduboy::initRandomSeed()
+{
+  power_adc_enable(); // ADC on
+  randomSeed(~rawADC(ADC_TEMP) * ~rawADC(ADC_VOLTAGE) * ~micros() + micros());
+  power_adc_disable(); // ADC off
+}
+
+uint16_t Arduboy::rawADC(byte adc_bits)
+{
+  ADMUX = adc_bits;
+  // we also need MUX5 for temperature check
+  if (adc_bits == ADC_TEMP) {
+    ADCSRB = _BV(MUX5);
+  }
+
+  delay(2); // Wait for ADMUX setting to settle
+  ADCSRA |= _BV(ADSC); // Start conversion
+  while (bit_is_set(ADCSRA,ADSC)); // measuring
+
+  return ADCW;
+}
+
 
 /* Graphics */
 
