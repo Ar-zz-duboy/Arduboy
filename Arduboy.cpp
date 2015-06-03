@@ -837,15 +837,17 @@ boolean Arduboy::not_pressed(uint8_t buttons)
 
 uint8_t Arduboy::getInput()
 {
-  // b00lurdab
-  uint8_t buttons = B00000000;
+  // using ports here is ~100 bytes smaller than digitalRead()
+  #ifdef DEVKIT
+  // down, left, up
+  uint8_t buttons = ((~PINB) & B01110000);
+  // right button
+  buttons = buttons | (((~PINC) & B01000000) >> 4);
+  // A and B
+  buttons = buttons | (((~PINF) & B11000000) >> 6);
+  #endif
 
-  if (!digitalRead(PIN_LEFT_BUTTON)) { buttons |= LEFT_BUTTON; }  // left
-  if (!digitalRead(PIN_RIGHT_BUTTON)) { buttons |= RIGHT_BUTTON; }  // right
-  if (!digitalRead(PIN_UP_BUTTON)) { buttons |= UP_BUTTON; }  // up
-  if (!digitalRead(PIN_DOWN_BUTTON)) { buttons |= DOWN_BUTTON; }  // down
-  if (!digitalRead(PIN_A_BUTTON)) { buttons |= A_BUTTON; }  // a?
-  if (!digitalRead(PIN_B_BUTTON)) { buttons |= B_BUTTON; }  // b?
+  // b0dlu0rab - see button defines in Arduboy.h
   return buttons;
 }
 

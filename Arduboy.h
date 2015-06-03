@@ -7,6 +7,8 @@
 #include <avr/power.h>
 #include <limits.h>
 
+#define DEVKIT
+
 // EEPROM settings
 
 #define EEPROM_VERSION 0
@@ -32,9 +34,9 @@
 #define ADC_TEMP _BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0)
 
 #define LEFT_BUTTON _BV(5)
-#define RIGHT_BUTTON _BV(3)
+#define RIGHT_BUTTON _BV(2)
 #define UP_BUTTON _BV(4)
-#define DOWN_BUTTON _BV(2)
+#define DOWN_BUTTON _BV(6)
 #define A_BUTTON _BV(1)
 #define B_BUTTON _BV(0)
 
