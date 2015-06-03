@@ -649,13 +649,15 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
     sRow--;
     yOffset = 8 - yOffset;
   }
-  for (int a = 0; a < h/8; a++) {
+  int rows = h/8;
+  if (h%8!=0) rows++;
+  for (int a = 0; a < rows; a++) {
     int bRow = sRow + a;
     if (bRow > (HEIGHT/8)-1) break;
     if (bRow > -2) {
       for (int iCol = 0; iCol<w; iCol++) {
         if (iCol + x > (WIDTH-1)) break;
-        if (iCol + x > 0) {
+        if (iCol + x >= 0) {
           if (bRow >= 0) {
             if (color) this->sBuffer[ (bRow*WIDTH) + x + iCol  ]  |= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
             else this->sBuffer[ (bRow*WIDTH) + x + iCol  ]  &= ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
