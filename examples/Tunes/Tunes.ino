@@ -1,4 +1,5 @@
 #include <SPI.h>
+#include <EEPROM.h>
 #include "Arduboy.h"
 
 const byte PROGMEM score [] = {
@@ -168,15 +169,11 @@ void setup() {
 
 void loop () {
   // pause render until it's time for the next frame
-  if (!(arduboy.nextFrame()))
+  if (!(display.nextFrame()))
     return;
 
   // play the tune if we aren't already
   if (!display.tunes.playing())
     display.tunes.playScore(score);
 
-  // render the frame
-  display.clearDisplay();
-  display.drawBitmap(0,0,floatyball,128,64,1);
-  display.display();
 }
