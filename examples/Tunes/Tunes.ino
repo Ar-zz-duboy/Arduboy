@@ -167,6 +167,16 @@ void setup() {
 }
 
 void loop () {
-  display.tunes.playScore(score);  /* start playing */
-  while (display.tunes.playing());   /* wait here until playing stops */
+  // pause render until it's time for the next frame
+  if (!(arduboy.nextFrame()))
+    return;
+
+  // play the tune if we aren't already
+  if (!display.tunes.playing())
+    display.tunes.playScore(score);
+
+  // render the frame
+  display.clearDisplay();
+  display.drawBitmap(0,0,floatyball,128,64,1);
+  display.display();
 }

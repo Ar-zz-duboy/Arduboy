@@ -4,7 +4,20 @@
 #include <SPI.h>
 #include <Print.h>
 #include <avr/sleep.h>
+#include <avr/power.h>
+#include <limits.h>
 
+#define DEVKIT
+
+// EEPROM settings
+
+#define EEPROM_VERSION 0
+#define EEPROM_BRIGHTNESS 1
+#define EEPROM_AUDIO_ON_OFF 2
+// we reserve the first 16 byte of EEPROM for system use
+#define EEPROM_STORAGE_SPACE_START 16 // and onward
+
+// eeprom settings above are neded for audio
 #include "audio.h"
 
 #define PIXEL_SAFE_MODE
@@ -14,10 +27,16 @@
 #define DC 4
 #define RST 12
 
+// compare Vcc to 1.1 bandgap
+#define ADC_VOLTAGE _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1)
+// compare temperature to 2.5 internal reference
+// also _BV(MUX5)
+#define ADC_TEMP _BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0)
+
 #define LEFT_BUTTON _BV(5)
-#define RIGHT_BUTTON _BV(3)
+#define RIGHT_BUTTON _BV(2)
 #define UP_BUTTON _BV(4)
-#define DOWN_BUTTON _BV(2)
+#define DOWN_BUTTON _BV(6)
 #define A_BUTTON _BV(1)
 #define B_BUTTON _BV(0)
 
@@ -28,6 +47,9 @@
 #define PIN_A_BUTTON A0
 #define PIN_B_BUTTON A1
 
+#define PIN_SPEAKER_1 A2
+#define PIN_SPEAKER_2 A3
+
 #define WIDTH 128
 #define HEIGHT 64
 
@@ -36,6 +58,7 @@
 
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F
 #define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07
+
 
 class Arduboy : public Print
 {
@@ -48,6 +71,7 @@ public:
   boolean pressed(uint8_t buttons);
   boolean not_pressed(uint8_t buttons);
   void start();
+  void saveMuchPower();
   void idle();
   void blank();
   void clearDisplay();
@@ -80,18 +104,32 @@ public:
   uint8_t width();
   uint8_t height();
   virtual size_t write(uint8_t);
+  void initRandomSeed();
   void swap(int16_t& a, int16_t& b);
 
   ArduboyTunes tunes;
   ArduboyAudio audio;
+
+  void setFrameRate(uint8_t rate);
+  bool nextFrame();
+  int cpuLoad();
+  uint8_t frameRate = 60;
+  uint8_t frameCount = 0;
+  uint8_t eachFrameMillis = 1000/60;
+  long lastFrameStart = 0;
+  long nextFrameStart = 0;
+  bool post_render = false;
+  uint8_t lastFrameDurationMs = 0;
 
 private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
 
   void bootLCD() __attribute__((always_inline));
   void safeMode() __attribute__((always_inline));
+  void slowCPU() __attribute__((always_inline));
   uint8_t readCapacitivePin(int pinToMeasure);
   uint8_t readCapXtal(int pinToMeasure);
+  uint16_t rawADC(byte adc_bits);
   volatile uint8_t *mosiport, *clkport, *csport, *dcport;
   uint8_t mosipinmask, clkpinmask, cspinmask, dcpinmask;
 

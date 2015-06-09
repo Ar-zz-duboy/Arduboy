@@ -5,6 +5,10 @@ Arduboy::Arduboy() { }
 
 void Arduboy::start()
 {
+  #if F_CPU == 8000000L
+  slowCPU();
+  #endif
+
   SPI.begin();
   pinMode(DC, OUTPUT);
   pinMode(CS, OUTPUT);
@@ -14,8 +18,8 @@ void Arduboy::start()
   pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_A_BUTTON, INPUT_PULLUP);
   pinMode(PIN_B_BUTTON, INPUT_PULLUP);
-  tunes.initChannel(A2);  // Speaker Pin 1
-  tunes.initChannel(A3);  // Speaker Pin 2
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
 
 
   csport = portOutputRegister(digitalPinToPort(CS));
@@ -39,7 +43,23 @@ void Arduboy::start()
   if (pressed(LEFT_BUTTON+UP_BUTTON))
     safeMode();
   #endif
+
+  audio.setup();
+  saveMuchPower();
 }
+
+#if F_CPU == 8000000L
+// if we're compiling for 8Mhz we need to slow the CPU down because the
+// hardware clock on the Arduboy is 16MHz
+void Arduboy::slowCPU()
+{
+  uint8_t oldSREG = SREG;
+  cli();                // suspend interrupts
+  CLKPR = _BV(CLKPCE);  // allow reprogramming clock
+  CLKPR = 1;            // set clock divisor to 2 (0b0001)
+  SREG = oldSREG;       // restore interrupts
+}
+#endif
 
 void Arduboy::bootLCD()
 {
@@ -99,12 +119,6 @@ void Arduboy::safeMode()
   }
 }
 
-void Arduboy::idle()
-{
-  set_sleep_mode(SLEEP_MODE_IDLE);
-  sleep_mode();
-}
-
 void Arduboy::LCDDataMode()
 {
   *dcport |= dcpinmask;
@@ -118,6 +132,110 @@ void Arduboy::LCDCommandMode()
   *dcport &= ~dcpinmask;
   *csport &= ~cspinmask;
 }
+
+
+/* Power Management */
+
+void Arduboy::idle()
+{
+  set_sleep_mode(SLEEP_MODE_IDLE);
+  sleep_mode();
+}
+
+void Arduboy::saveMuchPower()
+{
+  power_adc_disable();
+  power_usart0_disable();
+  power_twi_disable();
+  // timer 0 is for millis()
+  // timers 1 and 3 are for music and sounds
+  power_timer2_disable();
+  power_usart1_disable();
+  // we need USB, for now (to allow triggered reboots to reprogram)
+  // power_usb_disable()
+}
+
+
+/* Frame management */
+
+void Arduboy::setFrameRate(uint8_t rate)
+{
+  frameRate = rate;
+  eachFrameMillis = 1000/rate;
+}
+
+bool Arduboy::nextFrame()
+{
+  long now = millis();
+  uint8_t remaining;
+
+  // post render
+  if (post_render) {
+    lastFrameDurationMs = now - lastFrameStart;
+    frameCount++;
+    post_render = false;
+  }
+
+  // if it's not time for the next frame yet
+  if (now < nextFrameStart) {
+    remaining = nextFrameStart - now;
+    // if we have more than 1ms to spare, lets sleep
+    // we should be woken up by timer0 every 1ms, so this should be ok
+    if (remaining > 1)
+      idle();
+    return false;
+  }
+
+  // pre-render
+
+  // technically next frame should be last frame + each frame but if we're
+  // running a slow render we would constnatly be behind the clock
+  // keep an eye on this and see how it works.  If it works well the
+  // lastFrameStart variable could be eliminated completely
+  nextFrameStart = now + eachFrameMillis;
+  lastFrameStart = now;
+  post_render = true;
+  return post_render;
+}
+
+// returns the load on the CPU as a percentage
+// this is based on how much of the time your app is spends rendering
+// frames.  This number can be higher than 100 if your app is rendering
+// really slowly.
+int Arduboy::cpuLoad()
+{
+  return lastFrameDurationMs*100 / eachFrameMillis;
+}
+
+// seed the random number generator with entropy from the temperature,
+// voltage reading, and microseconds since boot.
+// this method is still most effective when called semi-randomly such
+// as after a user hits a button to start a game or other semi-random
+// events
+void Arduboy::initRandomSeed()
+{
+  power_adc_enable(); // ADC on
+  randomSeed(~rawADC(ADC_TEMP) * ~rawADC(ADC_VOLTAGE) * ~micros() + micros());
+  power_adc_disable(); // ADC off
+}
+
+uint16_t Arduboy::rawADC(byte adc_bits)
+{
+  ADMUX = adc_bits;
+  // we also need MUX5 for temperature check
+  if (adc_bits == ADC_TEMP) {
+    ADCSRB = _BV(MUX5);
+  }
+
+  delay(2); // Wait for ADMUX setting to settle
+  ADCSRA |= _BV(ADSC); // Start conversion
+  while (bit_is_set(ADCSRA,ADSC)); // measuring
+
+  return ADCW;
+}
+
+
+/* Graphics */
 
 void Arduboy::blank()
 {
@@ -531,13 +649,15 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
     sRow--;
     yOffset = 8 - yOffset;
   }
-  for (int a = 0; a < h/8; a++) {
+  int rows = h/8;
+  if (h%8!=0) rows++;
+  for (int a = 0; a < rows; a++) {
     int bRow = sRow + a;
     if (bRow > (HEIGHT/8)-1) break;
     if (bRow > -2) {
       for (int iCol = 0; iCol<w; iCol++) {
         if (iCol + x > (WIDTH-1)) break;
-        if (iCol + x > 0) {
+        if (iCol + x >= 0) {
           if (bRow >= 0) {
             if (color) this->sBuffer[ (bRow*WIDTH) + x + iCol  ]  |= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
             else this->sBuffer[ (bRow*WIDTH) + x + iCol  ]  &= ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
@@ -719,15 +839,17 @@ boolean Arduboy::not_pressed(uint8_t buttons)
 
 uint8_t Arduboy::getInput()
 {
-  // b00lurdab
-  uint8_t buttons = B00000000;
+  // using ports here is ~100 bytes smaller than digitalRead()
+  #ifdef DEVKIT
+  // down, left, up
+  uint8_t buttons = ((~PINB) & B01110000);
+  // right button
+  buttons = buttons | (((~PINC) & B01000000) >> 4);
+  // A and B
+  buttons = buttons | (((~PINF) & B11000000) >> 6);
+  #endif
 
-  if (!digitalRead(PIN_LEFT_BUTTON)) { buttons |= LEFT_BUTTON; }  // left
-  if (!digitalRead(PIN_RIGHT_BUTTON)) { buttons |= RIGHT_BUTTON; }  // right
-  if (!digitalRead(PIN_UP_BUTTON)) { buttons |= UP_BUTTON; }  // up
-  if (!digitalRead(PIN_DOWN_BUTTON)) { buttons |= DOWN_BUTTON; }  // down
-  if (!digitalRead(PIN_A_BUTTON)) { buttons |= A_BUTTON; }  // a?
-  if (!digitalRead(PIN_B_BUTTON)) { buttons |= B_BUTTON; }  // b?
+  // b0dlu0rab - see button defines in Arduboy.h
   return buttons;
 }
 

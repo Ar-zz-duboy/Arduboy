@@ -1,3 +1,4 @@
+#include "Arduboy.h"
 #include "audio.h"
 
 const byte PROGMEM tune_pin_to_timer_PGM[] = { 3, 1 };
@@ -41,6 +42,8 @@ const unsigned int PROGMEM _midi_note_frequencies[128] = {
 /* AUDIO */
 
 void ArduboyAudio::on() {
+  power_timer1_enable();
+  power_timer3_enable();
   audio_enabled = true;
 }
 
@@ -50,12 +53,18 @@ bool ArduboyAudio::enabled() {
 
 void ArduboyAudio::off() {
   audio_enabled = false;
+  power_timer1_disable();
+  power_timer3_disable();
+}
+
+void ArduboyAudio::save_on_off() {
+  EEPROM.write(EEPROM_AUDIO_ON_OFF, audio_enabled);
 }
 
 void ArduboyAudio::setup() {
-  // get audio setting from EEPROM
-  audio_enabled = false;
   tune_playing = false;
+  if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
+    on();
 }
 
 void ArduboyAudio::tone(uint8_t channel, unsigned int frequency, unsigned long duration)
@@ -282,7 +291,7 @@ void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
     prescalarbits = 0b011;
   }
   TCCR1B = (TCCR1B & 0b11111000) | prescalarbits;
-    
+
   // Calculate the toggle count
   if (duration > 0) {
     toggle_count = 2 * frequency * duration / 1000;

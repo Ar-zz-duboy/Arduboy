@@ -49,7 +49,7 @@ byte rightBrick;
 byte topBrick;
 byte bottomBrick;
 
-int ballclock = 0;
+byte tick;
 
 #include "pins_arduino.h" // Arduino pre-1.0 needs this
 
@@ -69,14 +69,6 @@ void intro()
   delay(2000);
 }
 
-void setup()
-{
-  arduboy.start();
-  arduboy.print("Hello World!");
-  arduboy.display();
-  intro();
-}
-
 void movePaddle()
 {
   //Move right
@@ -84,7 +76,7 @@ void movePaddle()
   {
     if (arduboy.pressed(RIGHT_BUTTON))
     {
-      xPaddle++;
+      xPaddle+=2;
     }
   }
 
@@ -93,17 +85,25 @@ void movePaddle()
   {
     if (arduboy.pressed(LEFT_BUTTON))
     {
-      xPaddle--;
+      xPaddle-=2;
     }
   }
 }
 
 void moveBall()
 {
+  tick++;
   if(released)
   {
     //Move ball
-    xb=xb + dx;
+    if (abs(dx)==2) {
+      xb += dx/2;
+      // 2x speed is really 1.5 speed
+      if (tick%2==0)
+        xb += dx/2;
+    } else {
+      xb += dx;
+    }
     yb=yb + dy;
 
     //Set bounds
@@ -161,6 +161,10 @@ void moveBall()
     {
       dy = -dy;
       dx = ((xb-(xPaddle+6))/3); //Applies spin on the ball
+      // prevent straight bounce
+      if (dx == 0) {
+        dx = (random(0,2) == 1) ? 1 : -1;
+      }
       arduboy.tunes.tone(200, 250);
     }
 
@@ -247,18 +251,15 @@ void moveBall()
 
 void drawBall()
 {
+  // arduboy.setCursor(0,0);
+  // arduboy.print(arduboy.cpuLoad());
+  // arduboy.print("  ");
   arduboy.drawPixel(xb,   yb,   0);
   arduboy.drawPixel(xb+1, yb,   0);
   arduboy.drawPixel(xb,   yb+1, 0);
   arduboy.drawPixel(xb+1, yb+1, 0);
 
-  if(ballclock>4)
-  {
-    moveBall();
-    ballclock=0;
-  }
-
-  ballclock++;
+  moveBall();
 
   arduboy.drawPixel(xb,   yb,   1);
   arduboy.drawPixel(xb+1, yb,   1);
@@ -656,10 +657,21 @@ void enterHighScore(byte file)
 }
 
 
+void setup()
+{
+  arduboy.start();
+  arduboy.setFrameRate(60);
+  arduboy.print("Hello World!");
+  arduboy.display();
+  intro();
+}
+
 
 void loop()
 {
-  arduboy.display();
+  // pause render until it's time for the next frame
+  if (!(arduboy.nextFrame()))
+    return;
 
   //Title screen loop switches from title screen
   //and high scores until FIRE is pressed
@@ -721,6 +733,8 @@ void loop()
     score=0;
     newLevel();
   }
+
+  arduboy.display();
 }
 
 
