@@ -810,7 +810,7 @@ void Arduboy::drawScreen(unsigned char image[])
   }
 }
 
-inline unsigned char* Arduboy::getBuffer(){
+unsigned char* Arduboy::getBuffer(){
   return sBuffer;
 }
 
