@@ -1,6 +1,46 @@
 #include "Arduboy.h"
 #include "glcdfont.c"
 
+const uint8_t PROGMEM lcdBootProgram[] = {
+  0xAE,  // Display Off
+  0XD5,  // Set Display Clock Divisor v
+  0xF0,  //   0x80 is default
+  0xA8,  // Set Multiplex Ratio v
+  0x3F,
+  0xD3,  // Set Display Offset v
+  0x00,
+  0x40,  // Set Start Line (0)
+  0x8D,  // Charge Pump Setting v
+  0x14,  //   Enable
+  // running this next pair twice?
+  0x20,  // Set Memory Mode v
+  0x00,  //   Horizontal Addressing
+  0xA1,  // Set Segment Re-map (A0) | (b0001)
+  0xC8,  // Set COM Output Scan Direction
+  0xDA,  // Set COM Pins v
+  0x12,
+  0x81,  // Set Contrast v
+  0xCF,
+  0xD9,  // Set Precharge
+  0xF1,
+  0xDB,  // Set VCom Detect
+  0x40,
+  0xA4,  // Entire Display ON
+  0xA6,  // Set normal/inverse display
+  0xAF,  // Display On
+
+  0x20,     // set display mode
+  0x00,     // horizontal addressing mode
+
+  0x21,     // set col address
+  0x00,
+  COLUMN_ADDRESS_END,
+
+  0x22, // set page address
+  0x00,
+  PAGE_ADDRESS_END
+};
+
 Arduboy::Arduboy() { }
 
 void Arduboy::start()
@@ -10,33 +50,7 @@ void Arduboy::start()
   #endif
 
   SPI.begin();
-  pinMode(DC, OUTPUT);
-  pinMode(CS, OUTPUT);
-  pinMode(PIN_LEFT_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_RIGHT_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_UP_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_A_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_B_BUTTON, INPUT_PULLUP);
-  tunes.initChannel(PIN_SPEAKER_1);
-  tunes.initChannel(PIN_SPEAKER_2);
-
-
-  csport = portOutputRegister(digitalPinToPort(CS));
-  cspinmask = digitalPinToBitMask(CS);
-  dcport = portOutputRegister(digitalPinToPort(DC));
-  dcpinmask = digitalPinToBitMask(DC);
-
-  /**
-   * Setup reset pin direction (used by both SPI and I2C)
-   */
-  pinMode(RST, OUTPUT);
-  digitalWrite(RST, HIGH);
-  delay(1);           // VDD (3.3V) goes high at start, lets just chill for a ms
-  digitalWrite(RST, LOW);   // bring reset low
-  delay(10);          // wait 10ms
-  digitalWrite(RST, HIGH);  // bring out of reset
-
+  bootPins();
   bootLCD();
 
   #ifdef SAFE_MODE
@@ -61,48 +75,43 @@ void Arduboy::slowCPU()
 }
 #endif
 
+void Arduboy::bootPins()
+{
+  // OLED SPI
+  pinMode(DC, OUTPUT);
+  pinMode(CS, OUTPUT);
+  pinMode(RST, OUTPUT);
+  digitalWrite(RST, HIGH);
+  delay(1);           // VDD (3.3V) goes high at start, lets just chill for a ms
+  digitalWrite(RST, LOW);   // bring reset low
+  delay(10);          // wait 10ms
+  digitalWrite(RST, HIGH);  // bring out of reset
+
+  // Buttons
+  pinMode(PIN_LEFT_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_RIGHT_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_UP_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_A_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_B_BUTTON, INPUT_PULLUP);
+
+  // Audio
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
+}
+
 void Arduboy::bootLCD()
 {
-  LCDCommandMode();
-  SPI.transfer(0xAE);  // Display Off
-  SPI.transfer(0XD5);  // Set Display Clock Divisor v
-  SPI.transfer(0xF0);  //   0x80 is default
-  SPI.transfer(0xA8);  // Set Multiplex Ratio v
-  SPI.transfer(0x3F);
-  SPI.transfer(0xD3);  // Set Display Offset v
-  SPI.transfer(0x0);
-  SPI.transfer(0x40);  // Set Start Line (0)
-  SPI.transfer(0x8D);  // Charge Pump Setting v
-  SPI.transfer(0x14);  //   Enable
-  // why are we running this next pair twice?
-  SPI.transfer(0x20);  // Set Memory Mode v
-  SPI.transfer(0x00);  //   Horizontal Addressing
-  SPI.transfer(0xA1);  // Set Segment Re-map (A0) | (b0001)
-  SPI.transfer(0xC8);  // Set COM Output Scan Direction
-  SPI.transfer(0xDA);  // Set COM Pins v
-  SPI.transfer(0x12);
-  SPI.transfer(0x81);  // Set Contrast v
-  SPI.transfer(0xCF);
-  SPI.transfer(0xD9);  // Set Precharge
-  SPI.transfer(0xF1);
-  SPI.transfer(0xDB);  // Set VCom Detect
-  SPI.transfer(0x40);
-  SPI.transfer(0xA4);  // Entire Display ON
-  SPI.transfer(0xA6);  // Set normal/inverse display
-  SPI.transfer(0xAF);  // Display On
+  // setup the ports we need to talk to the OLED
+  csport = portOutputRegister(digitalPinToPort(CS));
+  cspinmask = digitalPinToBitMask(CS);
+  dcport = portOutputRegister(digitalPinToPort(DC));
+  dcpinmask = digitalPinToBitMask(DC);
 
   LCDCommandMode();
-  SPI.transfer(0x20);     // set display mode
-  SPI.transfer(0x00);     // horizontal addressing mode
-
-  SPI.transfer(0x21);     // set col address
-  SPI.transfer(0x00);
-  SPI.transfer(COLUMN_ADDRESS_END);
-
-  SPI.transfer(0x22); // set page address
-  SPI.transfer(0x00);
-  SPI.transfer(PAGE_ADDRESS_END);
-
+  for (int8_t i=0; i < sizeof(lcdBootProgram); i++) {
+    SPI.transfer(pgm_read_byte(lcdBootProgram + i));
+  }
   LCDDataMode();
 }
 

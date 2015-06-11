@@ -125,6 +125,7 @@ private:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
 
   void bootLCD() __attribute__((always_inline));
+  void bootPins() __attribute__((always_inline));
   void safeMode() __attribute__((always_inline));
   void slowCPU() __attribute__((always_inline));
   uint8_t readCapacitivePin(int pinToMeasure);
