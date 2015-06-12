@@ -20,7 +20,7 @@ version 2.1 of the License, or (at your option) any later version.
 Arduboy arduboy;
 
 // Variables for your game go here.
-char text[] = "Hello, World!";
+char PROGMEM text[] = "Hello, World!";
 
 
 // This function runs once in your game.
