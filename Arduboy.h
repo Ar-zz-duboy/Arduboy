@@ -112,9 +112,10 @@ public:
 
   void setFrameRate(uint8_t rate);
   bool nextFrame();
+  bool everyXFrames(uint8_t frames);
   int cpuLoad();
   uint8_t frameRate = 60;
-  uint8_t frameCount = 0;
+  uint16_t frameCount = 0;
   uint8_t eachFrameMillis = 1000/60;
   long lastFrameStart = 0;
   long nextFrameStart = 0;
