@@ -20,6 +20,7 @@
 #define PIN_A_BUTTON A0
 #define PIN_B_BUTTON A1
 
+// button states
 #define LEFT_BUTTON _BV(5)
 #define RIGHT_BUTTON _BV(2)
 #define UP_BUTTON _BV(4)
@@ -46,8 +47,27 @@ public:
     void LCDDataMode();
     void LCDCommandMode();
 
-    uint8_t width();
-    uint8_t height();
+    uint8_t width();    //< return display width
+    uint8_t height();   // < return display height
+
+    /// get current state of buttons (bitmask)
+    /**
+    Byte value returned:
+
+    00000000
+    ||||||||
+    |||||||`- A Button
+    ||||||`-- B
+    |||||`--- Right
+    ||||`---- *reserved
+    |||`----- Up
+    ||`------ Left
+    |`------- Down
+    `-------- *reserved
+
+    Of course you shouldn't worry about this and should instead use the
+    button defines: LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
+    **/
 
     uint8_t getInput();
 

@@ -62,7 +62,7 @@ public:
   void setCursor(int16_t x, int16_t y);
   void setTextSize(uint8_t s);
   void setTextWrap(boolean w);
-  inline unsigned char* getBuffer();
+  unsigned char* getBuffer();
   virtual size_t write(uint8_t);
   void initRandomSeed();
   void swap(int16_t& a, int16_t& b);
