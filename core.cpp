@@ -133,11 +133,6 @@ void ArduboyCore::LCDCommandMode()
 
 
 
-// Safe Mode is engaged by holding down both the LEFT button and UP button
-// when plugging the device into USB.  It puts your device into a tight
-// loop and allows it to be reprogrammed even if you have uploaded a very
-// broken sketch that interferes with the normal USB triggered auto-reboot
-// functionality of the device.
 void ArduboyCore::safeMode()
 {
   blank(); // too avoid random gibberish

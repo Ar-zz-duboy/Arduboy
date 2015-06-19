@@ -6,13 +6,17 @@
 #include <avr/sleep.h>
 #include <limits.h>
 
-#define SAFE_MODE
-#define DEVKIT
+#define SAFE_MODE     //< compile in safe mode (44 bytes)
+
+#define DEVKIT        //< compile for the devkit
+#undef PROD_ARDUBOY   //< compile for the production Arduboy v1
+
 
 #define CS 6
 #define DC 4
 #define RST 12
 
+// pin values for buttons, probably shouldn't use these
 #define PIN_LEFT_BUTTON 9
 #define PIN_RIGHT_BUTTON 5
 #define PIN_UP_BUTTON 8
@@ -20,7 +24,7 @@
 #define PIN_A_BUTTON A0
 #define PIN_B_BUTTON A1
 
-// button states
+// bit values for button states
 #define LEFT_BUTTON _BV(5)
 #define RIGHT_BUTTON _BV(2)
 #define UP_BUTTON _BV(4)
@@ -28,23 +32,51 @@
 #define A_BUTTON _BV(1)
 #define B_BUTTON _BV(0)
 
-#define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F
-#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07
+#define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
+#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07  // 8 pages high
 
 #define WIDTH 128
 #define HEIGHT 64
 
-#define WHITE 1
-#define BLACK 0
+#define WHITE 1 //< lit pixel
+#define BLACK 0 //< unlit pixel
 
 class ArduboyCore
 {
 public:
     ArduboyCore();
+
+    /// starts up the hardware
+    /**
+    setup() here is just a stub - your subclass should define setup
+    and within it call boot() as well as any other startup code your
+    subclass needs to do to start up
+    **/
     void setup();
+
+    /// allows the CPU to idle between frames
+    /**
+    This puts the CPU in "Idle" sleep mode.  You should call this as often
+    as you can for the best power savings.  The timer 0 overflow interrupt
+    will wake up the chip every 1ms - so even at 60 FPS a well written
+    app should be able to sleep maybe half the time in between rendering
+    it's own frames.
+
+    See the Arduboy class nextFrame() for an example of how to use idle()
+    in a frame loop.
+    **/
     void idle();
 
-    void LCDDataMode();
+    void LCDDataMode(); //< put the display in data mode
+
+    /// put the display in command mode
+    /**
+    See SSD1306 documents for available commands and command sequences.
+
+    Links:
+    - https://www.adafruit.com/datasheets/SSD1306.pdf
+    - http://www.eimodule.com/download/SSD1306-OLED-Controller.pdf
+    **/
     void LCDCommandMode();
 
     uint8_t width();    //< return display width
@@ -52,21 +84,25 @@ public:
 
     /// get current state of buttons (bitmask)
     /**
-    Byte value returned:
+    Bit mask that is returned:
 
-    00000000
-    ||||||||
-    |||||||`- A Button
-    ||||||`-- B
-    |||||`--- Right
-    ||||`---- *reserved
-    |||`----- Up
-    ||`------ Left
-    |`------- Down
-    `-------- *reserved
+        High  Low
+        00000000
+        ||||||||
+        |||||||`- A
+        ||||||`-- B
+        |||||`--- Right
+        ||||`---- *reserved
+        |||`----- Up
+        ||`------ Left
+        |`------- Down
+        `-------- *reserved
 
-    Of course you shouldn't worry about this and should instead use the
-    button defines: LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
+        A is 1, Down is 64, etc.
+
+    Of course you shouldn't worry about bits (they may change with future
+    hardware) and should instead use the button defines:
+    LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
     **/
 
     uint8_t getInput();
@@ -103,25 +139,57 @@ public:
     void paint8Pixels(uint8_t pixels);
 
     /// paints an entire image directly to hardware (from PROGMEM)
+    /*
+    Each byte will be 8 vertical pixels, painted in the same order as
+    explained above in paint8Pixels.
+    */
     void paintScreen(const unsigned char *image);
+
     /// paints an entire image directly to hardware (from RAM)
+    /*
+    Each byte will be 8 vertical pixels, painted in the same order as
+    explained above in paint8Pixels.
+    */
     void paintScreen(unsigned char image[]);
-    /// paints a blank screen to hardware
+
+    /// paints a blank (black) screen to hardware
     void blank();
 
 
 protected:
+    /// boots the hardware
+    /**
+    - sets input/output/pullup mode for pins
+    - powers up the OLED screen and initializes it properly
+    - sets up power saving
+    - kicks CPU down to 8Mhz if needed
+    - allows Safe mode to be entered
+    **/
     void boot();
+
+    /// Safe mode
+    /**
+    Safe Mode is engaged by holding down both the LEFT button and UP button
+    when plugging the device into USB.  It puts your device into a tight
+    loop and allows it to be reprogrammed even if you have uploaded a very
+    broken sketch that interferes with the normal USB triggered auto-reboot
+    functionality of the device.
+
+    This is most useful on Devkits because they lack a built-in reset
+    button.
+    **/
+    void safeMode() __attribute__((always_inline));
+
+    // internals
     void bootLCD() __attribute__((always_inline));
     void bootPins() __attribute__((always_inline));
-    void safeMode() __attribute__((always_inline));
     void slowCPU() __attribute__((always_inline));
     void saveMuchPower(); __attribute__((always_inline));
+
 
 private:
     volatile uint8_t *mosiport, *clkport, *csport, *dcport;
     uint8_t mosipinmask, clkpinmask, cspinmask, dcpinmask;
-
 
 };
 
