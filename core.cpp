@@ -188,11 +188,23 @@ void ArduboyCore::paintScreen(const unsigned char *image)
   }
 }
 
+// paint from a memory buffer, this should be FAST as it's likely what
+// will be used by any buffer based subclass
 void ArduboyCore::paintScreen(unsigned char image[])
 {
   for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
   {
-    SPI.transfer(image[i]);
+    // SPI.transfer(image[i]);
+
+    // we need to burn 18 cycles between sets of SPDR
+    // 4 clock cycles
+    SPDR = image[i];
+    // 7 clock cycles
+    asm volatile(
+      "mul __zero_reg__, __zero_reg__ \n" // 2 cycles
+      "mul __zero_reg__, __zero_reg__ \n" // 2 cycles
+      "mul __zero_reg__, __zero_reg__ \n" // 2 cycles
+      );
   }
 }
 
