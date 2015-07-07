@@ -110,6 +110,8 @@ void ArduboyCore::bootLCD()
   dcport = portOutputRegister(digitalPinToPort(DC));
   dcpinmask = digitalPinToBitMask(DC);
 
+  SPI.setClockDivider(SPI_CLOCK_DIV2);
+
   LCDCommandMode();
   for (int8_t i=0; i < sizeof(lcdBootProgram); i++) {
     SPI.transfer(pgm_read_byte(lcdBootProgram + i));
