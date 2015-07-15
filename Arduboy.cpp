@@ -164,6 +164,11 @@ void Arduboy::setFrameRate(uint8_t rate)
   eachFrameMillis = 1000/rate;
 }
 
+bool Arduboy::everyXFrames(uint8_t frames)
+{
+  return frameCount % frames == 0;
+}
+
 bool Arduboy::nextFrame()
 {
   long now = millis();
@@ -810,7 +815,7 @@ void Arduboy::drawScreen(unsigned char image[])
   }
 }
 
-inline unsigned char* Arduboy::getBuffer(){
+unsigned char* Arduboy::getBuffer(){
   return sBuffer;
 }
 

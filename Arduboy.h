@@ -100,7 +100,7 @@ public:
   void setCursor(int16_t x, int16_t y);
   void setTextSize(uint8_t s);
   void setTextWrap(boolean w);
-  inline unsigned char* getBuffer();
+  unsigned char* getBuffer();
   uint8_t width();
   uint8_t height();
   virtual size_t write(uint8_t);
@@ -112,9 +112,10 @@ public:
 
   void setFrameRate(uint8_t rate);
   bool nextFrame();
+  bool everyXFrames(uint8_t frames);
   int cpuLoad();
   uint8_t frameRate = 60;
-  uint8_t frameCount = 0;
+  uint16_t frameCount = 0;
   uint8_t eachFrameMillis = 1000/60;
   long lastFrameStart = 0;
   long nextFrameStart = 0;
