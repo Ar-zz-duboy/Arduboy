@@ -258,7 +258,31 @@ void Arduboy::blank()
 
 void Arduboy::clearDisplay()
 {
-  for (int a = 0; a < (HEIGHT*WIDTH)/8; a++) sBuffer[a] = 0x00;
+  // C version:
+  // for (int a = 0; a < (HEIGHT*WIDTH)/8; a++) sBuffer[a] = 0x00;
+
+  // This implimentation should be close to an order of magnitude faster
+  asm volatile(
+    // load sBuffer pointer into Z
+    "movw  r30, %0\n\t"
+    // counter = 0
+    "eor __tmp_reg__, __tmp_reg__ \n\t"
+    "loop:   \n\t"
+    // (4x) push zero into screen buffer,
+    // then increment buffer position
+    "st Z+, __zero_reg__ \n\t"
+    "st Z+, __zero_reg__ \n\t"
+    "st Z+, __zero_reg__ \n\t"
+    "st Z+, __zero_reg__ \n\t"
+    // increase counter
+    "inc __tmp_reg__ \n\t"
+    // repeat for 256 loops
+    // (until counter rolls over back to 0)
+    "brne loop \n\t"
+    // input: sBuffer
+    // modified: Z (r30, r31)
+    : : "r" (sBuffer) : "r30","r31"
+  );
 }
 
 void Arduboy::drawPixel(int x, int y, uint8_t color)
