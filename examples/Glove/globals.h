@@ -8,12 +8,6 @@
 #include "Arduboy.h"
 #include "ArduboyGlove.h"
 
-#define OLED_DC 8
-#define OLED_CS 10   // SPI slave-select
-#define OLED_CLK 13  // hardware SPI clock
-#define OLED_MOSI 11   // hardware SPI MOSI
-#define OLED_RESET 7
-
 #define GAME_SAVE_FILE 6 // Save file for use with the game
 
 #define GSTR(X) strcpy(progmemString, PSTR(X))
@@ -60,8 +54,8 @@ extern ArduboyGlove display;
 extern bool new_a, new_b, new_up, new_left, new_down, new_right;
 extern bool old_a, old_b, old_up, old_down, old_left, old_right;
 
-const unsigned char scrw = 128;
-const unsigned char scrh = 64;
+const unsigned char scrw = WIDTH;
+const unsigned char scrh = HEIGHT;
 
 void updateNewInput();
 void updateOldInput();
