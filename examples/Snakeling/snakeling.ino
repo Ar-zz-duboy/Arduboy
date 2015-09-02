@@ -13,10 +13,9 @@
 
 
 #include <SPI.h>
-#include <Wire.h>
-#include "ArduboyDev.h"
-#include "Collision.h"
 #include <EEPROM.h>
+#include "Arduboy.h"
+#include "Collision.h"
 Arduboy display;
 Collision collision;
 const byte width = 128;   //Width of screen
@@ -99,10 +98,10 @@ void intro()
     delay(2);
   }
 
-  tone(A2, 987, 160);
+  display.tunes.tone(987, 160);
   delay(160);
 
-  tone(A2, 1318, 400);
+  display.tunes.tone(1318, 400);
   delay(2000);
 }
 
@@ -212,7 +211,7 @@ void enterInitials()
       } else
       {
 
-        tone(A2, 1046, 250);
+        display.tunes.tone(1046, 250);
       }
     }
 
@@ -224,7 +223,7 @@ void enterInitials()
         index = 2;
       }  else {
 
-        tone(A2, 1046, 250);
+        display.tunes.tone(1046, 250);
       }
     }
 
@@ -232,7 +231,7 @@ void enterInitials()
     {
       initials[index]++;
 
-      tone(A2, 523, 250);
+      display.tunes.tone(523, 250);
       // A-Z 0-9 :-? !-/ ' '
       if (initials[index] == '0')
       {
@@ -256,7 +255,7 @@ void enterInitials()
     {
       initials[index]--;
 
-      tone(A2, 523, 250);
+      display.tunes.tone(523, 250);
       if (initials[index] == ' ') {
         initials[index] = '?';
       }
@@ -277,10 +276,10 @@ void enterInitials()
       {
         index++;
 
-        tone(A2, 1046, 250);
+        display.tunes.tone(1046, 250);
       } else {
 
-        tone(A2, 1046, 250);
+        display.tunes.tone(1046, 250);
         return;
       }
     }
@@ -408,7 +407,7 @@ void checkCollision() {
   }
 
   if (collision.collideRectRect(apple.x, apple.y, unitSize, unitSize, x, y, unitSize, unitSize)) {
-    tone(A2, 800, 200);
+    display.tunes.tone(800, 200);
     if (moveDelayReset == slowDelay)
       score += 5;
     if (moveDelayReset == medDelay)
@@ -573,7 +572,7 @@ void menuSelect() {
         currentSelected = 0;
 
       }
-      tone(A2, 400, 200);
+      display.tunes.tone(400, 200);
       delay(300);
     }
 
@@ -582,7 +581,7 @@ void menuSelect() {
       if (currentSelected < 0) {
         currentSelected = 2;
       }
-      tone(A2, 400, 200);
+      display.tunes.tone(400, 200);
       delay(300);
     }
     if (!digitalRead(A_BTN)) {
