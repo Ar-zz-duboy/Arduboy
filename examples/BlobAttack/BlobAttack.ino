@@ -13,6 +13,7 @@
 
 #include <SPI.h>
 #include <EEPROM.h>
+#include "Arduboy.h"
 #include "Arglib.h"
 #include "menu_bitmap.h"
 #include "blobs_bitmap.h"
