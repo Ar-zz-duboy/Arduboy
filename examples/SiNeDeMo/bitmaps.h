@@ -1,6 +1,7 @@
 #ifndef BITMAPS_H
 #define BITMAPS_H
 
+#include "Arduino.h"
 #include <avr/pgmspace.h>
 
 extern const unsigned char TEAMarg[];
