@@ -10,29 +10,13 @@
  */
 
 #include <SPI.h>
-#include <Wire.h>
-#include "ArduboyDev.h"
-
 #include <EEPROM.h>
+#include "Arduboy.h"
 
 #include "Collision.h"
-#define OLED_DC 8
-#define OLED_CS 10   // SPI slave-select
-#define OLED_CLK 13  // hardware SPI clock
-#define OLED_MOSI 11   // hardware SPI MOSI
-#define OLED_RESET 7
-#define left 9
-#define up 8
-#define right 5
-#define down 10
 
 Arduboy display;
 Collision collision;
-
-const byte LCDWIDTH = 128;   //Width of screen
-const byte LCDHEIGHT = 64;   //Hight of screen
-
-
 
 byte pad, pad2, pad3;   //Button press buffer used to stop pause repeating
 byte oldpad, oldpad2, oldpad3;
@@ -58,7 +42,7 @@ class Chicken {
 
     int x, y;
     const byte w = 8, h = 5;
-    const int startX = LCDWIDTH / 2 - 3, startY = LCDHEIGHT - h;
+    const int startX = WIDTH / 2 - 3, startY = HEIGHT - h;
     const byte hopDistance = 7;
 };
 
@@ -75,7 +59,7 @@ class Egg{
     if(eggTimer == 0){
       if(isActive == false){      
      isActive  = true; 
-       tone(A2, 1200, 300);
+       display.tunes.tone(1200, 300);
      x = random(minX,maxX);
      x *= 7;
      y = random(minY,maxY) ;
@@ -108,8 +92,8 @@ class Car {
             x += xSpeed;
 
             if (xSpeed < 0 & x < 0 - w)
-              x = LCDWIDTH + 10;
-            if (xSpeed > 0 & x > LCDWIDTH)
+              x = WIDTH + 10;
+            if (xSpeed > 0 & x > WIDTH)
               x = 0 - w - 10;
           }
         }
@@ -186,13 +170,13 @@ void checkScore() {
     score += 100;
 
     if (enableSound)
-      tone(A2, 1200, 300);
+      display.tunes.tone(1200, 300);
     delay(200);
     if (enableSound)
-      tone(A2, 200, 200);
+      display.tunes.tone(200, 200);
     delay(100);
     if (enableSound)
-      tone(A2, 1500, 400);
+      display.tunes.tone(1500, 400);
     delay(200);
     chicken.x = chicken.startX;
     chicken.y = chicken.startY;
@@ -212,10 +196,10 @@ void intro()
 
   }
   if (enableSound)
-    tone(A2, 987, 160);
+    display.tunes.tone(987, 160);
   delay(160);
   if (enableSound)
-    tone(A2, 1318, 400);
+    display.tunes.tone(1318, 400);
   delay(2000);
 }
 
@@ -236,7 +220,7 @@ void setup()
 
   for (byte i = 0; i < 3; i++) {
     car[i].x = 40 * i;
-    car[i].y = LCDHEIGHT - 14;
+    car[i].y = HEIGHT - 14;
     car[i].xSpeed = -1 ;
 
     car2[i].x = 60 * i;
@@ -376,7 +360,7 @@ void enterInitials()
     display.drawLine(56 + (index * 8), 28, 56 + (index * 8) + 6, 28, 1);
     delay(150);
 
-    if (!digitalRead(5))
+    if (!digitalRead(PIN_RIGHT_BUTTON))
     {
       index--;
       if (index < 0)
@@ -385,11 +369,11 @@ void enterInitials()
       } else
       {
         if (enableSound)
-          tone(A2, 1046, 250);
+          display.tunes.tone(1046, 250);
       }
     }
 
-    if (!digitalRead(9))
+    if (!digitalRead(PIN_LEFT_BUTTON))
     {
       index++;
       if (index > 2)
@@ -397,15 +381,15 @@ void enterInitials()
         index = 2;
       }  else {
         if (enableSound)
-          tone(A2, 1046, 250);
+          display.tunes.tone(1046, 250);
       }
     }
 
-    if (!digitalRead(8))
+    if (!digitalRead(PIN_UP_BUTTON))
     {
       initials[index]++;
       if (enableSound)
-        tone(A2, 523, 250);
+        display.tunes.tone(523, 250);
       // A-Z 0-9 :-? !-/ ' '
       if (initials[index] == '0')
       {
@@ -425,11 +409,11 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(10))
+    if (!digitalRead(PIN_DOWN_BUTTON))
     {
       initials[index]--;
       if (enableSound)
-        tone(A2, 523, 250);
+        display.tunes.tone(523, 250);
       if (initials[index] == ' ') {
         initials[index] = '?';
       }
@@ -444,16 +428,16 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(A0))
+    if (!digitalRead(PIN_A_BUTTON))
     {
       if (index < 2)
       {
         index++;
         if (enableSound)
-          tone(A2, 1046, 250);
+          display.tunes.tone(1046, 250);
       } else {
         if (enableSound)
-          tone(A2, 1046, 250);
+          display.tunes.tone(1046, 250);
         return;
       }
     }
@@ -539,12 +523,12 @@ void movePlayer()
 {
   //Move right
 
-  if ( !digitalRead(right) & chicken.x < LCDWIDTH - chicken.w - 4 )
+  if ( !digitalRead(PIN_RIGHT_BUTTON) & chicken.x < WIDTH - chicken.w - 4 )
   {
-    pad = right;
+    pad = PIN_RIGHT_BUTTON;
     if (pad != oldpad) {
       if (enableSound)
-        tone(A2, 987, 60);
+        display.tunes.tone(987, 60);
       chicken.x += chicken.hopDistance;
       oldpad = pad;
     }
@@ -552,33 +536,33 @@ void movePlayer()
 
   //Move left
 
-  else if ( !digitalRead(left) & chicken.x > 0 + 5 )
+  else if ( !digitalRead(PIN_LEFT_BUTTON) & chicken.x > 0 + 5 )
   {
-    pad = left;
+    pad = PIN_LEFT_BUTTON;
     if (pad != oldpad) {
       if (enableSound)
-        tone(A2, 987, 60);
+        display.tunes.tone(987, 60);
       chicken.x -= chicken.hopDistance;
       oldpad = pad;
     }
   }
-  else if ( !digitalRead(up))
+  else if ( !digitalRead(PIN_UP_BUTTON))
   {
-    pad = up;
+    pad = PIN_UP_BUTTON;
     if (pad != oldpad) {
       if (enableSound)
-        tone(A2, 987, 60);
+        display.tunes.tone(987, 60);
       chicken.y -= chicken.hopDistance;
       oldpad = pad;
     }
   }
 
-  else if ( !digitalRead(down) & chicken.y < LCDHEIGHT - chicken.h)
+  else if ( !digitalRead(PIN_DOWN_BUTTON) & chicken.y < HEIGHT - chicken.h)
   {
-    pad = down;
+    pad = PIN_DOWN_BUTTON;
     if (pad != oldpad) {
       if (enableSound)
-        tone(A2, 987, 60);
+        display.tunes.tone(987, 60);
       chicken.y += chicken.hopDistance;
       oldpad = pad;
     }
@@ -602,7 +586,7 @@ boolean pollFireButton(int n)
   for (int i = 0; i < n; i++)
   {
     delay(15);
-    pad = !digitalRead(A0);
+    pad = !digitalRead(PIN_A_BUTTON);
     if (pad == 1 && oldpad == 0)
     {
       oldpad3 = 1; //Forces pad loop 3 to run once
@@ -650,7 +634,7 @@ boolean titleScreen()
       randomSeed(millis());
 
     }
-    if ( !digitalRead(A1) )
+    if ( !digitalRead(PIN_B_BUTTON) )
     {
       pad = 1;
       if (oldpad != pad) {
@@ -683,7 +667,7 @@ boolean titleScreen()
         break;
       }
 
-      if ( !digitalRead(A1) )
+      if ( !digitalRead(PIN_B_BUTTON) )
       {
         pad = 1;
         if (enableSound) {
@@ -722,7 +706,7 @@ boolean titleScreen()
         randomSeed(millis());
         break;
       }
-      if ( !digitalRead(A1) )
+      if ( !digitalRead(PIN_B_BUTTON) )
       {
         pad = 1;
         if (oldpad != pad) {
@@ -768,10 +752,10 @@ void checkCollision() {
   }
   if (collisionDetected) {
     if (enableSound)
-      tone(A2, 200, 250);
+      display.tunes.tone(200, 250);
     delay(150);
     if (enableSound)
-      tone(A2, 180, 250);
+      display.tunes.tone(180, 250);
     delay(400);
     lives --;
     timer = timerReset;
@@ -788,7 +772,7 @@ void checkCollision() {
       egg.x = 160;
       egg.y = 160;
       score += 300;
-      tone(A2,900,250);
+      display.tunes.tone(900,250);
       egg.eggTimer = egg.eggTimerReset;
     }
 }
@@ -797,10 +781,10 @@ void checkTimer() {
   if (timer < 0) {
     gameOver = true;
     if (enableSound)
-      tone(A2, 200, 250);
+      display.tunes.tone(200, 250);
     delay(150);
     if (enableSound)
-      tone(A2, 180, 250);
+      display.tunes.tone(180, 250);
     delay(400);
   }
 }
@@ -813,11 +797,11 @@ void loop()
     
     checkTimer();
     display.clearDisplay();
-    display.fillRect(0, 0, LCDWIDTH, 8, 1);
-    display.fillRect(0, LCDHEIGHT - 6, LCDWIDTH, 8, 1);
-    display.setCursor(LCDWIDTH / 2 - 10, 1);
+    display.fillRect(0, 0, WIDTH, 8, 1);
+    display.fillRect(0, HEIGHT - 6, WIDTH, 8, 1);
+    display.setCursor(WIDTH / 2 - 10, 1);
     display.print(score);
-    display.setCursor(LCDWIDTH - 24, LCDHEIGHT - 6);
+    display.setCursor(WIDTH - 24, HEIGHT - 6);
     display.print(timer);
 
 
@@ -836,7 +820,7 @@ void loop()
     egg.Update();
     ///////////
     byte color;
-    if (chicken.y < 4 | chicken.y > LCDHEIGHT - 9) {
+    if (chicken.y < 4 | chicken.y > HEIGHT - 9) {
       color = 0;
     } else {
       color = 1;
