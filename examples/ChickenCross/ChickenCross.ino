@@ -14,6 +14,7 @@
 #include "Arduboy.h"
 
 #include "Collision.h"
+#include "titlebmp.h"
 
 Arduboy display;
 Collision collision;
