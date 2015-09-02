@@ -19,6 +19,7 @@
 
 #include <SPI.h>
 #include <EEPROM.h>
+#include "Arduboy.h"
 #include "Arglib.h"
 #include "otherbitmaps.h"
 #include "candlebitmaps.h"
