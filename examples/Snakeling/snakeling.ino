@@ -20,14 +20,6 @@ Arduboy display;
 Collision collision;
 const byte width = 128;   //Width of screen
 const byte height = 64;   //Hight of screen
-#define RIGHT 5
-#define LEFT 9
-#define UP 8
-#define DOWN 10
-#define A_BTN A0
-#define B_BTN A1
-#define BLACK 0
-#define WHITE 1
 
 boolean gameover = false;
 boolean showTitle = true;
@@ -48,7 +40,7 @@ byte medDelay = 5;
 byte fastDelay = 3;
 int moveDelay = moveDelayReset;
 
-byte direct = RIGHT;
+byte direct = PIN_RIGHT_BUTTON;
 int pressATimer = 0;
 const int pressATimerReset = 30;
 const byte maxUnits = 200  ; //the maximum body segmants you can have///
@@ -155,7 +147,7 @@ void displayHighScores(byte file)
   display.display();
   boolean exitLoop = false;
   while (!exitLoop) {
-    if (!digitalRead(B_BTN))
+    if (!digitalRead(PIN_B_BUTTON))
     {
       delay(300);
       exitLoop = true;
@@ -202,7 +194,7 @@ void enterInitials()
     display.drawLine(56 + (index * 8), 28, 56 + (index * 8) + 6, 28, 1);
     delay(150);
 
-    if (!digitalRead(5))
+    if (!digitalRead(PIN_RIGHT_BUTTON))
     {
       index--;
       if (index < 0)
@@ -215,7 +207,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(9))
+    if (!digitalRead(PIN_LEFT_BUTTON))
     {
       index++;
       if (index > 2)
@@ -227,7 +219,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(8))
+    if (!digitalRead(PIN_UP_BUTTON))
     {
       initials[index]++;
 
@@ -251,7 +243,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(10))
+    if (!digitalRead(PIN_DOWN_BUTTON))
     {
       initials[index]--;
 
@@ -270,7 +262,7 @@ void enterInitials()
       }
     }
 
-    if (!digitalRead(A0))
+    if (!digitalRead(PIN_A_BUTTON))
     {
       if (index < 2)
       {
@@ -435,17 +427,17 @@ void resetApple() {
 
 void updateHead() {
 
-  if (!digitalRead(RIGHT) & direct != LEFT) {
-    direct = RIGHT;
+  if (!digitalRead(PIN_RIGHT_BUTTON) && direct != PIN_LEFT_BUTTON) {
+    direct = PIN_RIGHT_BUTTON;
   }
-  if (!digitalRead(LEFT) & direct != RIGHT) {
-    direct = LEFT;
+  if (!digitalRead(PIN_LEFT_BUTTON) && direct != PIN_RIGHT_BUTTON) {
+    direct = PIN_LEFT_BUTTON;
   }
-  if (!digitalRead(DOWN)& direct != UP) {
-    direct = DOWN;
+  if (!digitalRead(PIN_DOWN_BUTTON) && direct != PIN_UP_BUTTON) {
+    direct = PIN_DOWN_BUTTON;
   }
-  if (!digitalRead(UP)& direct != DOWN) {
-    direct = UP;
+  if (!digitalRead(PIN_UP_BUTTON) && direct != PIN_DOWN_BUTTON) {
+    direct = PIN_UP_BUTTON;
   }
 
   moveDelay --;
@@ -455,17 +447,16 @@ void updateHead() {
     moveDelay = moveDelayReset;
     updateUnits();
     switch (direct) {
-      case RIGHT:
+      case PIN_RIGHT_BUTTON:
         x += moveAmount;
         break;
-
-      case LEFT:
+      case PIN_LEFT_BUTTON:
         x -= moveAmount;
         break;
-      case UP:
+      case PIN_UP_BUTTON:
         y -= moveAmount;
         break;
-      case DOWN:
+      case PIN_DOWN_BUTTON:
         y += moveAmount;
         break;
     }
@@ -477,7 +468,7 @@ void resetSnake() {
 
   x = startX;
   y = startY;
-  direct = RIGHT;
+  direct = PIN_RIGHT_BUTTON;
 }
 
 void titleScreen()
@@ -491,7 +482,7 @@ void titleScreen()
   display.setTextSize(1);
   //display.display();
 
-  if (!digitalRead(A_BTN))
+  if (!digitalRead(PIN_A_BUTTON))
   {
 
     menuSelect();
@@ -504,7 +495,7 @@ void titleScreen()
 
   }
 
-  if (!digitalRead(B_BTN)) {
+  if (!digitalRead(PIN_B_BUTTON)) {
     delay(300);
     displayHighScores(4);
   }
@@ -566,7 +557,7 @@ void menuSelect() {
     display.print("Speed Select");
     display.display();
 
-    if (!digitalRead(RIGHT)) {
+    if (!digitalRead(PIN_RIGHT_BUTTON)) {
       currentSelected ++;
       if (currentSelected > 2) {
         currentSelected = 0;
@@ -576,7 +567,7 @@ void menuSelect() {
       delay(300);
     }
 
-    if (!digitalRead(LEFT)) {
+    if (!digitalRead(PIN_LEFT_BUTTON)) {
       currentSelected --;
       if (currentSelected < 0) {
         currentSelected = 2;
@@ -584,7 +575,7 @@ void menuSelect() {
       display.tunes.tone(400, 200);
       delay(300);
     }
-    if (!digitalRead(A_BTN)) {
+    if (!digitalRead(PIN_A_BUTTON)) {
       if (currentSelected == 0)
         moveDelayReset = slowDelay;
       if (currentSelected == 1)
@@ -629,7 +620,7 @@ void resetPlayArea() {
   resetApple();
   x = startX;
   y = startY;
-  direct = RIGHT;
+  direct = PIN_RIGHT_BUTTON;
   resetSnake();
   showTitle = true;
   gameover = false;
