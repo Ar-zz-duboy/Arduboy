@@ -30,12 +30,12 @@ void tautInput()
 
 void updateNewInput()
 {
-	new_a = !digitalRead(A1);
-	new_b = !digitalRead(A0);
-	new_up = !digitalRead(8);
-	new_down = !digitalRead(10);
-	new_left = !digitalRead(9);
-	new_right = !digitalRead(5);
+	new_a = !digitalRead(PIN_B_BUTTON);
+	new_b = !digitalRead(PIN_A_BUTTON);
+	new_up = !digitalRead(PIN_UP_BUTTON);
+	new_down = !digitalRead(PIN_DOWN_BUTTON);
+	new_left = !digitalRead(PIN_LEFT_BUTTON);
+	new_right = !digitalRead(PIN_RIGHT_BUTTON);
 }
 
 void updateOldInput()
