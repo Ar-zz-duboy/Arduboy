@@ -70,7 +70,7 @@ void displayRecords()
 		if(B_PRESSED || A_PRESSED) {
 			if(A_PRESSED && LEFT_DOWN && RIGHT_DOWN) 
 				initializeSave(GAME_SAVE_FILE);
-			tone(A2, TONE_BACK, 20);
+			display.tunes.tone(TONE_BACK, 20);
 			break;
 		}
 		updateOldInput();

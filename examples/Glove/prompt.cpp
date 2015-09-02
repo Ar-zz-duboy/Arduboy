@@ -14,26 +14,26 @@ char prompt_start(const char* const* prompts, unsigned char promptCount)
 		delay(10);
 		updateNewInput();
 		if(A_PRESSED) {
-			tone(A2, TONE_ACCEPT, 20);
+			display.tunes.tone(TONE_ACCEPT, 20);
 			updateOldInput();
 			return choice;
 		}
 		if(B_PRESSED) {		
-			tone(A2, TONE_BACK, 20);
+			display.tunes.tone(TONE_BACK, 20);
 			updateOldInput();
 			return 255;
 		}
 		if(DOWN_PRESSED) {
 			if(choice < promptCount-1) {
 				choice++;
-				tone(A2, TONE_MOVE, 20);
+				display.tunes.tone(TONE_MOVE, 20);
 				prompt_draw(prompts, promptCount, choice);
 			}
 		}
 		if(UP_PRESSED) {
 			if(choice > 0) {
 				choice--;
-				tone(A2, TONE_MOVE, 20);
+				display.tunes.tone(TONE_MOVE, 20);
 				prompt_draw(prompts, promptCount, choice);
 			}
 		}
@@ -84,28 +84,28 @@ char prompt_table(const char choiceString[], const char* const rowStrings[], cha
 			display.print(" ");
 		}
 		if(A_PRESSED) {
-			tone(A2, TONE_ACCEPT, 20);
+			display.tunes.tone(TONE_ACCEPT, 20);
 			return pgm_read_byte_near(choiceString + cursor);
 		} else if(B_PRESSED) {
-			tone(A2, TONE_BACK, 20);
+			display.tunes.tone(TONE_BACK, 20);
 			return 0;
 		} else if(UP_PRESSED) {
-			tone(A2, TONE_MOVE, 20);
+			display.tunes.tone(TONE_MOVE, 20);
 			if(cursor < tabCount)
 				cursor += tabCount*rows;
 			cursor -= tabCount;
 		} else if(DOWN_PRESSED) {
-			tone(A2, TONE_MOVE, 20);
+			display.tunes.tone(TONE_MOVE, 20);
 			cursor += tabCount;
 			if(cursor >= tabCount*rows)
 				cursor -= tabCount*rows;
 		} else if(LEFT_PRESSED) {
-			tone(A2, TONE_MOVE, 20);
+			display.tunes.tone(TONE_MOVE, 20);
 			if(cursor % tabCount == 0)
 				cursor += tabCount;
 			cursor --;
 		} else if(RIGHT_PRESSED) {
-			tone(A2, TONE_MOVE, 20);
+			display.tunes.tone(TONE_MOVE, 20);
 			cursor ++;
 			if(cursor % tabCount == 0)
 				cursor -= tabCount;

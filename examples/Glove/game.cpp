@@ -339,7 +339,7 @@ void add_bullet(short x, short y, short vx, short vy)
 {
 	for(int i=0; i<numBullets; ++i) {
 		if(!bullets[i].active) {
-			tone(A2, TONE_EXPLORER_FIRE, 20);
+			display.tunes.tone(TONE_EXPLORER_FIRE, 20);
 			bullets[i].active = true;
 			bullets[i].x = x;
 			bullets[i].y = y;
@@ -487,7 +487,7 @@ void activate_key(Key& obj)
 	{
 		walls[obj.target].active = false;
 		obj.active = false;
-		tone(A2, TONE_KEY_ACTIVATE, 20);
+		display.tunes.tone(TONE_KEY_ACTIVATE, 20);
 	}
 }
 
@@ -537,22 +537,22 @@ void activate_treasure(Treasure& obj)
 	switch(obj.type) {
 		case TREASURE_GOLD: // Awards 10 points
 			addScore(10);
-			tone(A2, TONE_GOLD_GET, 20);
+			display.tunes.tone(TONE_GOLD_GET, 20);
 			break;
 		case TREASURE_POO: // Kills all baddies on screen
 			for(i = 0; i < numBadguys; ++i) {
 				badguys[i].active = false;
 			}
 			flashScreen();
-			tone(A2, TONE_POO_GET, 20);
+			display.tunes.tone(TONE_POO_GET, 20);
 			break;
 		case TREASURE_CUP: // Awards 6 points
 			addScore(6);
-			tone(A2, TONE_CUP_GET, 20);
+			display.tunes.tone(TONE_CUP_GET, 20);
 			break;
 		case TREASURE_LEMON: // Awards 300 health
 			rollingHealth += 300;
-			tone(A2, TONE_LEMON_GET, 20);
+			display.tunes.tone(TONE_LEMON_GET, 20);
 			break;
 	}
 	obj.active = false;
@@ -598,9 +598,9 @@ void damage_spawner(Spawner& obj, short dmg)
 	{
 		obj.active = false;
 		addScore(1);
-		tone(A2, TONE_SPAWNER_DESTROY, 20);
+		display.tunes.tone(TONE_SPAWNER_DESTROY, 20);
 	} else {
-		tone(A2, TONE_SPAWNER_DAMAGE, 20);
+		display.tunes.tone(TONE_SPAWNER_DAMAGE, 20);
 	}
 }
 
@@ -1115,7 +1115,7 @@ void draw_badguy(BadGuy &b)
 void destroy_badguy(BadGuy &obj)
 {
 	if(obj.active) {
-		tone(A2, TONE_BADGUY_DESTROY, 20);
+		display.tunes.tone(TONE_BADGUY_DESTROY, 20);
 		obj.active = false;
 	}		
 }

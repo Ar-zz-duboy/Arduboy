@@ -1,7 +1,8 @@
-#include <SPI.h>	
-#include <Wire.h>
+#include <SPI.h>
 #include <EEPROM.h>
 
+#include "Arduboy.h"
+#include "ArduboyGlove.h"
 #include "globals.h"
 #include "prompt.h"
 #include "mainmenu.h"
@@ -9,6 +10,8 @@
 #include "title.h"
 
 #include "pins_arduino.h" // Arduino pre-1.0 needs this
+
+ArduboyGlove display;
 
 PROGMEM const unsigned char arduino [] =
 {
@@ -43,9 +46,9 @@ void intro()
 		delay(20);
 	}
 	delay(100);
-	tone(A2, 987, 80);
+	display.tunes.tone(987, 80);
 	delay(80);
-	tone(A2, 1318, 400);
+	display.tunes.tone(1318, 400);
 	delay(1000);
 }
 

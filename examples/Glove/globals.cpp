@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include "globals.h"
 
-Arduboy display;
-
 bool old_a = false;
 bool old_b = false;
 bool old_up = false;

@@ -4,10 +4,9 @@
 #include <Arduino.h>
 
 #include <SPI.h>
-#include <Wire.h>
-#include "Arduboy.h"
-
 #include <EEPROM.h>
+#include "Arduboy.h"
+#include "ArduboyGlove.h"
 
 #define OLED_DC 8
 #define OLED_CS 10   // SPI slave-select
@@ -30,7 +29,7 @@
 #define FILE_NAME 6
 #define FILE_CONTINUE 9
 
-extern Arduboy display;
+extern ArduboyGlove display;
 
 
 // Input
