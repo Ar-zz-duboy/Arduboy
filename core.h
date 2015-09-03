@@ -38,6 +38,7 @@
 #define WIDTH 128
 #define HEIGHT 64
 
+#define INVERT 2 //< lit/unlit pixel
 #define WHITE 1 //< lit pixel
 #define BLACK 0 //< unlit pixel
 
