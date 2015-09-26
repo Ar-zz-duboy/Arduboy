@@ -83,7 +83,7 @@ public:
   bool post_render = false;
   uint8_t lastFrameDurationMs = 0;
 
-private:
+protected:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
 
   uint8_t readCapacitivePin(int pinToMeasure);
