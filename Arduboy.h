@@ -75,13 +75,13 @@ public:
   bool nextFrame();
   bool everyXFrames(uint8_t frames);
   int cpuLoad();
-  uint8_t frameRate = 60;
-  uint16_t frameCount = 0;
-  uint8_t eachFrameMillis = 1000/60;
-  long lastFrameStart = 0;
-  long nextFrameStart = 0;
-  bool post_render = false;
-  uint8_t lastFrameDurationMs = 0;
+  uint8_t frameRate;
+  uint16_t frameCount;
+  uint8_t eachFrameMillis;
+  long lastFrameStart;
+  long nextFrameStart;
+  bool post_render;
+  uint8_t lastFrameDurationMs;
 
 protected:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
@@ -92,9 +92,9 @@ protected:
 
 // Adafruit stuff
 protected:
-  int16_t cursor_x = 0;
-  int16_t cursor_y = 0;
-  uint8_t textsize = 1;
+  int16_t cursor_x;
+  int16_t cursor_y;
+  uint8_t textsize;
   boolean wrap; // If set, 'wrap' text at right edge of display
 };
 

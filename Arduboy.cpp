@@ -2,7 +2,19 @@
 #include "glcdfont.c"
 
 
-Arduboy::Arduboy() { }
+Arduboy::Arduboy() {
+  frameRate = 60;
+  frameCount = 0;
+  eachFrameMillis = 1000/60;
+  lastFrameStart = 0;
+  nextFrameStart = 0;
+  post_render = false;
+  lastFrameDurationMs = 0;
+  
+  cursor_x = 0;
+  cursor_y = 0;
+  textsize = 1;
+}
 
 void Arduboy::start()
 {
@@ -94,7 +106,7 @@ uint16_t Arduboy::rawADC(byte adc_bits)
   ADCSRA |= _BV(ADSC); // Start conversion
   while (bit_is_set(ADCSRA,ADSC)); // measuring
 
-  return ADCW;
+  return ADC;
 }
 
 
