@@ -24,7 +24,7 @@ public:
 	void tone(uint8_t channel, unsigned int frequency, unsigned long duration);
 
 protected:
-	bool audio_enabled = false;
+	bool audio_enabled;
 };
 
 
@@ -38,18 +38,14 @@ public:
 	void delay(unsigned msec);		// delay in milliseconds
 	void closeChannels();			// stop all timers
 	bool playing();
-
-    void tone(unsigned int frequency, unsigned long duration);
+  void tone(unsigned int frequency, unsigned long duration);
 
 	// called via interrupt
 	void static step();
 	void static soundOutput();
 
-
 private:
 	void static playNote (byte chan, byte note);
 	void static stopNote (byte chan);
-
-
 };
 #endif
