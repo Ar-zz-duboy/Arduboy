@@ -230,7 +230,7 @@ void moveBall()
     xb=xPaddle + 5;
 
     //Release ball if FIRE pressed
-    pad3 = arduboy.pressed(B_BUTTON);
+    pad3 = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if (pad3 == 1 && oldpad3 == 0)
     {
       released=true;
@@ -308,7 +308,7 @@ void pause()
   {
     delay(150);
     //Unpause if FIRE is pressed
-    pad2 = arduboy.pressed(B_BUTTON);
+    pad2 = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if (pad2 > 1 && oldpad2 == 0 && released)
     {
         arduboy.fillRect(52, 45, 30, 11, 0);
@@ -367,7 +367,7 @@ boolean pollFireButton(int n)
   for(int i = 0; i < n; i++)
   {
     delay(15);
-    pad = arduboy.pressed(B_BUTTON);
+    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if(pad == 1 && oldpad == 0)
     {
       oldpad3 = 1; //Forces pad loop 3 to run once
@@ -510,7 +510,7 @@ void enterInitials()
     arduboy.drawLine(56 + (index*8), 28, 56 + (index*8) + 6, 28, 1);
     delay(150);
 
-    if (arduboy.pressed(RIGHT_BUTTON))
+    if (arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(B_BUTTON))
     {
       index--;
       if (index < 0)
@@ -522,7 +522,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(LEFT_BUTTON))
+    if (arduboy.pressed(RIGHT_BUTTON))
     {
       index++;
       if (index > 2)
@@ -533,7 +533,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(UP_BUTTON))
+    if (arduboy.pressed(DOWN_BUTTON))
     {
       initials[index]++;
       arduboy.tunes.tone(523, 250);
@@ -556,7 +556,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(DOWN_BUTTON))
+    if (arduboy.pressed(UP_BUTTON))
     {
       initials[index]--;
       arduboy.tunes.tone(523, 250);
@@ -574,7 +574,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(B_BUTTON))
+    if (arduboy.pressed(A_BUTTON))
     {
       if (index < 2)
       {
@@ -703,7 +703,7 @@ void loop()
     drawPaddle();
 
     //Pause game if FIRE pressed
-    pad = arduboy.pressed(B_BUTTON);
+    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
 
     if(pad >1 && oldpad==0 && released)
     {
