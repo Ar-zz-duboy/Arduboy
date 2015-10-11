@@ -45,7 +45,7 @@ void loop()
   arduboy.setCursor(5, 10);
 
   //then we print to screen with quotations "Hello World"
-  arduboy.print("Hello, World!");
+  arduboy.print(F("Hello, World!"));
 
   //then we finaly we tell the arduboy to display what we just wrote to the display.
   arduboy.display();
