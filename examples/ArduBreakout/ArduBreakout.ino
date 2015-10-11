@@ -17,6 +17,8 @@
 
 Arduboy arduboy;
 
+const unsigned int COLUMNS = 13; //Columns of bricks
+const unsigned int ROWS = 4;     //Rows of bricks
 int dx = -1;        //Initial movement of ball
 int dy = -1;        //Initial movement of ball
 int xb;           //Balls starting possition
@@ -24,7 +26,7 @@ int yb;           //Balls starting possition
 boolean released;     //If the ball has been released by the player
 boolean paused = false;   //If the game has been paused
 byte xPaddle;       //X position of paddle
-boolean isHit[5][12];   //Array of if bricks are hit or not
+boolean isHit[ROWS][COLUMNS];   //Array of if bricks are hit or not
 boolean bounced=false;  //Used to fix double bounce glitch
 byte lives = 3;       //Amount of lives
 byte level = 1;       //Current level
@@ -169,9 +171,9 @@ void moveBall()
     }
 
     //Bounce off Bricks
-    for (byte row = 0; row < 4; row++)
+    for (byte row = 0; row < ROWS; row++)
     {
-      for (byte column = 0; column < 14; column++)
+      for (byte column = 0; column < COLUMNS; column++)
       {
         if (!isHit[row][column])
         {
@@ -712,7 +714,7 @@ void loop()
     oldpad=pad;
     drawBall();
 
-    if(brickCount==60)
+    if(brickCount == ROWS * COLUMNS)
     {
       level++;
       newLevel();
