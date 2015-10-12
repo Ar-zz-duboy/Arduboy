@@ -19,9 +19,6 @@ version 2.1 of the License, or (at your option) any later version.
 // make an instance of arduboy used for many functions
 Arduboy arduboy;
 
-// Variables for your game go here.
-char text[] = "Hello, World!";
-
 
 // This function runs once in your game.
 // use it for anything that needs to be set only once in your game.
@@ -49,8 +46,8 @@ void loop()
   //we set our cursor 5 pixels to the right and 10 down from the top
   arduboy.setCursor(5, 10);
 
-  //then we print to screen what is stored in our text variable we declared earlyer
-  arduboy.print(text);
+  //then we print to screen what is in the Quotation marks ""
+  arduboy.print(F("Hello, world!"));
 
   //then we finaly we tell the arduboy to display what we just wrote to the display.
   arduboy.display();
