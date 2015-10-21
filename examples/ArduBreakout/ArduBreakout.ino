@@ -17,6 +17,8 @@
 
 Arduboy arduboy;
 
+const unsigned int COLUMNS = 13; //Columns of bricks
+const unsigned int ROWS = 4;     //Rows of bricks
 int dx = -1;        //Initial movement of ball
 int dy = -1;        //Initial movement of ball
 int xb;           //Balls starting possition
@@ -24,7 +26,7 @@ int yb;           //Balls starting possition
 boolean released;     //If the ball has been released by the player
 boolean paused = false;   //If the game has been paused
 byte xPaddle;       //X position of paddle
-boolean isHit[5][12];   //Array of if bricks are hit or not
+boolean isHit[ROWS][COLUMNS];   //Array of if bricks are hit or not
 boolean bounced=false;  //Used to fix double bounce glitch
 byte lives = 3;       //Amount of lives
 byte level = 1;       //Current level
@@ -169,9 +171,9 @@ void moveBall()
     }
 
     //Bounce off Bricks
-    for (byte row = 0; row < 4; row++)
+    for (byte row = 0; row < ROWS; row++)
     {
-      for (byte column = 0; column < 14; column++)
+      for (byte column = 0; column < COLUMNS; column++)
       {
         if (!isHit[row][column])
         {
@@ -228,7 +230,7 @@ void moveBall()
     xb=xPaddle + 5;
 
     //Release ball if FIRE pressed
-    pad3 = arduboy.pressed(B_BUTTON);
+    pad3 = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if (pad3 == 1 && oldpad3 == 0)
     {
       released=true;
@@ -306,7 +308,7 @@ void pause()
   {
     delay(150);
     //Unpause if FIRE is pressed
-    pad2 = arduboy.pressed(B_BUTTON);
+    pad2 = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if (pad2 > 1 && oldpad2 == 0 && released)
     {
         arduboy.fillRect(52, 45, 30, 11, 0);
@@ -365,7 +367,7 @@ boolean pollFireButton(int n)
   for(int i = 0; i < n; i++)
   {
     delay(15);
-    pad = arduboy.pressed(B_BUTTON);
+    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if(pad == 1 && oldpad == 0)
     {
       oldpad3 = 1; //Forces pad loop 3 to run once
@@ -508,7 +510,7 @@ void enterInitials()
     arduboy.drawLine(56 + (index*8), 28, 56 + (index*8) + 6, 28, 1);
     delay(150);
 
-    if (arduboy.pressed(RIGHT_BUTTON))
+    if (arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(B_BUTTON))
     {
       index--;
       if (index < 0)
@@ -520,7 +522,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(LEFT_BUTTON))
+    if (arduboy.pressed(RIGHT_BUTTON))
     {
       index++;
       if (index > 2)
@@ -531,7 +533,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(UP_BUTTON))
+    if (arduboy.pressed(DOWN_BUTTON))
     {
       initials[index]++;
       arduboy.tunes.tone(523, 250);
@@ -554,7 +556,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(DOWN_BUTTON))
+    if (arduboy.pressed(UP_BUTTON))
     {
       initials[index]--;
       arduboy.tunes.tone(523, 250);
@@ -572,7 +574,7 @@ void enterInitials()
       }
     }
 
-    if (arduboy.pressed(B_BUTTON))
+    if (arduboy.pressed(A_BUTTON))
     {
       if (index < 2)
       {
@@ -701,7 +703,7 @@ void loop()
     drawPaddle();
 
     //Pause game if FIRE pressed
-    pad = arduboy.pressed(B_BUTTON);
+    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
 
     if(pad >1 && oldpad==0 && released)
     {
@@ -712,7 +714,7 @@ void loop()
     oldpad=pad;
     drawBall();
 
-    if(brickCount==60)
+    if(brickCount == ROWS * COLUMNS)
     {
       level++;
       newLevel();
