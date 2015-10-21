@@ -67,7 +67,7 @@ public:
    * on scrap paper privately before showing the drawing to everyone. Most of
    * these functions draw to the screen buffer, and then when you're ready you
    * call display() which sends the frame to the screen.
-	 */
+   */
   void display();
   
   /// Sets a single pixel on the screen buffer to white or black. This function is used by many of the line/shape drawing functions.
@@ -146,20 +146,20 @@ public:
   /// Writes a single ASCII character to the screen, with properties determined by the use of the above functions (setCursor() etc.). This function is called by the print() function to print entire strings of text. The actual print() function is included in Print.h.
   virtual size_t write(uint8_t);
 
-	/// Returns the load on the CPU as a percentage.
-	/**
-	 * This is based on how much of the time your app is spends rendering
-	 * frames.  This number can be higher than 100 if your app is rendering
-	 * really slowly.
-	 */
+  /// Returns the load on the CPU as a percentage.
+  /**
+   * This is based on how much of the time your app is spends rendering
+   * frames.  This number can be higher than 100 if your app is rendering
+   * really slowly.
+   */
   int cpuLoad();
-	
-	/// Seed the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
-	/**
-	 * This method is still most effective when called semi-randomly such
-	 * as after a user hits a button to start a game or other semi-random
-	 * events
-	 */
+  
+  /// Seed the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
+  /**
+   * This method is still most effective when called semi-randomly such
+   * as after a user hits a button to start a game or other semi-random
+   * events
+   */
   void initRandomSeed();
   
   /// Swaps the contents of the a and b variables with each other.
@@ -171,7 +171,7 @@ public:
 
   ArduboyTunes tunes;
   ArduboyAudio audio;
-	
+  
   /// \cond NOT_IN_DOCUMENTATION
   uint8_t frameRate;
   uint16_t frameCount;
