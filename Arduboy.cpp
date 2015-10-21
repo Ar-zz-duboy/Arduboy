@@ -73,20 +73,11 @@ bool Arduboy::nextFrame()
   return post_render;
 }
 
-// returns the load on the CPU as a percentage
-// this is based on how much of the time your app is spends rendering
-// frames.  This number can be higher than 100 if your app is rendering
-// really slowly.
 int Arduboy::cpuLoad()
 {
   return lastFrameDurationMs*100 / eachFrameMillis;
 }
 
-// seed the random number generator with entropy from the temperature,
-// voltage reading, and microseconds since boot.
-// this method is still most effective when called semi-randomly such
-// as after a user hits a button to start a game or other semi-random
-// events
 void Arduboy::initRandomSeed()
 {
   power_adc_enable(); // ADC on
@@ -205,8 +196,7 @@ void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
   }
 }
 
-void Arduboy::drawCircleHelper
-(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint8_t color)
+void Arduboy::drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -256,15 +246,7 @@ void Arduboy::fillCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
   fillCircleHelper(x0, y0, r, 3, 0, color);
 }
 
-void Arduboy::fillCircleHelper
-(
- int16_t x0,
- int16_t y0,
- int16_t r,
- uint8_t cornername,
- int16_t delta,
- uint8_t color
-)
+void Arduboy::fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint8_t color)
 {
   // used to do circles and roundrects!
   int16_t f = 1 - r;
@@ -300,8 +282,7 @@ void Arduboy::fillCircleHelper
   }
 }
 
-void Arduboy::drawLine
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color)
+void Arduboy::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color)
 {
   // bresenham's algorithm - thx wikpedia
   boolean steep = abs(y1 - y0) > abs(x1 - x0);
@@ -351,8 +332,7 @@ void Arduboy::drawLine
   }
 }
 
-void Arduboy::drawRect
-(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
+void Arduboy::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
 {
   drawFastHLine(x, y, w, color);
   drawFastHLine(x, y+h-1, w, color);
@@ -360,8 +340,7 @@ void Arduboy::drawRect
   drawFastVLine(x+w-1, y, h, color);
 }
 
-void Arduboy::drawFastVLine
-(int16_t x, int16_t y, int16_t h, uint8_t color)
+void Arduboy::drawFastVLine(int16_t x, int16_t y, int16_t h, uint8_t color)
 {
   int end = y+h;
   for (int a = max(0,y); a < min(end,HEIGHT); a++)
@@ -370,8 +349,7 @@ void Arduboy::drawFastVLine
   }
 }
 
-void Arduboy::drawFastHLine
-(int16_t x, int16_t y, int16_t w, uint8_t color)
+void Arduboy::drawFastHLine(int16_t x, int16_t y, int16_t w, uint8_t color)
 {
   int end = x+w;
   for (int a = max(0,x); a < min(end,WIDTH); a++)
@@ -380,8 +358,7 @@ void Arduboy::drawFastHLine
   }
 }
 
-void Arduboy::fillRect
-(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
+void Arduboy::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
 {
   // stupidest version - update in subclasses if desired!
   for (int16_t i=x; i<x+w; i++)
@@ -395,8 +372,7 @@ void Arduboy::fillScreen(uint8_t color)
   fillRect(0, 0, WIDTH, HEIGHT, color);
 }
 
-void Arduboy::drawRoundRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
+void Arduboy::drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
 {
   // smarter version
   drawFastHLine(x+r, y, w-2*r, color); // Top
@@ -410,8 +386,7 @@ void Arduboy::drawRoundRect
   drawCircleHelper(x+r, y+h-r-1, r, 8, color);
 }
 
-void Arduboy::fillRoundRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
+void Arduboy::fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
 {
   // smarter version
   fillRect(x+r, y, w-2*r, h, color);
@@ -421,18 +396,15 @@ void Arduboy::fillRoundRect
   fillCircleHelper(x+r, y+r, r, 2, h-2*r-1, color);
 }
 
-void Arduboy::drawTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
+void Arduboy::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
 {
   drawLine(x0, y0, x1, y1, color);
   drawLine(x1, y1, x2, y2, color);
   drawLine(x2, y2, x0, y0, color);
 }
 
-void Arduboy::fillTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
+void Arduboy::fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
 {
-
   int16_t a, b, y, last;
   // Sort coordinates by Y order (y2 >= y1 >= y0)
   if (y0 > y1)
@@ -532,7 +504,8 @@ void Arduboy::fillTriangle
   }
 }
 
-void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color)
+{
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
@@ -568,14 +541,8 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
   }
 }
 
-
-// Draw images that are bit-oriented horizontally
-//
-// This requires a lot of additional CPU power and will draw images much
-// more slowly than drawBitmap where the images are stored in a format that
-// allows them to be directly written to the screen hardware fast. It is
-// recommended you use drawBitmap when possible.
-void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color)
+{
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
@@ -590,11 +557,8 @@ void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int1
   }
 }
 
-
-void Arduboy::drawChar
-(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
+void Arduboy::drawChar(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
 {
-
   if ((x >= WIDTH) ||         // Clip right
     (y >= HEIGHT) ||        // Clip bottom
     ((x + 5 * size - 1) < 0) ||   // Clip left
@@ -690,30 +654,25 @@ void Arduboy::display()
   this->paintScreen(sBuffer);
 }
 
-unsigned char* Arduboy::getBuffer(){
+unsigned char* Arduboy::getBuffer()
+{
   return sBuffer;
 }
 
-
-// returns true if the button mask passed in is pressed
-//
-//   if (pressed(LEFT_BUTTON + A_BUTTON))
 boolean Arduboy::pressed(uint8_t buttons)
 {
  uint8_t button_state = getInput();
  return (button_state & buttons) == buttons;
 }
 
-// returns true if the button mask passed in not pressed
-//
-//   if (not_pressed(LEFT_BUTTON))
 boolean Arduboy::not_pressed(uint8_t buttons)
 {
  uint8_t button_state = getInput();
  return (button_state & buttons) == 0;
 }
 
-void Arduboy::swap(int16_t& a, int16_t& b) {
+void Arduboy::swap(int16_t& a, int16_t& b)
+{
   int temp = a;
   a = b;
   b = temp;
