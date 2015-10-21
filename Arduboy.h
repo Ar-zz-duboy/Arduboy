@@ -37,14 +37,14 @@ public:
 
   /// Returns true if the button mask passed in is pressed.
   /**
-  if (pressed(LEFT_BUTTON + A_BUTTON))
-  */
+   * if (pressed(LEFT_BUTTON + A_BUTTON))
+   */
   boolean pressed(uint8_t buttons);
   
   /// Returns true if the button mask passed in not pressed.
   /**
-  if (not_pressed(LEFT_BUTTON))
-  */
+   * if (not_pressed(LEFT_BUTTON))
+   */
   boolean not_pressed(uint8_t buttons);
   
   /// This function sets up everything for the Arduboy's display and needs to be called at the start of your program.
@@ -55,19 +55,19 @@ public:
   
   /// This function copies the contents of the screen buffer to the screen, finally displaying the image you've built on the buffer using all the other functions.
   /**
-	X and Y positions on the display are from the top left corner, thus a Y of 64
-  is the bottom of the screen and an X of 128 is the right side of the screen.
-  "Color" or "value" means choosing whether a pixel is lit or not - if color is
-  0, the pixel is off (black), if color is 1, the pixel is on (white).
-
-  What is a screen buffer? Basically it is an internal, "virtual" screen that
-  you draw things on before sending it to the actual screen. This is so users
-  don't see you drawing directly on the screen including overlaying the
-  graphics, building the picture from its component parts. Sort of like drawing
-  on scrap paper privately before showing the drawing to everyone. Most of
-  these functions draw to the screen buffer, and then when you're ready you
-  call display() which sends the frame to the screen.
-	*/
+   * X and Y positions on the display are from the top left corner, thus a Y of 64
+   * is the bottom of the screen and an X of 128 is the right side of the screen.
+   * "Color" or "value" means choosing whether a pixel is lit or not - if color is
+   * 0, the pixel is off (black), if color is 1, the pixel is on (white).
+   * 
+   * What is a screen buffer? Basically it is an internal, "virtual" screen that
+   * you draw things on before sending it to the actual screen. This is so users
+   * don't see you drawing directly on the screen including overlaying the
+   * graphics, building the picture from its component parts. Sort of like drawing
+   * on scrap paper privately before showing the drawing to everyone. Most of
+   * these functions draw to the screen buffer, and then when you're ready you
+   * call display() which sends the frame to the screen.
+	 */
   void display();
   
   /// Sets a single pixel on the screen buffer to white or black. This function is used by many of the line/shape drawing functions.
@@ -122,11 +122,11 @@ public:
   
   /// Draws images that are bit-oriented horizontally.
   /**
-  This requires a lot of additional CPU power and will draw images much
-  more slowly than drawBitmap where the images are stored in a format that
-  allows them to be directly written to the screen hardware fast. It is
-  recommended you use drawBitmap when possible.
-  */
+   * This requires a lot of additional CPU power and will draw images much
+   * more slowly than drawBitmap where the images are stored in a format that
+   * allows them to be directly written to the screen hardware fast. It is
+   * recommended you use drawBitmap when possible.
+   */
   void drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color);
   
   /// Draws an ASCII character to a specific X/Y location in white or black. Individual characters are 6x8 pixels (5x7 with spacing on two edges). "Size" is a pixel multiplier, so a size of 2 means each character will be 12x16, etc. If color is 0 and bg is 1, the character will be drawn inverted (i.e. black with a white background).
@@ -148,18 +148,18 @@ public:
 
 	/// Returns the load on the CPU as a percentage.
 	/**
-	This is based on how much of the time your app is spends rendering
-	frames.  This number can be higher than 100 if your app is rendering
-	really slowly.
-	*/
+	 * This is based on how much of the time your app is spends rendering
+	 * frames.  This number can be higher than 100 if your app is rendering
+	 * really slowly.
+	 */
   int cpuLoad();
 	
 	/// Seed the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
 	/**
-	This method is still most effective when called semi-randomly such
-	as after a user hits a button to start a game or other semi-random
-	events
-	*/
+	 * This method is still most effective when called semi-randomly such
+	 * as after a user hits a button to start a game or other semi-random
+	 * events
+	 */
   void initRandomSeed();
   
   /// Swaps the contents of the a and b variables with each other.
