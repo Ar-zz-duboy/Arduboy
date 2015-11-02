@@ -367,7 +367,7 @@ boolean pollFireButton(int n)
   for(int i = 0; i < n; i++)
   {
     delay(15);
-    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
+    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if(pad == 1 && oldpad == 0)
     {
       oldpad3 = 1; //Forces pad loop 3 to run once
@@ -510,7 +510,7 @@ void enterInitials()
     arduboy.drawLine(56 + (index*8), 28, 56 + (index*8) + 6, 28, 1);
     delay(150);
 
-    if (arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(B_BUTTON))
+    if (arduboy.pressed(LEFT_BUTTON) || arduboy.pressed(B_BUTTON))
     {
       index--;
       if (index < 0)
