@@ -10,7 +10,7 @@ Using `git` clone the repository.  Preferably you should clone this into your Ar
 
 **From the Linux command line or Windows Powershell**
 	
-    $ git clone https://github.com/Arduboy/ArduBreakout.git
+    $ git clone https://github.com/Arduboy/Arduboy.git
 
 Open the any of the example .ino files in the Arduino IDE and select the **Leonardo** board as the target platform. Compile the source code, and upload to the Arduboy.
 
