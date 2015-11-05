@@ -308,7 +308,7 @@ void pause()
   {
     delay(150);
     //Unpause if FIRE is pressed
-    pad2 = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
+    pad2 = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
     if (pad2 > 1 && oldpad2 == 0 && released)
     {
         arduboy.fillRect(52, 45, 30, 11, 0);
