@@ -28,14 +28,14 @@ const uint8_t PROGMEM lcdBootProgram[] = {
   0xA6,  // Set normal/inverse display
   0xAF,  // Display On
 
-  0x20,     // set display mode
-  0x00,     // horizontal addressing mode
+  0x20,  // Set display mode
+  0x00,  // Horizontal addressing mode
 
-  0x21,     // set col address
+  0x21,  // Set col address
   0x00,
   COLUMN_ADDRESS_END,
 
-  0x22, // set page address
+  0x22,  // Set page address
   0x00,
   PAGE_ADDRESS_END
 };
@@ -87,9 +87,9 @@ void ArduboyCore::bootPins()
   pinMode(CS, OUTPUT);
   pinMode(RST, OUTPUT);
   digitalWrite(RST, HIGH);
-  delay(1);           // VDD (3.3V) goes high at start, lets just chill for a ms
+  delay(1);                 // VDD (3.3V) goes high at start, lets just chill for a ms
   digitalWrite(RST, LOW);   // bring reset low
-  delay(10);          // wait 10ms
+  delay(10);                // wait 10ms
   digitalWrite(RST, HIGH);  // bring out of reset
 
   // Buttons
@@ -226,6 +226,6 @@ uint8_t ArduboyCore::getInput()
   buttons = buttons | (((~PINF) & B11000000) >> 6);
   #endif
 
-  // b0dlu0rab - see button defines in Arduboy.h
+  // B0dlu0rab - see button defines in core.h
   return buttons;
 }
