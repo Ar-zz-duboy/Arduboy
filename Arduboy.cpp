@@ -73,20 +73,11 @@ bool Arduboy::nextFrame()
   return post_render;
 }
 
-// returns the load on the CPU as a percentage
-// this is based on how much of the time your app is spends rendering
-// frames.  This number can be higher than 100 if your app is rendering
-// really slowly.
 int Arduboy::cpuLoad()
 {
   return lastFrameDurationMs*100 / eachFrameMillis;
 }
 
-// seed the random number generator with entropy from the temperature,
-// voltage reading, and microseconds since boot.
-// this method is still most effective when called semi-randomly such
-// as after a user hits a button to start a game or other semi-random
-// events
 void Arduboy::initRandomSeed()
 {
   power_adc_enable(); // ADC on
@@ -569,12 +560,6 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
 }
 
 
-// Draw images that are bit-oriented horizontally
-//
-// This requires a lot of additional CPU power and will draw images much
-// more slowly than drawBitmap where the images are stored in a format that
-// allows them to be directly written to the screen hardware fast. It is
-// recommended you use drawBitmap when possible.
 void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
@@ -695,18 +680,12 @@ unsigned char* Arduboy::getBuffer(){
 }
 
 
-// returns true if the button mask passed in is pressed
-//
-//   if (pressed(LEFT_BUTTON + A_BUTTON))
 boolean Arduboy::pressed(uint8_t buttons)
 {
  uint8_t button_state = getInput();
  return (button_state & buttons) == buttons;
 }
 
-// returns true if the button mask passed in not pressed
-//
-//   if (not_pressed(LEFT_BUTTON))
 boolean Arduboy::not_pressed(uint8_t buttons)
 {
  uint8_t button_state = getInput();
