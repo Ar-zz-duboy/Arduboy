@@ -8,9 +8,9 @@ Core library for the Arduboy.  If you're building an app for the Arduboy this is
 
 Using `git` clone the repository.  Preferably you should clone this into your Arduino `libraries` directory.  This will allow the Arduboy library code to be used by any sketches you write or download later.  On Mac the `libraries` folder can be found in `[HOME]/Documents/Ardiuno/libraries`.
 
-**From the Linux command line or Windows Powershell**
+**From a terminal or through Windows Powershell**
 	
-    $ git clone https://github.com/Arduboy/ArduBreakout.git
+    $ git clone https://github.com/Arduboy/Arduboy.git
 
 Open the any of the example .ino files in the Arduino IDE and select the **Leonardo** board as the target platform. Compile the source code, and upload to the Arduboy.
 
