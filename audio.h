@@ -32,11 +32,22 @@ class ArduboyTunes
 {
 public:
 	// Playtune Functions
-	void initChannel(byte pin);			// assign a timer to an output pin
-	void playScore(const byte *score);	// start playing a polyphonic score
-	void stopScore();			// stop playing the score
-	void delay(unsigned msec);		// delay in milliseconds
-	void closeChannels();			// stop all timers
+  
+  /// Assign a timer to an output pin.
+  void initChannel(byte pin);
+  
+  /// Start playing a polyphonic score.
+  void playScore(const byte *score);
+  
+  /// Stop playing the score.
+  void stopScore();
+  
+  /// Delay in milliseconds.
+  void delay(unsigned msec);
+  
+  /// Stop all timers.
+  void closeChannels();
+  
 	bool playing();
   void tone(unsigned int frequency, unsigned long duration);
 
