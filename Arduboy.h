@@ -145,11 +145,12 @@ public:
 
   /// Writes a single ASCII character to the screen.
   virtual size_t write(uint8_t);
-
-  /// Seed random.
+  
+  /// Seeds the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
   /**
-   * the random number generator with entropy from the temperature,
-   * voltage reading, and microseconds since boot.
+   * This method is still most effective when called semi-randomly such
+   * as after a user hits a button to start a game or other semi-random
+   * events
    */
   void initRandomSeed();
 
@@ -162,7 +163,15 @@ public:
   void setFrameRate(uint8_t rate);
   bool nextFrame();
   bool everyXFrames(uint8_t frames);
+  
+  /// Returns the load on the CPU as a percentage.
+  /**
+   * This is based on how much of the time your app is spends rendering
+   * frames.  This number can be higher than 100 if your app is rendering
+   * really slowly.
+   */
   int cpuLoad();
+  
   uint8_t frameRate;
   uint16_t frameCount;
   uint8_t eachFrameMillis;
