@@ -383,7 +383,10 @@ void Arduboy::fillRect
 
 void Arduboy::fillScreen(uint8_t color)
 {
-  fillRect(0, 0, WIDTH, HEIGHT, color);
+  for(int16_t i=0; i<1024; i++) //1024 = (128*64)/8
+  {
+    sBuffer[i] = color*256;     //if c=0, b00000000. if c=1, b=11111111
+  }
 }
 
 void Arduboy::drawRoundRect
