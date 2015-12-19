@@ -383,13 +383,35 @@ void Arduboy::fillRect
 
 void Arduboy::fillScreen(uint8_t color)
 {
-  color *= 0xFF;
-  {
-    for(int16_t i=0; i<1024; i++) //1024 = (128*64)/8
-    {
-      sBuffer[i] = color;
-    }
-  }
+  asm volatile
+  (
+    // load color value into r27
+    "mov r27, %1 \n\t"
+    // if value is zero, skip assigning to 0xff
+    "cpse r27, __zero_reg__ \n\t"
+    "ldi r27, 0xff \n\t"
+    // load sBuffer pointer into Z
+    "movw  r30, %0\n\t"
+    // counter = 0
+    "clr __tmp_reg__ \n\t"
+    "loopto:   \n\t"
+    // (4x) push zero into screen buffer,
+    // then increment buffer position
+    "st Z+, r27 \n\t"
+    "st Z+, r27 \n\t"
+    "st Z+, r27 \n\t"
+    "st Z+, r27 \n\t"
+    // increase counter
+    "inc __tmp_reg__ \n\t"
+    // repeat for 256 loops
+    // (until counter rolls over back to 0)
+    "brne loopto \n\t"
+    // input: sBuffer, color
+    // modified: Z (r30, r31), r27
+    :
+    : "r" (sBuffer), "r" (color)
+    : "r30", "r31", "r27"
+  );
 }
 
 void Arduboy::drawRoundRect
