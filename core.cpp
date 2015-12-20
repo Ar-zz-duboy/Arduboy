@@ -211,6 +211,21 @@ void ArduboyCore::blank()
     SPI.transfer(0x00);
 }
 
+
+// invert the display or set to normal
+// when inverted, a pixel set to 0 will be on
+void ArduboyCore::invert(boolean inverse)
+{
+  LCDCommandMode();
+  if (inverse) {
+    SPI.transfer(0xA7); // inverse display
+  }
+  else {
+    SPI.transfer(0xA6); // normal display
+  }
+  LCDDataMode();
+}
+
 // flip the display vertically or set to normal
 void ArduboyCore::flipVertical(boolean flip)
 {
