@@ -252,6 +252,19 @@ void ArduboyCore::flipHorizontal(boolean flip)
   LCDDataMode();
 }
 
+// turn all display pixels on, ignoring buffer contents
+void ArduboyCore::allOn(boolean on)
+{
+  LCDCommandMode();
+  if (on) {
+    SPI.transfer(0xA5); // all pixels on
+  }
+  else {
+    SPI.transfer(0xA4); // normal display
+  }
+  LCDDataMode();
+}
+
 
 /* Buttons */
 

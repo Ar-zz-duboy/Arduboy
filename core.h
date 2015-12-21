@@ -168,6 +168,8 @@ public:
     /// flip the display horizontally or set to normal
     void flipHorizontal(boolean flip);
 
+    /// turn all display pixels on, ignoring buffer contents
+    void allOn(boolean on);
 
 protected:
     /// boots the hardware
