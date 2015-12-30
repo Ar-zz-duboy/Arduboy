@@ -156,6 +156,12 @@ public:
     /// paints a blank (black) screen to hardware
     void blank();
 
+    /// flip the display vertically or set to normal
+    void flipVertical(boolean flip);
+
+    /// flip the display horizontally or set to normal
+    void flipHorizontal(boolean flip);
+
 
 protected:
     /// boots the hardware

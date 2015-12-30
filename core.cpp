@@ -211,6 +211,32 @@ void ArduboyCore::blank()
     SPI.transfer(0x00);
 }
 
+// flip the display vertically or set to normal
+void ArduboyCore::flipVertical(boolean flip)
+{
+  LCDCommandMode();
+  if (flip) {
+    SPI.transfer(0xC0); // reversed COM scan direction
+  }
+  else {
+    SPI.transfer(0xC8); // normal COM scan direction
+  }
+  LCDDataMode();
+}
+
+// flip the display horizontally or set to normal
+void ArduboyCore::flipHorizontal(boolean flip)
+{
+  LCDCommandMode();
+  if (flip) {
+    SPI.transfer(0xA0); // reversed segment re-map
+  }
+  else {
+    SPI.transfer(0xA1); // normal segment re-map
+  }
+  LCDDataMode();
+}
+
 
 /* Buttons */
 
