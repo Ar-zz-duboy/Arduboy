@@ -253,7 +253,7 @@ void ArduboyCore::flipHorizontal(boolean flip)
 }
 
 // turn all display pixels on, ignoring buffer contents
-void ArduboyCore::allOn(boolean on)
+void ArduboyCore::allPixelsOn(boolean on)
 {
   LCDCommandMode();
   if (on) {

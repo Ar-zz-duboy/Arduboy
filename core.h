@@ -169,7 +169,7 @@ public:
     void flipHorizontal(boolean flip);
 
     /// turn all display pixels on, ignoring buffer contents
-    void allOn(boolean on);
+    void allPixelsOn(boolean on);
 
 protected:
     /// boots the hardware
