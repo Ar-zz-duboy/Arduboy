@@ -157,10 +157,13 @@ public:
     void blank();
 
     /// flip the display vertically or set to normal
-    void flipVertical(boolean flip);
+    void flipVertical(boolean flipped);
 
     /// flip the display horizontally or set to normal
-    void flipHorizontal(boolean flip);
+    void flipHorizontal(boolean flipped);
+
+    /// send a single byte command to the OLED
+    void sendLCDByteCommand(uint8_t command);
 
 
 protected:
