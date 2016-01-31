@@ -163,7 +163,7 @@ public:
     void flipHorizontal(boolean flipped);
 
     /// send a single byte command to the OLED
-    void sendLCDByteCommand(uint8_t command);
+    void sendLCDCommand(uint8_t command);
 
 
 protected:

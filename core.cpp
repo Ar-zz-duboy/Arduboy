@@ -211,7 +211,7 @@ void ArduboyCore::blank()
     SPI.transfer(0x00);
 }
 
-void ArduboyCore::sendLCDByteCommand(uint8_t command)
+void ArduboyCore::sendLCDCommand(uint8_t command)
 {
   LCDCommandMode();
   SPI.transfer(command);
@@ -224,7 +224,7 @@ void ArduboyCore::sendLCDByteCommand(uint8_t command)
 // flip the display vertically or set to normal
 void ArduboyCore::flipVertical(boolean flipped)
 {
-  sendLCDByteCommand(flipped ? OLED_VERTICAL_FLIPPED : OLED_VERTICAL_NORMAL);
+  sendLCDCommand(flipped ? OLED_VERTICAL_FLIPPED : OLED_VERTICAL_NORMAL);
 }
 
 #define OLED_HORIZ_FLIPPED 0xA0 // reversed segment re-map
@@ -233,7 +233,7 @@ void ArduboyCore::flipVertical(boolean flipped)
 // flip the display horizontally or set to normal
 void ArduboyCore::flipHorizontal(boolean flipped)
 {
-  sendLCDByteCommand(flipped ? OLED_HORIZ_FLIPPED : OLED_HORIZ_NORMAL);
+  sendLCDCommand(flipped ? OLED_HORIZ_FLIPPED : OLED_HORIZ_NORMAL);
 }
 
 /* Buttons */
