@@ -1,5 +1,21 @@
 #include "core.h"
 
+const uint8_t PROGMEM pinBootProgram[] = {
+  // buttons
+  PIN_LEFT_BUTTON, INPUT_PULLUP,
+  PIN_RIGHT_BUTTON, INPUT_PULLUP,
+  PIN_UP_BUTTON, INPUT_PULLUP,
+  PIN_DOWN_BUTTON, INPUT_PULLUP,
+  PIN_A_BUTTON, INPUT_PULLUP,
+  PIN_B_BUTTON, INPUT_PULLUP,
+
+  // OLED SPI
+  DC, OUTPUT,
+  CS, OUTPUT,
+  RST, OUTPUT,
+  0
+};
+
 const uint8_t PROGMEM lcdBootProgram[] = {
   0xAE,  // Display Off
   0XD5,  // Set Display Clock Divisor v
@@ -82,24 +98,21 @@ void ArduboyCore::slowCPU()
 
 void ArduboyCore::bootPins()
 {
-  // OLED SPI
-  pinMode(DC, OUTPUT);
-  pinMode(CS, OUTPUT);
-  pinMode(RST, OUTPUT);
+  uint8_t pin, mode;
+  const uint8_t *i = pinBootProgram;
+
+  while(true) {
+    pin = pgm_read_byte(i++);
+    mode = pgm_read_byte(i++);
+    if (pin==0) break;
+    pinMode(pin, mode);
+  }
+
   digitalWrite(RST, HIGH);
   delay(1);           // VDD (3.3V) goes high at start, lets just chill for a ms
   digitalWrite(RST, LOW);   // bring reset low
   delay(10);          // wait 10ms
   digitalWrite(RST, HIGH);  // bring out of reset
-
-  // Buttons
-  pinMode(PIN_LEFT_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_RIGHT_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_UP_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_A_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_B_BUTTON, INPUT_PULLUP);
-
 }
 
 void ArduboyCore::bootLCD()
