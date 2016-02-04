@@ -156,6 +156,19 @@ public:
     /// paints a blank (black) screen to hardware
     void blank();
 
+    /// invert the display or set to normal
+    /**
+     * when inverted, a pixel set to 0 will be on
+     */
+    void invert(boolean inverse);
+
+    /// turn all display pixels on, or display the buffer contents
+    /**
+     * when set to all pixels on, the display buffer will be
+     * ignored but not altered
+     */
+    void allPixelsOn(boolean on);
+
     /// flip the display vertically or set to normal
     void flipVertical(boolean flipped);
 
