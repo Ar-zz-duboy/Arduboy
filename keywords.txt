@@ -12,6 +12,7 @@ Arduboy	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
+allPixelsOn	KEYWORD2
 blank	KEYWORD2
 clearDisplay	KEYWORD2
 cpuLoad	KEYWORD2
