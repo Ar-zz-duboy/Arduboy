@@ -3,6 +3,7 @@
 *.swp
 *.swo
 
+# Ignore working files
 .build
 Makefile
 ino.ini
