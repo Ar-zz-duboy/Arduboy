@@ -1,4 +1,7 @@
+# Ignore vim temp and swap files
+*~
 *.swp
+*.swo
 
 .build
 Makefile
