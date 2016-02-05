@@ -1,0 +1,58 @@
+#######################################
+# Syntax Coloring Map For Arduboy
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Arduboy	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+blank	KEYWORD2
+clearDisplay	KEYWORD2
+cpuLoad	KEYWORD2
+display	KEYWORD2
+drawBitmap	KEYWORD2
+drawChar	KEYWORD2
+drawCircle	KEYWORD2
+drawFastHLine	KEYWORD2
+drawFastVLine	KEYWORD2
+drawLine	KEYWORD2
+drawPixel	KEYWORD2
+drawRect	KEYWORD2
+drawRoundRect	KEYWORD2
+drawSlowXYBitmap	KEYWORD2
+drawTriangle	KEYWORD2
+everyXFrames	KEYWORD2
+fillCircle	KEYWORD2
+fillRect	KEYWORD2
+fillRoundRect	KEYWORD2
+fillScreen	KEYWORD2
+fillTriangle	KEYWORD2
+flipVertical	KEYWORD2
+flipHorizontal	KEYWORD2
+getBuffer	KEYWORD2
+getInput	KEYWORD2
+idle	KEYWORD2
+initRandomSeed	KEYWORD2
+invert	KEYWORD2
+nextFrame	KEYWORD2
+paint8Pixels	KEYWORD2
+paintScreen	KEYWORD2
+pressed	KEYWORD2
+setCursor	KEYWORD2
+setFrameRate	KEYWORD2
+setTextSize	KEYWORD2
+setTextWrap	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+BLACK	LITERAL1
+WHITE	LITERAL1
+
