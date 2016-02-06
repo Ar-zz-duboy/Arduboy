@@ -158,7 +158,8 @@ const byte PROGMEM score [] = {
 
 Arduboy display;
 
-void setup() {
+void setup()
+{
   SPI.begin();
   display.start();
   display.setTextSize(4);
@@ -167,7 +168,8 @@ void setup() {
   display.display();
 }
 
-void loop () {
+void loop ()
+{
   // pause render until it's time for the next frame
   if (!(display.nextFrame()))
     return;
@@ -175,5 +177,4 @@ void loop () {
   // play the tune if we aren't already
   if (!display.tunes.playing())
     display.tunes.playScore(score);
-
 }
