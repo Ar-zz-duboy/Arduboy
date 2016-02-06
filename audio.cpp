@@ -11,12 +11,9 @@ byte _tune_pins[AVAILABLE_TIMERS];
 byte _tune_num_chans = 0;
 volatile boolean tune_playing; // is the score still playing?
 volatile unsigned wait_timer_frequency2;       /* its current frequency */
-volatile unsigned wait_timer_old_frequency2;   /* its previous frequency */
 volatile boolean wait_timer_playing = false;   /* is it currently playing a note? */
-volatile boolean doing_delay = false;          /* are we using it for a tune_delay()? */
 volatile boolean tonePlaying = false;
 volatile unsigned long wait_toggle_count;      /* countdown score waits */
-volatile unsigned long delay_toggle_count;     /* countdown tune_ delay() delays */
 
 
 // pointers to your musical score and your position in said score
@@ -221,21 +218,6 @@ void ArduboyTunes::step() {
   }
 }
 
-void ArduboyTunes::delay (unsigned duration) {
-  boolean notdone;
-  noInterrupts();
-  delay_toggle_count = ((unsigned long) wait_timer_frequency2 * duration + 500) / 1000;
-  doing_delay = true;
-  interrupts();
-  do { // wait until the interrupt routines decrements the toggle count to zero
-    noInterrupts();
-    notdone = delay_toggle_count != 0;  /* interrupt-safe test */
-    interrupts();
-  }
-  while (notdone);
-  doing_delay = false;
-}
-
 void ArduboyTunes::closeChannels(void) {
   byte timer_num;
   for (uint8_t chan=0; chan < _tune_num_chans; chan++) {
@@ -261,21 +243,8 @@ void ArduboyTunes::soundOutput()
   }
   if (tune_playing && wait_toggle_count && --wait_toggle_count == 0) {
     // end of a score wait, so execute more score commands
-    wait_timer_old_frequency2 = wait_timer_frequency2;  // save this timer's frequency
     ArduboyTunes::step();  // execute commands
-    // If this timer's frequency has changed and we're using it for a tune_delay(),
-    // recompute the number of toggles to wait for
-    if (doing_delay && wait_timer_old_frequency2 != wait_timer_frequency2) {
-      if (delay_toggle_count >= 0x20000UL && wait_timer_frequency2 >= 0x4000U) {
-        // Need to avoid 32-bit overflow...
-        delay_toggle_count = ( (delay_toggle_count+4>>3) * (wait_timer_frequency2+2>>2) / wait_timer_old_frequency2 )<<5;
-      }
-      else {
-        delay_toggle_count = delay_toggle_count * wait_timer_frequency2 / wait_timer_old_frequency2;
-      }
-    }
   }
-  if (doing_delay && delay_toggle_count) --delay_toggle_count;  // countdown for tune_delay()
 }
 void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
   tonePlaying = true;
