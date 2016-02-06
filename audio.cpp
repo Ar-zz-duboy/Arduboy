@@ -38,6 +38,8 @@ const unsigned int PROGMEM _midi_note_frequencies[128] = {
 
 /* AUDIO */
 
+bool ArduboyAudio::audio_enabled = false;
+
 void ArduboyAudio::on() {
   power_timer1_enable();
   power_timer3_enable();
@@ -62,12 +64,6 @@ void ArduboyAudio::setup() {
   tune_playing = false;
   if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
     on();
-}
-
-void ArduboyAudio::tone(uint8_t channel, unsigned int frequency, unsigned long duration)
-{
-  // if (audio_enabled)
-    // ::tone(channel, frequency, duration);
 }
 
 
