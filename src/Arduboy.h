@@ -24,6 +24,12 @@
 // compare temperature to 2.5 internal reference and _BV(MUX5)
 #define ADC_TEMP (_BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0))
 
+#define PIN_SPEAKER_1_PORT &PORTF
+#define PIN_SPEAKER_2_PORT &PORTF
+
+#define PIN_SPEAKER_1_BITMASK _BV(5)
+#define PIN_SPEAKER_2_BITMASK _BV(4)
+
 class Arduboy : public Print, public ArduboyCore
 {
 public:
@@ -44,6 +50,9 @@ public:
   /// Initializes the display.
   void begin();
   void start() __attribute__ ((deprecated("use begin() instead")));
+
+  /// Scrolls in the Arduboy logo
+  void bootLogo();
 
   /// Clears display.
   void clear();

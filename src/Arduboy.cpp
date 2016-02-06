@@ -1,5 +1,6 @@
 #include "Arduboy.h"
 #include "glcdfont.c"
+#include "ab_logo.h"
 
 Arduboy::Arduboy()
 {
@@ -35,10 +36,44 @@ void Arduboy::begin()
     while(true) {}
   }
 
+  bootLogo();
+
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
   tunes.initChannel(PIN_SPEAKER_2);
   audio.begin();
+}
+
+void Arduboy::bootLogo()
+{
+  setRGBled(10,0,0);
+  for(int8_t y = -17; y<24; y++) {
+    clear();
+    drawBitmap(20,y, arduboy_logo, 88, 16, WHITE);
+    display();
+    delay(27);
+    // longer delay post boot, we put it inside the loop to
+    // save the flash calling clear/delay again outside the loop
+    if (y==-16) {
+      delay(250);
+    }
+  }
+
+  // pinMode(PIN_SPEAKER_1, OUTPUT);
+  // volatile byte *spkr  = PIN_SPEAKER_1_PORT;
+  // for (int16_t i = 0; i<200; i++) {
+  //    *spkr ^= PIN_SPEAKER_1_BITMASK;
+  //   delayMicroseconds(1500 + i*2);
+  // }
+  // for (int16_t i = 0; i<350; i++) {
+  //    *spkr ^= PIN_SPEAKER_1_BITMASK;
+  //   delayMicroseconds(1500 - i*4);
+  // }
+  // // speaker off
+  // *spkr &= ~PIN_SPEAKER_1_BITMASK;
+
+  delay(750);
+  setRGBled(0,0,0);
 }
 
 /* Frame management */
@@ -713,3 +748,4 @@ void Arduboy::swap(int16_t& a, int16_t& b)
   a = b;
   b = temp;
 }
+  

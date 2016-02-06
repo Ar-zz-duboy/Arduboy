@@ -162,6 +162,9 @@ void setup()
 {
   arduboy.begin();
   arduboy.setTextSize(4);
+  arduboy.setCursor(0,0);
+  arduboy.print("Music\nDemo");
+  arduboy.display();
 }
 
 
@@ -189,6 +192,7 @@ void loop ()
     arduboy.invert(false);
   }
 
+  arduboy.clear();
   arduboy.setCursor(x,y);
   arduboy.print("Music\nDemo");
   arduboy.display();
