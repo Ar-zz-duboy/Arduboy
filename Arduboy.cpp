@@ -579,6 +579,7 @@ void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int1
 void Arduboy::drawChar
 (int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
 {
+  boolean draw_background = bg != color;
 
   if ((x >= WIDTH) ||         // Clip right
     (y >= HEIGHT) ||        // Clip bottom
@@ -603,29 +604,15 @@ void Arduboy::drawChar
 
     for (int8_t j = 0; j<8; j++)
     {
-      if (line & 0x1)
-      {
-        if (size == 1) // default size
-        {
-          drawPixel(x+i, y+j, color);
-        }
-        else  // big size
-        {
-          fillRect(x+(i*size), y+(j*size), size, size, color);
-        }
-      }
-      else if (bg != color)
-      {
-        if (size == 1) // default size
-        {
-          drawPixel(x+i, y+j, bg);
-        }
-        else
-        {  // big size
-          fillRect(x+i*size, y+j*size, size, size, bg);
-        }
-      }
+      uint8_t draw_color = (line & 0x1) ? color : bg;
 
+      if (draw_color || draw_background) {
+        for (uint8_t a = 0; a < size; a++ ) {
+          for (uint8_t b = 0; b < size; b++ ) {
+            drawPixel(x + (i * size) + a, y + (j * size) + b, draw_color);
+          }
+        }
+      }
       line >>= 1;
     }
   }
