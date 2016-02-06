@@ -16,15 +16,15 @@
 class ArduboyAudio
 {
 public:
-  void setup();
-  void on();
-  void off();
-  void save_on_off();
-  bool enabled();
-  void tone(uint8_t channel, unsigned int frequency, unsigned long duration);
+  void static setup();
+  void static on();
+  void static off();
+  void static save_on_off();
+  bool static enabled();
+  void static tone(uint8_t channel, unsigned int frequency, unsigned long duration);
 
 protected:
-  bool audio_enabled;
+  bool static audio_enabled;
 };
 
 
