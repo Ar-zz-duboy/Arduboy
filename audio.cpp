@@ -69,12 +69,6 @@ void ArduboyAudio::setup() {
     on();
 }
 
-void ArduboyAudio::tone(uint8_t channel, unsigned int frequency, unsigned long duration)
-{
-  // if (audio_enabled)
-    // ::tone(channel, frequency, duration);
-}
-
 
 /* TUNES */
 

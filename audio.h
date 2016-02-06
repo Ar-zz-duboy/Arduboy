@@ -21,7 +21,6 @@ public:
   void static off();
   void static save_on_off();
   bool static enabled();
-  void static tone(uint8_t channel, unsigned int frequency, unsigned long duration);
 
 protected:
   bool static audio_enabled;
