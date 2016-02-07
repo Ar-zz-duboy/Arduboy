@@ -103,7 +103,12 @@ uint16_t Arduboy::rawADC(byte adc_bits)
 
 /* Graphics */
 
-void Arduboy::clearDisplay()
+void Arduboy::clearDisplay() // deprecated
+{
+  clear();
+}
+
+void Arduboy::clear()
 {
   // C version:
   // for (int a = 0; a < (HEIGHT*WIDTH)/8; a++) sBuffer[a] = 0x00;
