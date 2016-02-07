@@ -640,7 +640,8 @@ void Arduboy::setCursor(int16_t x, int16_t y)
 
 void Arduboy::setTextSize(uint8_t s)
 {
-  textsize = (s > 0) ? s : 1;
+  // textsize must always be 1 or higher
+  textsize = max(1,s); 
 }
 
 void Arduboy::setTextWrap(boolean w)
