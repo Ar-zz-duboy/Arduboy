@@ -140,7 +140,6 @@ void ArduboyCore::LCDDataMode()
 
 void ArduboyCore::LCDCommandMode()
 {
-  *csport |= cspinmask; // why are we doing this twice?
   *csport |= cspinmask;
   *dcport &= ~dcpinmask;
   *csport &= ~cspinmask;
