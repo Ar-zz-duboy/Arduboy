@@ -8,7 +8,7 @@
 #include "Arduboy.h"
 #include "bitmaps.h"
 
-Arduboy display;
+Arduboy arduboy;
 
 int gameFPS = 1000/30;
 
@@ -67,30 +67,30 @@ const byte PROGMEM hit [] = {
 0x90,60, 0,31, 0x80, 0x90,61, 0,31, 0x80, 0x90,62, 0,31, 0x80, 0xf0};
 
 void drawFloor() {
-  display.drawLine(0,HEIGHT-1,WIDTH-1,HEIGHT-1,WHITE);
+  arduboy.drawLine(0,HEIGHT-1,WIDTH-1,HEIGHT-1,WHITE);
 }
 void drawFloaty() {
   ballFlapper--;
   if (ballFlapper < 0) { ballFlapper = ballRadius; }  // Flapper starts at the top of the ball
-  display.drawCircle(ballX, ballY, ballRadius, BLACK);  // Black out behind the ball
-  display.drawCircle(ballX, ballY, ballRadius, WHITE);  // Draw outline
-  display.drawLine(ballX, ballY, ballX-(ballRadius+1), ballY - ballFlapper, WHITE);  // Draw wing
-  display.drawPixel(ballX-(ballRadius+1), ballY - ballFlapper + 1, WHITE);  // Dot the wing
-  display.drawPixel(ballX+1, ballY-2, WHITE);  // Eye	
+  arduboy.drawCircle(ballX, ballY, ballRadius, BLACK);  // Black out behind the ball
+  arduboy.drawCircle(ballX, ballY, ballRadius, WHITE);  // Draw outline
+  arduboy.drawLine(ballX, ballY, ballX-(ballRadius+1), ballY - ballFlapper, WHITE);  // Draw wing
+  arduboy.drawPixel(ballX-(ballRadius+1), ballY - ballFlapper + 1, WHITE);  // Dot the wing
+  arduboy.drawPixel(ballX+1, ballY-2, WHITE);  // Eye	
 }
 void drawPipes() {
   for (int x = 0; x < pipeArraySize; x++){
     if (pipes[0][x] != 255) {  // value set to 255 if array element is inactive,
                                // otherwise it is the xvalue of the pipe's left edge
       // Pipes
-      display.drawRect(pipes[0][x], -1, pipeWidth, pipes[1][x], WHITE);
-      display.drawRect(pipes[0][x], pipes[1][x] + pipeGapHeight, pipeWidth, HEIGHT - pipes[1][x] - pipeGapHeight, WHITE);
+      arduboy.drawRect(pipes[0][x], -1, pipeWidth, pipes[1][x], WHITE);
+      arduboy.drawRect(pipes[0][x], pipes[1][x] + pipeGapHeight, pipeWidth, HEIGHT - pipes[1][x] - pipeGapHeight, WHITE);
       // Caps
-      display.drawRect(pipes[0][x] - pipeCapWidth, pipes[1][x] - pipeCapHeight, pipeWidth + (pipeCapWidth*2), pipeCapHeight, WHITE);
-      display.drawRect(pipes[0][x] - pipeCapWidth, pipes[1][x] + pipeGapHeight, pipeWidth + (pipeCapWidth*2), pipeCapHeight, WHITE);
+      arduboy.drawRect(pipes[0][x] - pipeCapWidth, pipes[1][x] - pipeCapHeight, pipeWidth + (pipeCapWidth*2), pipeCapHeight, WHITE);
+      arduboy.drawRect(pipes[0][x] - pipeCapWidth, pipes[1][x] + pipeGapHeight, pipeWidth + (pipeCapWidth*2), pipeCapHeight, WHITE);
       // Detail lines
-      display.drawLine(pipes[0][x]+2, 0, pipes[0][x]+2, pipes[1][x]-5, WHITE);
-      display.drawLine(pipes[0][x]+2, pipes[1][x] + pipeGapHeight + 5, pipes[0][x]+2, HEIGHT - 3,WHITE);
+      arduboy.drawLine(pipes[0][x]+2, 0, pipes[0][x]+2, pipes[1][x]-5, WHITE);
+      arduboy.drawLine(pipes[0][x]+2, pipes[1][x] + pipeGapHeight + 5, pipes[0][x]+2, HEIGHT - 3,WHITE);
     }
   }
 }
@@ -146,24 +146,24 @@ int getOffset(int s) {
   return 0;
 }
 void setup() {
-  display.start();
+  arduboy.start();
   for(int i=-8; i<28; i=i+2) {
-    display.clearDisplay();
-    display.drawSlowXYBitmap(46,i, arduino, 32,8,1);
-    display.display();
+    arduboy.clearDisplay();
+    arduboy.drawSlowXYBitmap(46,i, arduino, 32,8,1);
+    arduboy.display();
   }
-  display.tunes.playScore (bing);
+  arduboy.tunes.playScore (bing);
   delay(2000);
-  display.clearDisplay();
-  display.drawSlowXYBitmap(0,0,floatyball,128,64,1);
-  display.display();
-  display.tunes.playScore (intro);
+  arduboy.clearDisplay();
+  arduboy.drawSlowXYBitmap(0,0,floatyball,128,64,1);
+  arduboy.display();
+  arduboy.tunes.playScore (intro);
   delay(500);
-  display.setCursor(18,55);
-  display.print("Press Any Button");
-  display.display();
+  arduboy.setCursor(18,55);
+  arduboy.print("Press Any Button");
+  arduboy.display();
 
-  while (!display.getInput());
+  while (!arduboy.getInput());
 
   delay(500);
   for (int x = 0; x < pipeArraySize; x++) { pipes[0][x] = 255; }  // set all pipes offscreen
@@ -171,25 +171,25 @@ void setup() {
 }
 void loop() {
   if (millis() > lTime + gameFPS) {
-    display.clearDisplay();
+    arduboy.clearDisplay();
     lTime = millis();
     if (gameState == 0) {       // If the game is paused
       drawFloor();
       drawFloaty();
-      if (display.getInput()) { // Wait for a button press
+      if (arduboy.getInput()) { // Wait for a button press
         gameState = 1;          // Then start the game
         ballVY = jumpHeight;    // And make Floaty jump
-        if (display.tunes.playing()) { display.tunes.stopScore(); }
-        display.tunes.playScore (flap);
+        if (arduboy.tunes.playing()) { arduboy.tunes.stopScore(); }
+        arduboy.tunes.playScore (flap);
       }
     }
     if (gameState == 1) {       // If the game is playing
       pipeGenCount++;           // inc pipe generator counter 1 frame
       if (ballVY > 0) {         // If the ball isn't already rising, check for jump
-        if (display.pressed(B_BUTTON) || display.pressed(A_BUTTON)) {
+        if (arduboy.pressed(B_BUTTON) || arduboy.pressed(A_BUTTON)) {
           ballVY = jumpHeight;  // jump
-          if (display.tunes.playing()) { display.tunes.stopScore(); }
-          display.tunes.playScore (flap);
+          if (arduboy.tunes.playing()) { arduboy.tunes.stopScore(); }
+          arduboy.tunes.playScore (flap);
         }
       }
       if (pipeGenCount > pipeGenTimer) {  // Every pipeGenTimer worth of frames
@@ -210,15 +210,15 @@ void loop() {
             gameScoreX = ballX;           // Load up the floating text with
             gameScoreY = ballY - ballRadius; // Current ball x/y values
             gameScoreRiser = 15;          // And set it for 15 frames
-            if (display.tunes.playing()) { display.tunes.stopScore(); }
-            display.tunes.playScore (point);
+            if (arduboy.tunes.playing()) { arduboy.tunes.stopScore(); }
+            arduboy.tunes.playScore (point);
           }
         }
       }
 
       if (gameScoreRiser > 0) {  // If we have floating text
-        display.setCursor(gameScoreX - 2,gameScoreY + gameScoreRiser - 24);
-        display.print(gameScore);								
+        arduboy.setCursor(gameScoreX - 2,gameScoreY + gameScoreRiser - 24);
+        arduboy.print(gameScore);								
         gameScoreX = gameScoreX - 2;
         gameScoreRiser--;
       }
@@ -241,38 +241,38 @@ void loop() {
     }
     if (gameState == 2) {  // If the gameState is 2 then we draw a Game Over screen w/ score
       if (gameScore > gameHighScore) { gameHighScore = gameScore; }
-      if (display.tunes.playing()) { display.tunes.stopScore(); }
-      display.display();              // Make sure final frame is drawn
-      display.tunes.playScore (hit);  // Hit sound
+      if (arduboy.tunes.playing()) { arduboy.tunes.stopScore(); }
+      arduboy.display();              // Make sure final frame is drawn
+      arduboy.tunes.playScore (hit);  // Hit sound
       delay(100);                     // Pause for the sound
       while (ballY + ballRadius < (HEIGHT-1)) {  // While floaty is still airborne
       if (ballVY < 0) { ballVY = 0; } // Stop any upward momentum
         ballY = ballY + ballVY;       // Fall
         ballVY++;                     // Increase falling speed
         if (ballY + ballRadius > (HEIGHT-1)) { ballY = HEIGHT - ballRadius; } // Don't fall through the floor plx
-        display.clearDisplay();
+        arduboy.clearDisplay();
         drawPipes();
         drawFloor();
         drawFloaty();
-        display.display();
+        arduboy.display();
       }
-      display.tunes.playScore (horns);     // SOUND THE LOSER'S HORN	
-      display.drawRect(16,8,96,48, WHITE); // Box border
-      display.fillRect(17,9,94,46, BLACK); // Black out the inside
-      display.drawSlowXYBitmap(30,12,gameover,72,14,1);
-      display.setCursor(56 - getOffset(gameScore),30);
-      display.print(gameScore);
-      display.setCursor(69,30);
-      display.print("Score");
+      arduboy.tunes.playScore (horns);     // SOUND THE LOSER'S HORN	
+      arduboy.drawRect(16,8,96,48, WHITE); // Box border
+      arduboy.fillRect(17,9,94,46, BLACK); // Black out the inside
+      arduboy.drawSlowXYBitmap(30,12,gameover,72,14,1);
+      arduboy.setCursor(56 - getOffset(gameScore),30);
+      arduboy.print(gameScore);
+      arduboy.setCursor(69,30);
+      arduboy.print("Score");
 
-      display.setCursor(56 - getOffset(gameHighScore),42);
-      display.print(gameHighScore);
-      display.setCursor(69,42);
-      display.print("High");
+      arduboy.setCursor(56 - getOffset(gameHighScore),42);
+      arduboy.print(gameHighScore);
+      arduboy.setCursor(69,42);
+      arduboy.print("High");
 
-      display.display();
+      arduboy.display();
 
-      while (!display.getInput());
+      while (!arduboy.getInput());
 
       gameState = 0;       // Then start the game paused
       gameScore = 0;       // Reset score to 0
@@ -283,6 +283,6 @@ void loop() {
       delay(250);          // Slight delay so input doesn't break pause
 
     }
-    display.display();  // Finally draw this thang
+    arduboy.display();  // Finally draw this thang
   }
 }

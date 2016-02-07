@@ -156,25 +156,24 @@ const byte PROGMEM score [] = {
   0x91,0x47, 0,53, 0,141, 0x80, 0x81, 0x82, 0x90,0x47, 0x91,0x44, 0x92,0x28, 0,95, 1,77, 0,202,
   0x80, 0x81, 0x90,0x45, 0,91, 0,136, 0x80, 0x82, 0x90,0x45, 0x91,0x2D, 7,83, 0x80, 0x81, 0xf0};
 
-Arduboy display;
+Arduboy arduboy;
 
 void setup()
 {
-  SPI.begin();
-  display.start();
-  display.setTextSize(4);
-  display.setCursor(0,0);
-  display.print("Music\nDemo");
-  display.display();
+  arduboy.start();
+  arduboy.setTextSize(4);
+  arduboy.setCursor(0,0);
+  arduboy.print("Music\nDemo");
+  arduboy.display();
 }
 
 void loop ()
 {
   // pause render until it's time for the next frame
-  if (!(display.nextFrame()))
+  if (!(arduboy.nextFrame()))
     return;
 
   // play the tune if we aren't already
-  if (!display.tunes.playing())
-    display.tunes.playScore(score);
+  if (!arduboy.tunes.playing())
+    arduboy.tunes.playScore(score);
 }
