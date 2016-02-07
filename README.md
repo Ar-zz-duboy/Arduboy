@@ -4,17 +4,17 @@ This library provides Arduboy's  core functionality.
 
 ## How to use the library
 
-Install by cloning the repository, and use by including `Arduboy.h` in your application.
+Install by cloning the repository.
 
 ```	
 $ git clone https://github.com/Arduboy/Arduboy.git
 ```
 
-The library should be installed into your user's Arduino `libraries` directory. Refer to the following list for the location of the Arduino `libraries` folder.
+The library should be installed into your user's home Arduino `libraries` directory. Refer to the following list for the location of the Arduino `libraries` folder.
 
 **Linux**
 ```
-/home/username/arduino/libraries
+/home/username/Documents/Arduino/libraries
 ```
 **Mac**
 ```
