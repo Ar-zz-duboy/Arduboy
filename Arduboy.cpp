@@ -666,8 +666,9 @@ size_t Arduboy::write(uint8_t c)
     cursor_x += textsize*6;
     if (wrap && (cursor_x > (WIDTH - textsize*6)))
     {
-      cursor_y += textsize*8;
-      cursor_x = 0;
+      // calling ourselves recursively for 'newline' is 
+      // 12 bytes smaller than doing the same math here
+      write('\n');
     }
   }
 }
