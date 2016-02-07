@@ -30,9 +30,9 @@ C:\Users\username\My Documents\Arduino\libraries
 Select the **Leonardo** board as the target platform.
 
 ### Examples
-Examples like games and how to play a small composition can be found in the `examples` directory.
+Examples games and source can be found in the `examples` directory.
 
-#### Play
+#### Playing Examples
 Find and play an example by opening it through the Arduino IDE, compiling, and uploading the example to the Arduboy.
 Examples can be found in the Arduino IDE in the navigation menu under, `File > Examples > Arduboy > Example_Name`.
 
