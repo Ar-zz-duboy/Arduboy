@@ -6,22 +6,22 @@ This library provides the core functionality for the Aruboy.
 
 ## How to use the library
 
-Install by cloning the repository.
+Install by cloning the repository, and use by including `Arduboy.h` in your application.
 ```	
 $ git clone https://github.com/Arduboy/Arduboy.git
 ```
 
 The library should be installed into your user's Arduino `libraries` directory. Refer to the following list for the location of the Arduino `libraries` folder.
 
-Linux
+**Linux**
 ```
 /home/username/arduino/libraries
 ```
-Mac
+**Mac**
 ```
 /Users/username/Documents/Arduino/libraries
 ```
-Windows
+**Windows**
 ```
 C:\Users\username\My Documents\Arduino\libraries
 ```
@@ -43,10 +43,10 @@ Sketches which include copies of the Arduboy library may not compile if the Ardu
 
 To compile sketches including local copies of the Aruboy Library,
 
-- Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. This will only work in some cases.
+Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. This will only work in some cases.
 
 **OR**
 
-- Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add `#include "CustomArduboy.h"` to the `.ino` sketch file. 
+Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add `#include "CustomArduboy.h"` to the `.ino` sketch file. 
 
 
