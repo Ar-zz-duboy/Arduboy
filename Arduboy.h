@@ -48,7 +48,8 @@ public:
   void start();
 
   /// Clears display.
-  void clearDisplay();
+  void clear();
+  void clearDisplay() __attribute__ ((deprecated("use clear() instead")));
 
   /// Copies the contents of the screen buffer to the screen.
   /**
