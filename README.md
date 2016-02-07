@@ -29,7 +29,7 @@ C:\Users\username\My Documents\Arduino\libraries
 Select the **Leonardo** board as the target platform.
 
 ### Examples
-Examples games and source can be found in the `examples` directory.
+Example games and source can be found in the `examples` directory.
 
 #### Playing Examples
 Find and play an example by opening it through the Arduino IDE, compiling, and uploading the example to the Arduboy.
