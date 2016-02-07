@@ -3,14 +3,16 @@
 
 Arduboy::Arduboy()
 {
-  frameRate = 60;
+  // frame management
+  setFrameRate(60);
   frameCount = 0;
-  eachFrameMillis = 1000/60;
-  lastFrameStart = 0;
   nextFrameStart = 0;
   post_render = false;
-  lastFrameDurationMs = 0;
-  
+  // init not necessary, will be reset after first use
+  // lastFrameStart
+  // lastFrameDurationMs
+
+  // font rendering  
   cursor_x = 0;
   cursor_y = 0;
   textsize = 1;
