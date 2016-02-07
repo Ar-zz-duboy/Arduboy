@@ -2,6 +2,7 @@
 
 - Kevin "Arduboy" Bates (@Arduboy)
 - arduboychris (@arduboychris)
+- Ross (@rogosher)
 - Andrew (@ace-dent)
 - Josh Goebel (@yyyc514)
 
