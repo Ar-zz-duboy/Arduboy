@@ -2,7 +2,7 @@ Arduboy
 =======
 This library provides Arduboy's  core functionality.
 
-## How to use the library
+## Using the Library
 
 Install by cloning the repository.
 
