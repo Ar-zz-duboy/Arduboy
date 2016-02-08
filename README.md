@@ -29,7 +29,7 @@ C:\Users\username\My Documents\Arduino\libraries
 ```
 
 ### Include
-To use the Arduboy library in your own sketches, include the `Arduboy.h` heade file. To do so, add the following line to the top of your `.ino` file.
+To use the Arduboy library in your own sketches, include the `Arduboy.h` header file. To do so, add the following line to the top of your `.ino` file.
 ```C
 #include "Arduboy.h"
 ```
