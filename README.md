@@ -3,12 +3,15 @@ Arduboy
 This library provides Arduboy's  core functionality.
 
 ## Using the Library
+To use the Arduboy library, it must be installed and then included in your project.
 
-Install by cloning the repository.
-
+### Install
+Install the library by cloning its repository.
 ```	
 $ git clone https://github.com/Arduboy/Arduboy.git
 ```
+
+#### Where to Install
 
 The library should be installed into your user's home Arduino `libraries` directory. Refer to the following list for the location of the Arduino `libraries` folder.
 
@@ -23,6 +26,12 @@ The library should be installed into your user's home Arduino `libraries` direct
 **Windows**
 ```
 C:\Users\username\My Documents\Arduino\libraries
+```
+
+### Include
+To use the Arduboy in your own sketches, include the `Arduboy.h` header file at the top of your sketch's source file.
+```C
+#include "Arduboy.h"
 ```
 
 ### Board Selection
