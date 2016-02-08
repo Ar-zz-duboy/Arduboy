@@ -359,6 +359,10 @@ void Arduboy::fillRect
 
 void Arduboy::fillScreen(uint8_t color)
 {
+  // C version : 
+  //if(color != 0) color = 0xFF;  //change any nonzero argument to b11111111 and insert into screen array.
+  //for(int16_t i=0; i<1024; i++)  { sBuffer[i] = color; }  //sBuffer = (128*64) = 8192/8 = 1024 bytes. 
+  
   asm volatile
   (
     // load color value into r27
