@@ -1,8 +1,8 @@
 #include "Arduboy.h"
 #include "glcdfont.c"
 
-
-Arduboy::Arduboy() {
+Arduboy::Arduboy()
+{
   frameRate = 60;
   frameCount = 0;
   eachFrameMillis = 1000/60;
@@ -99,7 +99,6 @@ uint16_t Arduboy::rawADC(byte adc_bits)
 
   return ADC;
 }
-
 
 /* Graphics */
 
@@ -253,14 +252,8 @@ void Arduboy::fillCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
 }
 
 void Arduboy::fillCircleHelper
-(
- int16_t x0,
- int16_t y0,
- int16_t r,
- uint8_t cornername,
- int16_t delta,
- uint8_t color
-)
+(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta,
+ uint8_t color)
 {
   // used to do circles and roundrects!
   int16_t f = 1 - r;
@@ -528,7 +521,10 @@ void Arduboy::fillTriangle
   }
 }
 
-void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+void Arduboy::drawBitmap
+(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, 
+ uint8_t color)
+{
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
@@ -565,7 +561,9 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
 }
 
 
-void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
+void Arduboy::drawSlowXYBitmap
+(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color)
+{
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
@@ -667,7 +665,8 @@ void Arduboy::display()
   this->paintScreen(sBuffer);
 }
 
-unsigned char* Arduboy::getBuffer(){
+unsigned char* Arduboy::getBuffer()
+{
   return sBuffer;
 }
 
@@ -684,7 +683,8 @@ boolean Arduboy::not_pressed(uint8_t buttons)
  return (button_state & buttons) == 0;
 }
 
-void Arduboy::swap(int16_t& a, int16_t& b) {
+void Arduboy::swap(int16_t& a, int16_t& b)
+{
   int temp = a;
   a = b;
   b = temp;
