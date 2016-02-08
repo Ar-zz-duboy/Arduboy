@@ -109,31 +109,7 @@ void Arduboy::clearDisplay() // deprecated
 
 void Arduboy::clear()
 {
-  // C version:
-  // for (int a = 0; a < (HEIGHT*WIDTH)/8; a++) sBuffer[a] = 0x00;
-
-  // This implimentation should be close to an order of magnitude faster
-  asm volatile(
-    // load sBuffer pointer into Z
-    "movw  r30, %0\n\t"
-    // counter = 0
-    "eor __tmp_reg__, __tmp_reg__ \n\t"
-    "loop:   \n\t"
-    // (4x) push zero into screen buffer,
-    // then increment buffer position
-    "st Z+, __zero_reg__ \n\t"
-    "st Z+, __zero_reg__ \n\t"
-    "st Z+, __zero_reg__ \n\t"
-    "st Z+, __zero_reg__ \n\t"
-    // increase counter
-    "inc __tmp_reg__ \n\t"
-    // repeat for 256 loops
-    // (until counter rolls over back to 0)
-    "brne loop \n\t"
-    // input: sBuffer
-    // modified: Z (r30, r31)
-    : : "r" (sBuffer) : "r30","r31"
-  );
+  this->fillScreen(0);
 }
 
 void Arduboy::drawPixel(int x, int y, uint8_t color)
@@ -381,7 +357,39 @@ void Arduboy::fillRect
 
 void Arduboy::fillScreen(uint8_t color)
 {
-  fillRect(0, 0, WIDTH, HEIGHT, color);
+  // C version : 
+  //if(color != 0) color = 0xFF;  //change any nonzero argument to b11111111 and insert into screen array.
+  //for(int16_t i=0; i<1024; i++)  { sBuffer[i] = color; }  //sBuffer = (128*64) = 8192/8 = 1024 bytes. 
+  
+  asm volatile
+  (
+    // load color value into r27
+    "mov r27, %1 \n\t"
+    // if value is zero, skip assigning to 0xff
+    "cpse r27, __zero_reg__ \n\t"
+    "ldi r27, 0xff \n\t"
+    // load sBuffer pointer into Z
+    "movw  r30, %0\n\t"
+    // counter = 0
+    "clr __tmp_reg__ \n\t"
+    "loopto:   \n\t"
+    // (4x) push zero into screen buffer,
+    // then increment buffer position
+    "st Z+, r27 \n\t"
+    "st Z+, r27 \n\t"
+    "st Z+, r27 \n\t"
+    "st Z+, r27 \n\t"
+    // increase counter
+    "inc __tmp_reg__ \n\t"
+    // repeat for 256 loops
+    // (until counter rolls over back to 0)
+    "brne loopto \n\t"
+    // input: sBuffer, color
+    // modified: Z (r30, r31), r27
+    :
+    : "r" (sBuffer), "r" (color)
+    : "r30", "r31", "r27"
+  );
 }
 
 void Arduboy::drawRoundRect
