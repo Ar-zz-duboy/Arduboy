@@ -15,7 +15,6 @@ volatile boolean wait_timer_playing = false;   /* is it currently playing a note
 volatile boolean tonePlaying = false;
 volatile unsigned long wait_toggle_count;      /* countdown score waits */
 
-
 // pointers to your musical score and your position in said score
 volatile const byte *score_start = 0;
 volatile const byte *score_cursor = 0;
@@ -35,41 +34,45 @@ const unsigned int PROGMEM _midi_note_frequencies[128] = {
 10548,11175,11840,12544,13290,14080,14917,15804,16744,17740,18795,19912,21096,
 22351,23680,25088 };
 
-
 /* AUDIO */
 
 bool ArduboyAudio::audio_enabled = false;
 
-void ArduboyAudio::on() {
+void ArduboyAudio::on()
+{
   power_timer1_enable();
   power_timer3_enable();
   audio_enabled = true;
 }
 
-bool ArduboyAudio::enabled() {
+bool ArduboyAudio::enabled()
+{
   return audio_enabled;
 }
 
-void ArduboyAudio::off() {
+void ArduboyAudio::off()
+{
   audio_enabled = false;
   power_timer1_disable();
   power_timer3_disable();
 }
 
-void ArduboyAudio::save_on_off() {
+void ArduboyAudio::save_on_off()
+{
   EEPROM.write(EEPROM_AUDIO_ON_OFF, audio_enabled);
 }
 
-void ArduboyAudio::setup() {
+void ArduboyAudio::setup()
+{
   tune_playing = false;
   if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
     on();
 }
 
-
 /* TUNES */
 
-void ArduboyTunes::initChannel(byte pin) {
+void ArduboyTunes::initChannel(byte pin)
+{
   byte timer_num;
 
   // we are all out of timers
@@ -102,8 +105,8 @@ void ArduboyTunes::initChannel(byte pin) {
   }
 }
 
-
-void ArduboyTunes::playNote(byte chan, byte note) {
+void ArduboyTunes::playNote(byte chan, byte note)
+{
   byte timer_num;
   byte prescalar_bits;
   unsigned int frequency2; /* frequency times 2 */
@@ -145,7 +148,8 @@ void ArduboyTunes::playNote(byte chan, byte note) {
   }
 }
 
-void ArduboyTunes::stopNote(byte chan) {
+void ArduboyTunes::stopNote(byte chan)
+{
   byte timer_num;
   timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
   switch (timer_num) {
@@ -160,14 +164,16 @@ void ArduboyTunes::stopNote(byte chan) {
   }
 }
 
-void ArduboyTunes::playScore(const byte *score) {
+void ArduboyTunes::playScore(const byte *score)
+{
   score_start = score;
   score_cursor = score_start;
   step();  /* execute initial commands */
   tune_playing = true;  /* release the interrupt routine */
 }
 
-void ArduboyTunes::stopScore (void) {
+void ArduboyTunes::stopScore (void)
+{
   for (uint8_t i = 0; i < _tune_num_chans; i++)
     stopNote(i);
   tune_playing = false;
@@ -178,13 +184,13 @@ bool ArduboyTunes::playing()
   return tune_playing;
 }
 
-
 /* Do score commands until a "wait" is found, or the score is stopped.
 This is called initially from tune_playcore, but then is called
 from the interrupt routine when waits expire.
 */
 /* if CMD < 0x80, then the other 7 bits and the next byte are a 15-bit big-endian number of msec to wait */
-void ArduboyTunes::step() {
+void ArduboyTunes::step()
+{
   byte command, opcode, chan;
   unsigned duration;
 
@@ -214,7 +220,8 @@ void ArduboyTunes::step() {
   }
 }
 
-void ArduboyTunes::closeChannels(void) {
+void ArduboyTunes::closeChannels(void)
+{
   byte timer_num;
   for (uint8_t chan=0; chan < _tune_num_chans; chan++) {
     timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
@@ -242,7 +249,9 @@ void ArduboyTunes::soundOutput()
     ArduboyTunes::step();  // execute commands
   }
 }
-void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
+
+void ArduboyTunes::tone(unsigned int frequency, unsigned long duration)
+{
   tonePlaying = true;
   uint8_t prescalarbits = 0b001;
   int32_t toggle_count = 0;
@@ -272,7 +281,9 @@ void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
   bitWrite(TIMSK1, OCIE1A, 1);
 }
 
-ISR(TIMER1_COMPA_vect) {  // TIMER 1
+// TIMER 1
+ISR(TIMER1_COMPA_vect)
+{
   if (tonePlaying) {
     if (timer1_toggle_count != 0) {
       // toggle the pin
@@ -289,7 +300,10 @@ ISR(TIMER1_COMPA_vect) {  // TIMER 1
     *_tunes_timer1_pin_port ^= _tunes_timer1_pin_mask;  // toggle the pin
   }
 }
-ISR(TIMER3_COMPA_vect) {  // TIMER 3
+
+// TIMER 3
+ISR(TIMER3_COMPA_vect)
+{
   // Timer 3 is the one assigned first, so we keep it running always
   // and use it to time score waits, whether or not it is playing a note.
   ArduboyTunes::soundOutput();
