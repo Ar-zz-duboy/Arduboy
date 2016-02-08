@@ -69,16 +69,16 @@ public:
   /**
    * Draws a circle in white or black. X and Y are the center point of the circle.
    */
-  void drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color);
+  void drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color);
 
   /// Draws one or more "corners" of a circle.
-  void drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint8_t color);
+  void drawCircleHelper(int16_t x0, int16_t y0, uint8_t r, uint8_t cornername, uint8_t color);
 
   /// Draws a filled-in circle.
-  void fillCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color);
+  void fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color);
 
    /// Draws one or both vertical halves of a filled-in circle.
-  void fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint8_t color);
+  void fillCircleHelper(int16_t x0, int16_t y0, uint8_t r, uint8_t cornername, int16_t delta, uint8_t color);
 
   /// Draws a line between two points.
   /**
@@ -87,25 +87,25 @@ public:
   void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color);
 
   /// Draws a rectangle of a width and height.
-  void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color);
+  void drawRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color);
 
   /// Draws vertical line.
-  void drawFastVLine(int16_t x, int16_t y, int16_t h, uint8_t color);
+  void drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color);
 
   /// Draws a horizontal line.
-  void drawFastHLine(int16_t x, int16_t y, int16_t w, uint8_t color);
+  void drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color);
 
   /// Draws a filled-in rectangle.
-  void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color);
+  void fillRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color);
 
   /// Fills the screen buffer with white or black.
   void fillScreen(uint8_t color);
 
   /// Draws a rectangle with rounded edges.
-  void drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color);
+  void drawRoundRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t r, uint8_t color);
 
   /// Draws a filled-in rectangle with rounded edges.
-  void fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color);
+  void fillRoundRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t r, uint8_t color);
 
    /// Draws the outline of a triangle.
   void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
@@ -114,7 +114,7 @@ public:
   void fillTriangle (int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
 
   /// Draws a bitmap from program memory to a specific X/Y
-  void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color);
+  void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, uint8_t color);
 
   /// Draws images that are bit-oriented horizontally.
   /**
@@ -123,7 +123,7 @@ public:
    * allows them to be directly written to the screen. It is
    * recommended you use drawBitmap when possible.
    */
-  void drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color);
+  void drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, uint8_t color);
 
   /// Draws an ASCII character at a point.
   void drawChar(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size);

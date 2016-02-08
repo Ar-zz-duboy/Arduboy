@@ -163,7 +163,7 @@ uint8_t Arduboy::getPixel(uint8_t x, uint8_t y)
   return (sBuffer[(row*WIDTH) + x] & _BV(bit_position)) >> bit_position;
 }
 
-void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
+void Arduboy::drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -201,7 +201,7 @@ void Arduboy::drawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
 }
 
 void Arduboy::drawCircleHelper
-(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint8_t color)
+(int16_t x0, int16_t y0, uint8_t r, uint8_t cornername, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -245,14 +245,14 @@ void Arduboy::drawCircleHelper
   }
 }
 
-void Arduboy::fillCircle(int16_t x0, int16_t y0, int16_t r, uint8_t color)
+void Arduboy::fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
 {
   drawFastVLine(x0, y0-r, 2*r+1, color);
   fillCircleHelper(x0, y0, r, 3, 0, color);
 }
 
 void Arduboy::fillCircleHelper
-(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta,
+(int16_t x0, int16_t y0, uint8_t r, uint8_t cornername, int16_t delta,
  uint8_t color)
 {
   // used to do circles and roundrects!
@@ -341,7 +341,7 @@ void Arduboy::drawLine
 }
 
 void Arduboy::drawRect
-(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
+(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color)
 {
   drawFastHLine(x, y, w, color);
   drawFastHLine(x, y+h-1, w, color);
@@ -350,7 +350,7 @@ void Arduboy::drawRect
 }
 
 void Arduboy::drawFastVLine
-(int16_t x, int16_t y, int16_t h, uint8_t color)
+(int16_t x, int16_t y, uint8_t h, uint8_t color)
 {
   int end = y+h;
   for (int a = max(0,y); a < min(end,HEIGHT); a++)
@@ -360,7 +360,7 @@ void Arduboy::drawFastVLine
 }
 
 void Arduboy::drawFastHLine
-(int16_t x, int16_t y, int16_t w, uint8_t color)
+(int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
   int end = x+w;
   for (int a = max(0,x); a < min(end,WIDTH); a++)
@@ -370,7 +370,7 @@ void Arduboy::drawFastHLine
 }
 
 void Arduboy::fillRect
-(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t color)
+(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color)
 {
   // stupidest version - update in subclasses if desired!
   for (int16_t i=x; i<x+w; i++)
@@ -385,7 +385,7 @@ void Arduboy::fillScreen(uint8_t color)
 }
 
 void Arduboy::drawRoundRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
+(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t r, uint8_t color)
 {
   // smarter version
   drawFastHLine(x+r, y, w-2*r, color); // Top
@@ -400,7 +400,7 @@ void Arduboy::drawRoundRect
 }
 
 void Arduboy::fillRoundRect
-(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color)
+(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t r, uint8_t color)
 {
   // smarter version
   fillRect(x+r, y, w-2*r, h, color);
@@ -522,7 +522,7 @@ void Arduboy::fillTriangle
 }
 
 void Arduboy::drawBitmap
-(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, 
+(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, 
  uint8_t color)
 {
   // no need to dar at all of we're offscreen
@@ -562,7 +562,7 @@ void Arduboy::drawBitmap
 
 
 void Arduboy::drawSlowXYBitmap
-(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color)
+(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, uint8_t color)
 {
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
