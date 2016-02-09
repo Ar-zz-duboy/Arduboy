@@ -45,7 +45,8 @@ public:
   boolean notPressed(uint8_t buttons);
 
   /// Initializes the display.
-  void start();
+  void begin();
+  void start() __attribute__ ((deprecated("use begin() instead")));
 
   /// Clears display.
   void clear();

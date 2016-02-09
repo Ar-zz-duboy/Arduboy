@@ -160,7 +160,7 @@ Arduboy arduboy;
 
 void setup()
 {
-  arduboy.start();
+  arduboy.begin();
   arduboy.setTextSize(4);
   arduboy.setCursor(0,0);
   arduboy.print("Music\nDemo");
