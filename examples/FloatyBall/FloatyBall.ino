@@ -148,13 +148,13 @@ int getOffset(int s) {
 void setup() {
   arduboy.start();
   for(int i=-8; i<28; i=i+2) {
-    arduboy.clearDisplay();
+    arduboy.clear();
     arduboy.drawSlowXYBitmap(46,i, arduino, 32,8,1);
     arduboy.display();
   }
   arduboy.tunes.playScore (bing);
   delay(2000);
-  arduboy.clearDisplay();
+  arduboy.clear();
   arduboy.drawSlowXYBitmap(0,0,floatyball,128,64,1);
   arduboy.display();
   arduboy.tunes.playScore (intro);
@@ -171,7 +171,7 @@ void setup() {
 }
 void loop() {
   if (millis() > lTime + gameFPS) {
-    arduboy.clearDisplay();
+    arduboy.clear();
     lTime = millis();
     if (gameState == 0) {       // If the game is paused
       drawFloor();
@@ -250,7 +250,7 @@ void loop() {
         ballY = ballY + ballVY;       // Fall
         ballVY++;                     // Increase falling speed
         if (ballY + ballRadius > (HEIGHT-1)) { ballY = HEIGHT - ballRadius; } // Don't fall through the floor plx
-        arduboy.clearDisplay();
+        arduboy.clear();
         drawPipes();
         drawFloor();
         drawFloaty();

@@ -14,7 +14,7 @@ Arduboy	KEYWORD1
 
 allPixelsOn	KEYWORD2
 blank	KEYWORD2
-clearDisplay	KEYWORD2
+clear	KEYWORD2
 cpuLoad	KEYWORD2
 display	KEYWORD2
 drawBitmap	KEYWORD2
