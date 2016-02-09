@@ -152,23 +152,16 @@ public:
     /// get current state of buttons (bitmask)
     /**
      * Bit mask that is returned:
-     * 
-     *     High  Low
-     *     00000000
-     *     ||||||||
-     *     |||||||`- A
-     *     ||||||`-- B
-     *     |||||`--- Right
-     *     ||||`---- *reserved
-     *     |||`----- Up
-     *     ||`------ Left
-     *     |`------- Down
-     *     `-------- *reserved
-     * 
-     *     A is 1, Down is 64, etc.
+     *
+     *           Hi   Low   
+     *  DevKit   00000000    - reserved                         
+     *           -DLU-RAB    D down
+     *                       U up       
+     *  1.0      00000000    L left
+     *           URLDAB--    R right
      * 
      * Of course you shouldn't worry about bits (they may change with future
-     * hardware) and should instead use the button defines:
+     * hardware revisions) and should instead use the button defines:
      * LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
      */
 
