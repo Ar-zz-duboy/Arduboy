@@ -228,7 +228,7 @@ void loop() {
         gameState = 2;                        // Game over. State is 2.
       }
       // Collision checking
-      for (int x = 0; x < 6; x++) {             // For each pipe array element
+      for (int x = 0; x < pipeArraySize; x++) { // For each pipe array element
         if (pipes[0][x] != 255) {               // If the pipe is active (not 255)
           if (checkPipe(x)) { gameState = 2; }  // If the check is true, game over
         }
