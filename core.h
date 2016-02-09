@@ -9,11 +9,27 @@
 
 // main hardware compile flags
 
-// #define AB_DEVKIT    //< compile for the official dev kit
+#if !defined(ARDUBOY_10) && !defined(AB_DEVKIT)
+/// defaults to Arduboy Release 1.0 if not using a boards.txt file
+/**
+ * we default to Arduboy Release 1.0 if a compile flag has not been
+ * passed to us from a boards.txt file
+ *
+ * if you wish to compile for the devkit without using a boards.txt
+ * file simply comment out the ARDUBOY_10 define and uncomment
+ * the AB_DEVKIT define like this:
+ *
+ *     // #define ARDUBOY_10
+ *     #define AB_DEVKIT
+ */     
 #define ARDUBOY_10   //< compile for the production Arduboy v1.0
-#ifdef AB_DEVKIT     
+// #define AB_DEVKIT    //< compile for the official dev kit
+#endif
+
+
+#ifdef AB_DEVKIT
 #define DEVKIT       //< for compatibilty with older sketches
-#define SAFE_MODE    //< compile in safe mode (44 bytes)
+#define SAFE_MODE    //< include safe mode (44 bytes)
 #endif 
 
 
