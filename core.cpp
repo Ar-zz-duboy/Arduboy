@@ -59,12 +59,6 @@ const uint8_t PROGMEM lcdBootProgram[] = {
 
 ArduboyCore::ArduboyCore() {}
 
-// meant to be overridden by subclasses
-void ArduboyCore::setup()
-{
-  boot();
-}
-
 void ArduboyCore::boot()
 {
   #if F_CPU == 8000000L
