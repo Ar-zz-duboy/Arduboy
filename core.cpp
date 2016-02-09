@@ -17,37 +17,42 @@ const uint8_t PROGMEM pinBootProgram[] = {
 };
 
 const uint8_t PROGMEM lcdBootProgram[] = {
-  0xAE,     // Display Off
+  // boot defaults are commented out but left here incase they
+  // might prove useful for reference
+  //
+  // Further reading: https://www.adafruit.com/datasheets/SSD1306.pdf
+  //
+  // 0xAE,     // Display Off
   0XD5,     // Set Display Clock Divisor v
     0xF0,   //   0x80 is default
-  0xA8,     // Set Multiplex Ratio v
-    0x3F,   
-  0xD3,     // Set Display Offset v
-    0x00,   
-  0x40,     // Set Start Line (0)
+  // 0xA8,     // Set Multiplex Ratio v
+    // 0x3F,   
+  // 0xD3,     // Set Display Offset v
+    // 0x00,   
+  // 0x40,     // Set Start Line (0)
   0x8D,     // Charge Pump Setting v
     0x14,   //   Enable
   0xA1,     // Set Segment Re-map (A0) | (b0001)
   0xC8,     // Set COM Output Scan Direction
-  0xDA,     // Set COM Pins v
-    0x12,   
+  // 0xDA,     // Set COM Pins v
+    // 0x12,   
   0x81,     // Set Contrast v
     0xCF,   
   0xD9,     // Set Precharge
     0xF1,   
-  0xDB,     // Set VCom Detect
-    0x40,   
-  0xA4,     // Entire Display ON
-  0xA6,     // Set normal/inverse display
+  // 0xDB,     // Set VCom Detect
+    // 0x40,   
+  // 0xA4,     // Entire Display ON
+  // 0xA6,     // Set normal/inverse display
   0xAF,     // Display On
   0x20,     // set display mode
     0x00,   // horizontal addressing mode
-  0x21,     // set col address
-    0x00,
-    COLUMN_ADDRESS_END,
-  0x22,     // set page address
-    0x00,
-    PAGE_ADDRESS_END
+  // 0x21,     // set col address
+  //   0x00,
+  //   COLUMN_ADDRESS_END,
+  // 0x22,     // set page address
+  //   0x00,
+  //   PAGE_ADDRESS_END
 };
 
 
@@ -120,6 +125,8 @@ void ArduboyCore::bootLCD()
   SPI.setClockDivider(SPI_CLOCK_DIV2);
 
   LCDCommandMode();
+  // run our customized boot-up command sequence against the
+  // OLED to initialize it properly for Arduboy
   for (int8_t i=0; i < sizeof(lcdBootProgram); i++) {
     SPI.transfer(pgm_read_byte(lcdBootProgram + i));
   }
