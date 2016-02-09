@@ -30,7 +30,7 @@ void Arduboy::begin()
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
   tunes.initChannel(PIN_SPEAKER_2);
-  audio.setup();
+  audio.begin();
 }
 
 /* Frame management */
