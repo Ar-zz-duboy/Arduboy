@@ -6,15 +6,76 @@
 #include <avr/sleep.h>
 #include <limits.h>
 
-#define SAFE_MODE     //< compile in safe mode (44 bytes)
 
-#define DEVKIT        //< compile for the devkit
-#undef PROD_ARDUBOY   //< compile for the production Arduboy v1
+// main hardware compile flags
 
+#if !defined(ARDUBOY_10) && !defined(AB_DEVKIT)
+/// defaults to Arduboy Release 1.0 if not using a boards.txt file
+/**
+ * we default to Arduboy Release 1.0 if a compile flag has not been
+ * passed to us from a boards.txt file
+ *
+ * if you wish to compile for the devkit without using a boards.txt
+ * file simply comment out the ARDUBOY_10 define and uncomment
+ * the AB_DEVKIT define like this:
+ *
+ *     // #define ARDUBOY_10
+ *     #define AB_DEVKIT
+ */     
+#define ARDUBOY_10   //< compile for the production Arduboy v1.0
+// #define AB_DEVKIT    //< compile for the official dev kit
+#endif
+
+
+#ifdef AB_DEVKIT
+#define DEVKIT       //< for compatibilty with older sketches
+#define SAFE_MODE    //< include safe mode (44 bytes)
+#endif 
+
+
+#ifdef ARDUBOY_10
+
+#define CS 12
+#define DC 4
+#define RST 6
+
+#define RED_LED 10
+#define GREEN_LED 11
+#define BLUE_LED 9
+#define TX_LED 30
+#define RX_LED 17
+
+// pin values for buttons, probably shouldn't use these
+#define PIN_LEFT_BUTTON A2
+#define PIN_RIGHT_BUTTON A1
+#define PIN_UP_BUTTON A0
+#define PIN_DOWN_BUTTON A3
+#define PIN_A_BUTTON 7
+#define PIN_B_BUTTON 8
+
+// bit values for button states
+#define LEFT_BUTTON _BV(5)
+#define RIGHT_BUTTON _BV(6)
+#define UP_BUTTON _BV(7)
+#define DOWN_BUTTON _BV(4)
+#define A_BUTTON _BV(3)
+#define B_BUTTON _BV(2)
+
+#define PIN_SPEAKER_1 5
+#define PIN_SPEAKER_2 13
+
+#elif defined(AB_DEVKIT)
 
 #define CS 6
 #define DC 4
 #define RST 12
+
+// map all LEDs to the single TX LED on DEVKIT
+#define RED_LED 17
+#define GREEN_LED 17
+#define BLUE_LED 17
+#define TX_LED 17
+#define RX_LED 17
 
 // pin values for buttons, probably shouldn't use these
 #define PIN_LEFT_BUTTON 9
@@ -31,6 +92,11 @@
 #define DOWN_BUTTON _BV(6)
 #define A_BUTTON _BV(1)
 #define B_BUTTON _BV(0)
+
+#define PIN_SPEAKER_1 A2
+#define PIN_SPEAKER_2 A3
+
+#endif
 
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
 #define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07  // 8 pages high
@@ -86,23 +152,16 @@ public:
     /// get current state of buttons (bitmask)
     /**
      * Bit mask that is returned:
-     * 
-     *     High  Low
-     *     00000000
-     *     ||||||||
-     *     |||||||`- A
-     *     ||||||`-- B
-     *     |||||`--- Right
-     *     ||||`---- *reserved
-     *     |||`----- Up
-     *     ||`------ Left
-     *     |`------- Down
-     *     `-------- *reserved
-     * 
-     *     A is 1, Down is 64, etc.
+     *
+     *           Hi   Low   
+     *  DevKit   00000000    - reserved                         
+     *           -DLU-RAB    D down
+     *                       U up       
+     *  1.0      00000000    L left
+     *           URLDAB--    R right
      * 
      * Of course you shouldn't worry about bits (they may change with future
-     * hardware) and should instead use the button defines:
+     * hardware revisions) and should instead use the button defines:
      * LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
      */
 
@@ -177,6 +236,9 @@ public:
 
     /// send a single byte command to the OLED
     void sendLCDCommand(uint8_t command);
+
+    /// set the light output of the RGB LEB
+    void setRGBled(uint8_t red, uint8_t green, uint8_t blue);
 
 
 protected:

@@ -269,20 +269,43 @@ void ArduboyCore::flipHorizontal(boolean flipped)
   sendLCDCommand(flipped ? OLED_HORIZ_FLIPPED : OLED_HORIZ_NORMAL);
 }
 
+/* RGB LED */
+
+void ArduboyCore::setRGBled(uint8_t red, uint8_t green, uint8_t blue)
+{
+#ifdef ARDUBOY_10 // RGB, all the pretty colors
+  // inversion is necessary because these are common annode LEDs
+  analogWrite(RED_LED, 255 - red);
+  analogWrite(GREEN_LED, 255 - green);
+  analogWrite(BLUE_LED, 255 - blue);
+#elif defined(AB_DEVKIT)
+  // only blue on devkit
+  digitalWrite(BLUE_LED, ~blue);
+#endif
+}
+
 /* Buttons */
 
 uint8_t ArduboyCore::getInput()
 {
+  uint8_t buttons;
+  
   // using ports here is ~100 bytes smaller than digitalRead()
-  #ifdef DEVKIT
+#ifdef AB_DEVKIT
   // down, left, up
-  uint8_t buttons = ((~PINB) & B01110000);
+  buttons = ((~PINB) & B01110000);
   // right button
   buttons = buttons | (((~PINC) & B01000000) >> 4);
   // A and B
   buttons = buttons | (((~PINF) & B11000000) >> 6);
-  #endif
-
-  // b0dlu0rab - see button defines in Arduboy.h
+#elif defined(ARDUBOY_10)
+  // down, up, left right
+  buttons = ((~PINF) & B11110000);
+  // A (left)
+  buttons = buttons | (((~PINE) & B01000000) >> 3);
+  // B (right)
+  buttons = buttons | (((~PINB) & B00010000) >> 2);
+#endif
+  
   return buttons;
 }
