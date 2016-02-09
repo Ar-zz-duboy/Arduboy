@@ -20,9 +20,9 @@
 #define PIXEL_SAFE_MODE
 
 // compare Vcc to 1.1 bandgap
-#define ADC_VOLTAGE _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1)
+#define ADC_VOLTAGE (_BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1))
 // compare temperature to 2.5 internal reference and _BV(MUX5)
-#define ADC_TEMP _BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0)
+#define ADC_TEMP (_BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0))
 
 #define PIN_SPEAKER_1 A2
 #define PIN_SPEAKER_2 A3
@@ -181,12 +181,14 @@ public:
   bool post_render;
   uint8_t lastFrameDurationMs;
 
+  /// useful for getting raw approximate voltage values
+  uint16_t rawADC(byte adc_bits);
+
 protected:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
 
   uint8_t readCapacitivePin(int pinToMeasure);
   uint8_t readCapXtal(int pinToMeasure);
-  uint16_t rawADC(byte adc_bits);
 
 // Adafruit stuff
 protected:
