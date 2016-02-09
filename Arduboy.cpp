@@ -18,7 +18,12 @@ Arduboy::Arduboy()
   textsize = 1;
 }
 
-void Arduboy::start()
+void Arduboy::start() // deprecated
+{
+  begin();
+}
+
+void Arduboy::begin()
 {
   boot(); // required
 

@@ -146,7 +146,7 @@ int getOffset(int s) {
   return 0;
 }
 void setup() {
-  arduboy.start();
+  arduboy.begin();
   for(int i=-8; i<28; i=i+2) {
     arduboy.clear();
     arduboy.drawSlowXYBitmap(46,i, arduino, 32,8,1);

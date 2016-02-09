@@ -160,9 +160,10 @@ Arduboy arduboy;
 
 void setup()
 {
-  arduboy.start();
+  arduboy.begin();
   arduboy.setTextSize(4);
 }
+
 
 int x = 0, y = 0;
 
@@ -191,7 +192,6 @@ void loop ()
   arduboy.setCursor(x,y);
   arduboy.print("Music\nDemo");
   arduboy.display();
-
 
   // play the tune if we aren't already
   if (!arduboy.tunes.playing())
