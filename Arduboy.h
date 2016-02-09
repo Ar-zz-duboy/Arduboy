@@ -40,9 +40,9 @@ public:
 
   /// Returns true if the button mask passed in not pressed.
   /**
-   * if (not_pressed(LEFT_BUTTON))
+   * if (notPressed(LEFT_BUTTON))
    */
-  boolean not_pressed(uint8_t buttons);
+  boolean notPressed(uint8_t buttons);
 
   /// Initializes the display.
   void start();
