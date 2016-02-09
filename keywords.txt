@@ -42,6 +42,7 @@ idle	KEYWORD2
 initRandomSeed	KEYWORD2
 invert	KEYWORD2
 nextFrame	KEYWORD2
+notPressed	KEYWORD2
 paint8Pixels	KEYWORD2
 paintScreen	KEYWORD2
 pressed	KEYWORD2
