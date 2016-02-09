@@ -62,7 +62,7 @@ void ArduboyAudio::save_on_off()
   EEPROM.write(EEPROM_AUDIO_ON_OFF, audio_enabled);
 }
 
-void ArduboyAudio::setup()
+void ArduboyAudio::begin()
 {
   tune_playing = false;
   if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
