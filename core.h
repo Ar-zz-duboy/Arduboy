@@ -113,14 +113,6 @@ class ArduboyCore
 public:
     ArduboyCore();
 
-    /// starts up the hardware
-    /**
-     * setup() here is just a stub - your subclass should define setup
-     * and within it call boot() as well as any other startup code your
-     * subclass needs to do to start up
-     */
-    void setup();
-
     /// allows the CPU to idle between frames
     /**
      * This puts the CPU in "Idle" sleep mode.  You should call this as often
