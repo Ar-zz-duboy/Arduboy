@@ -47,6 +47,7 @@ paintScreen	KEYWORD2
 pressed	KEYWORD2
 setCursor	KEYWORD2
 setFrameRate	KEYWORD2
+setRGBled 	KEYWORD2
 setTextSize	KEYWORD2
 setTextWrap	KEYWORD2
 

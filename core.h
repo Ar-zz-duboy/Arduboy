@@ -23,6 +23,12 @@
 #define DC 4
 #define RST 6
 
+#define RED_LED 10
+#define GREEN_LED 11
+#define BLUE_LED 9
+#define TX_LED 30
+#define RX_LED 17
+
 // pin values for buttons, probably shouldn't use these
 #define PIN_LEFT_BUTTON A2
 #define PIN_RIGHT_BUTTON A1
@@ -47,6 +53,13 @@
 #define CS 6
 #define DC 4
 #define RST 12
+
+// map all LEDs to the single TX LED on DEVKIT
+#define RED_LED 17
+#define GREEN_LED 17
+#define BLUE_LED 17
+#define TX_LED 17
+#define RX_LED 17
 
 // pin values for buttons, probably shouldn't use these
 #define PIN_LEFT_BUTTON 9
@@ -214,6 +227,9 @@ public:
 
     /// send a single byte command to the OLED
     void sendLCDCommand(uint8_t command);
+
+    /// set the light output of the RGB LEB
+    void setRGBled(uint8_t red, uint8_t green, uint8_t blue);
 
 
 protected:

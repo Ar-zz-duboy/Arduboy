@@ -269,6 +269,21 @@ void ArduboyCore::flipHorizontal(boolean flipped)
   sendLCDCommand(flipped ? OLED_HORIZ_FLIPPED : OLED_HORIZ_NORMAL);
 }
 
+/* RGB LED */
+
+void ArduboyCore::setRGBled(uint8_t red, uint8_t green, uint8_t blue)
+{
+#ifdef ARDUBOY_10 // RGB, all the pretty colors
+  // inversion is necessary because these are common annode LEDs
+  analogWrite(RED_LED, 255 - red);
+  analogWrite(GREEN_LED, 255 - green);
+  analogWrite(BLUE_LED, 255 - blue);
+#elif defined(AB_DEVKIT)
+  // only blue on devkit
+  digitalWrite(BLUE_LED, ~blue);
+#endif
+}
+
 /* Buttons */
 
 uint8_t ArduboyCore::getInput()
