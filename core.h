@@ -6,11 +6,43 @@
 #include <avr/sleep.h>
 #include <limits.h>
 
-#define SAFE_MODE     //< compile in safe mode (44 bytes)
 
-#define DEVKIT        //< compile for the devkit
-#undef PROD_ARDUBOY   //< compile for the production Arduboy v1
+// main hardware compile flags
 
+// #define AB_DEVKIT    //< compile for the official dev kit
+#define ARDUBOY_10   //< compile for the production Arduboy v1.0
+#ifdef AB_DEVKIT     
+#define DEVKIT       //< for compatibilty with older sketches
+#define SAFE_MODE    //< compile in safe mode (44 bytes)
+#endif 
+
+
+#ifdef ARDUBOY_10
+
+#define CS 12
+#define DC 4
+#define RST 6
+
+// pin values for buttons, probably shouldn't use these
+#define PIN_LEFT_BUTTON A2
+#define PIN_RIGHT_BUTTON A1
+#define PIN_UP_BUTTON A0
+#define PIN_DOWN_BUTTON A3
+#define PIN_A_BUTTON 7
+#define PIN_B_BUTTON 8
+
+// bit values for button states
+#define LEFT_BUTTON _BV(5)
+#define RIGHT_BUTTON _BV(6)
+#define UP_BUTTON _BV(7)
+#define DOWN_BUTTON _BV(4)
+#define A_BUTTON _BV(3)
+#define B_BUTTON _BV(2)
+
+#define PIN_SPEAKER_1 5
+#define PIN_SPEAKER_2 13
+
+#elif defined(AB_DEVKIT)
 
 #define CS 6
 #define DC 4
@@ -31,6 +63,11 @@
 #define DOWN_BUTTON _BV(6)
 #define A_BUTTON _BV(1)
 #define B_BUTTON _BV(0)
+
+#define PIN_SPEAKER_1 A2
+#define PIN_SPEAKER_2 A3
+
+#endif
 
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
 #define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07  // 8 pages high
