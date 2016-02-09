@@ -59,7 +59,7 @@ void intro()
 {
   for(int i = -8; i < 28; i = i + 2)
   {
-    arduboy.clearDisplay();
+    arduboy.clear();
     arduboy.setCursor(46, i);
     arduboy.print("ARDUBOY");
     arduboy.display();
@@ -387,7 +387,7 @@ boolean displayHighScores(byte file)
   // is 5 bytes long:  3 bytes for initials and two bytes for score.
   int address = file*10*5;
   byte hi, lo;
-  arduboy.clearDisplay();
+  arduboy.clear();
   arduboy.setCursor(32, 0);
   arduboy.print("HIGH SCORES");
   arduboy.display();
@@ -433,7 +433,7 @@ boolean displayHighScores(byte file)
 boolean titleScreen()
 {
   //Clears the screen
-  arduboy.clearDisplay();
+  arduboy.clear();
   arduboy.setCursor(16,22);
   arduboy.setTextSize(2);
   arduboy.print("ARAKNOID");
@@ -458,7 +458,7 @@ boolean titleScreen()
       return true;
     }
     //Removes "Press FIRE"
-    arduboy.clearDisplay();
+    arduboy.clear();
     arduboy.setCursor(16,22);
     arduboy.setTextSize(2);
     arduboy.print("ARAKNOID");
@@ -480,7 +480,7 @@ void enterInitials()
 {
   char index = 0;
 
-  arduboy.clearDisplay();
+  arduboy.clear();
 
   initials[0] = ' ';
   initials[1] = ' ';
@@ -489,7 +489,7 @@ void enterInitials()
   while (true)
   {
     arduboy.display();
-    arduboy.clearDisplay();
+    arduboy.clear();
 
     arduboy.setCursor(16,0);
     arduboy.print("HIGH SCORE");
@@ -691,7 +691,7 @@ void loop()
   {
     //Clears the screen
     arduboy.display();
-    arduboy.clearDisplay();
+    arduboy.clear();
     //Selects Font
     //Draws the new level
     newLevel();
@@ -728,7 +728,7 @@ void loop()
       enterHighScore(2);
     }
 
-    arduboy.clearDisplay();
+    arduboy.clear();
     initialDraw=false;
     start=false;
     lives=3;
