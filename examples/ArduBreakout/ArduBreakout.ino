@@ -661,7 +661,7 @@ void enterHighScore(byte file)
 
 void setup()
 {
-  arduboy.start();
+  arduboy.begin();
   arduboy.setFrameRate(60);
   arduboy.print("Hello World!");
   arduboy.display();

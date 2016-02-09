@@ -160,7 +160,7 @@ Arduboy arduboy;
 
 void setup()
 {
-  arduboy.start();
+  arduboy.begin();
   arduboy.setTextSize(4);
 }
 
