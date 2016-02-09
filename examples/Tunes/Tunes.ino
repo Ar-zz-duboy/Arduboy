@@ -162,16 +162,36 @@ void setup()
 {
   arduboy.start();
   arduboy.setTextSize(4);
-  arduboy.setCursor(0,0);
-  arduboy.print("Music\nDemo");
-  arduboy.display();
 }
+
+int x = 0, y = 0;
 
 void loop ()
 {
   // pause render until it's time for the next frame
   if (!(arduboy.nextFrame()))
     return;
+
+  if (arduboy.pressed(UP_BUTTON)) {
+    y-=1;
+  } else if (arduboy.pressed(DOWN_BUTTON)) {
+    y+=1;
+  } else if (arduboy.pressed(LEFT_BUTTON)) {
+    x-=1;
+  } else if (arduboy.pressed(RIGHT_BUTTON)) {
+    x+=1;
+  }
+
+  if (arduboy.pressed(A_BUTTON)) {
+    arduboy.invert(true);
+  } else if (arduboy.pressed(B_BUTTON)) {
+    arduboy.invert(false);
+  }
+
+  arduboy.setCursor(x,y);
+  arduboy.print("Music\nDemo");
+  arduboy.display();
+
 
   // play the tune if we aren't already
   if (!arduboy.tunes.playing())
