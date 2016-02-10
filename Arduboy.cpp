@@ -687,12 +687,14 @@ unsigned char* Arduboy::getBuffer()
 
 boolean Arduboy::pressed(uint8_t buttons)
 {
- return (getInput() & buttons) == buttons;
+  uint8_t button_state = getInput();
+  return (button_state & buttons) == buttons;
 }
 
 boolean Arduboy::notPressed(uint8_t buttons)
 {
- return (getInput() & buttons) == 0;
+  uint8_t button_state = getInput();
+  return (button_state & buttons) == 0;
 }
 
 void Arduboy::swap(int16_t& a, int16_t& b)
