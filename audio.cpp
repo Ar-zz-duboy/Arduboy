@@ -120,8 +120,9 @@ void ArduboyTunes::playNote(byte chan, byte note)
     return;
 
   // we only have frequencies for 128 notes
-  if (note > 127)
-    note = 127;
+  if (note > 127) {
+    return;
+  }
 
   timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
   if (note < 48) {
