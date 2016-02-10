@@ -184,8 +184,6 @@ public:
 protected:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
 
-  uint8_t readCapacitivePin(int pinToMeasure);
-  uint8_t readCapXtal(int pinToMeasure);
 
 // Adafruit stuff
 protected:
