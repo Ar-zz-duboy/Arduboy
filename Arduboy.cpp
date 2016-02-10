@@ -3,14 +3,16 @@
 
 Arduboy::Arduboy()
 {
-  frameRate = 60;
+  // frame management
+  setFrameRate(60);
   frameCount = 0;
-  eachFrameMillis = 1000/60;
-  lastFrameStart = 0;
   nextFrameStart = 0;
   post_render = false;
-  lastFrameDurationMs = 0;
-  
+  // init not necessary, will be reset after first use
+  // lastFrameStart
+  // lastFrameDurationMs
+
+  // font rendering  
   cursor_x = 0;
   cursor_y = 0;
   textsize = 1;
@@ -638,7 +640,8 @@ void Arduboy::setCursor(int16_t x, int16_t y)
 
 void Arduboy::setTextSize(uint8_t s)
 {
-  textsize = (s > 0) ? s : 1;
+  // textsize must always be 1 or higher
+  textsize = max(1,s); 
 }
 
 void Arduboy::setTextWrap(boolean w)
@@ -663,8 +666,9 @@ size_t Arduboy::write(uint8_t c)
     cursor_x += textsize*6;
     if (wrap && (cursor_x > (WIDTH - textsize*6)))
     {
-      cursor_y += textsize*8;
-      cursor_x = 0;
+      // calling ourselves recursively for 'newline' is 
+      // 12 bytes smaller than doing the same math here
+      write('\n');
     }
   }
 }

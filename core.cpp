@@ -17,43 +17,67 @@ const uint8_t PROGMEM pinBootProgram[] = {
 };
 
 const uint8_t PROGMEM lcdBootProgram[] = {
-  0xAE,  // Display Off
-  0XD5,  // Set Display Clock Divisor v
-  0xF0,  //   0x80 is default
-  0xA8,  // Set Multiplex Ratio v
-  0x3F,
-  0xD3,  // Set Display Offset v
-  0x00,
-  0x40,  // Set Start Line (0)
-  0x8D,  // Charge Pump Setting v
-  0x14,  //   Enable
-  // running this next pair twice?
-  0x20,  // Set Memory Mode v
-  0x00,  //   Horizontal Addressing
-  0xA1,  // Set Segment Re-map (A0) | (b0001)
-  0xC8,  // Set COM Output Scan Direction
-  0xDA,  // Set COM Pins v
-  0x12,
-  0x81,  // Set Contrast v
-  0xCF,
-  0xD9,  // Set Precharge
-  0xF1,
-  0xDB,  // Set VCom Detect
-  0x40,
-  0xA4,  // Entire Display ON
-  0xA6,  // Set normal/inverse display
-  0xAF,  // Display On
+  // boot defaults are commented out but left here incase they
+  // might prove useful for reference
+  //
+  // Further reading: https://www.adafruit.com/datasheets/SSD1306.pdf
+  //
+  // Display Off
+  // 0xAE,     
 
-  0x20,     // set display mode
-  0x00,     // horizontal addressing mode
+  // Set Display Clock Divisor v = 0xF0
+  // default is 0x80
+  0xD5, 0xF0,
 
-  0x21,     // set col address
-  0x00,
-  COLUMN_ADDRESS_END,
+  // Set Multiplex Ratio v = 0x3F
+  // 0xA8, 0x3F,   
 
-  0x22, // set page address
-  0x00,
-  PAGE_ADDRESS_END
+  // Set Display Offset v = 0
+  // 0xD3, 0x00, 
+
+  // Set Start Line (0)
+  // 0x40,     
+
+  // Charge Pump Setting v = enable (0x14)
+  // default is disabled
+  0x8D, 0x14,   
+
+  // Set Segment Re-map (A0) | (b0001)
+  // default is (b0000)
+  0xA1,     
+
+  // Set COM Output Scan Direction
+  0xC8,     
+
+  // Set COM Pins v
+  // 0xDA, 0x12,   
+
+  // Set Contrast v = 0xCF
+  0x81, 0xCF,   
+
+  // Set Precharge = 0xF1
+  0xD9, 0xF1,
+    
+  // Set VCom Detect
+  // 0xDB, 0x40,   
+
+  // Entire Display ON
+  // 0xA4,     
+
+  // Set normal/inverse display
+  // 0xA6,  
+
+  // Display On
+  0xAF,     
+
+  // set display mode = horizontal addressing mode (0x00)
+  0x20, 0x00,  
+
+  // set col address range 
+  // 0x21, 0x00, COLUMN_ADDRESS_END,
+
+  // set page address range
+  // 0x22, 0x00, PAGE_ADDRESS_END
 };
 
 
@@ -126,6 +150,8 @@ void ArduboyCore::bootLCD()
   SPI.setClockDivider(SPI_CLOCK_DIV2);
 
   LCDCommandMode();
+  // run our customized boot-up command sequence against the
+  // OLED to initialize it properly for Arduboy
   for (int8_t i=0; i < sizeof(lcdBootProgram); i++) {
     SPI.transfer(pgm_read_byte(lcdBootProgram + i));
   }
@@ -140,7 +166,6 @@ void ArduboyCore::LCDDataMode()
 
 void ArduboyCore::LCDCommandMode()
 {
-  *csport |= cspinmask; // why are we doing this twice?
   *csport |= cspinmask;
   *dcport &= ~dcpinmask;
   *csport &= ~cspinmask;

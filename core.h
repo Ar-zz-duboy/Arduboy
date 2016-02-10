@@ -273,8 +273,8 @@ protected:
 
 
 private:
-    volatile uint8_t *mosiport, *clkport, *csport, *dcport;
-    uint8_t mosipinmask, clkpinmask, cspinmask, dcpinmask;
+    volatile uint8_t *mosiport, *csport, *dcport;
+    uint8_t mosipinmask, cspinmask, dcpinmask;
 
 };
 
