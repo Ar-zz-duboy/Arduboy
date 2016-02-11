@@ -9,14 +9,10 @@ Arduboy::Arduboy()
   frameCount = 0;
   nextFrameStart = 0;
   post_render = false;
+
   // init not necessary, will be reset after first use
   // lastFrameStart
   // lastFrameDurationMs
-
-  // font rendering
-  cursor_x = 0;
-  cursor_y = 0;
-  textsize = 1;
 }
 
 void Arduboy::start() // deprecated
@@ -677,47 +673,6 @@ void Arduboy::drawChar
   }
 }
 
-void Arduboy::setCursor(int16_t x, int16_t y)
-{
-  cursor_x = x;
-  cursor_y = y;
-}
-
-void Arduboy::setTextSize(uint8_t s)
-{
-  // textsize must always be 1 or higher
-  textsize = max(1,s);
-}
-
-void Arduboy::setTextWrap(boolean w)
-{
-  wrap = w;
-}
-
-size_t Arduboy::write(uint8_t c)
-{
-  if (c == '\n')
-  {
-    cursor_y += textsize*8;
-    cursor_x = 0;
-  }
-  else if (c == '\r')
-  {
-    // skip em
-  }
-  else
-  {
-    drawChar(cursor_x, cursor_y, c, 1, 0, textsize);
-    cursor_x += textsize*6;
-    if (wrap && (cursor_x > (WIDTH - textsize*6)))
-    {
-      // calling ourselves recursively for 'newline' is
-      // 12 bytes smaller than doing the same math here
-      write('\n');
-    }
-  }
-}
-
 void Arduboy::display()
 {
   this->paintScreen(sBuffer);
@@ -727,7 +682,6 @@ unsigned char* Arduboy::getBuffer()
 {
   return sBuffer;
 }
-
 
 boolean Arduboy::pressed(uint8_t buttons)
 {

@@ -2,6 +2,7 @@
 #define Arduboy_h
 
 #include "core/core.h"
+#include "ab_printer.h"
 #include <Print.h>
 #include <limits.h>
 
@@ -28,7 +29,8 @@
 // compare temperature to 2.5 internal reference and _BV(MUX5)
 #define ADC_TEMP (_BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0))
 
-class Arduboy : public Print, public ArduboyCore
+
+class Arduboy : public ArduboyCore
 {
 public:
   Arduboy();
@@ -156,24 +158,8 @@ public:
   /// Draws an ASCII character at a point.
   void drawChar(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size);
 
-  /// Sets the location of the screen cursor.
-  void setCursor(int16_t x, int16_t y);
-
-  /// Set text size
-  /**
-   * As mentioned in drawChar(), individual ASCII characters are 6x8 pixels
-   * (5x7 with spacing on two edges). The size is a pixel multiplier,
-   * so a size of 2 means each character will be 12x16, etc.
-   */
-  void setTextSize(uint8_t s);
-
-  /// Sets whether text will wrap at screen edges.
-  void setTextWrap(boolean w);
-
   unsigned char* getBuffer();
 
-  /// Writes a single ASCII character to the screen.
-  virtual size_t write(uint8_t);
 
   /// Seeds the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
   /**
@@ -216,7 +202,6 @@ protected:
   unsigned char sBuffer[(HEIGHT*WIDTH)/8];
 
 
-// Adafruit stuff
 protected:
   int16_t cursor_x;
   int16_t cursor_y;
