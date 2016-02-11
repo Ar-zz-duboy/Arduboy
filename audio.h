@@ -16,7 +16,7 @@
 class ArduboyAudio
 {
 public:
-  void static setup();
+  void static begin();
   void static on();
   void static off();
   void static save_on_off();

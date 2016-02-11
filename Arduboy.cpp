@@ -18,14 +18,19 @@ Arduboy::Arduboy()
   textsize = 1;
 }
 
-void Arduboy::start()
+void Arduboy::start() // deprecated
+{
+  begin();
+}
+
+void Arduboy::begin()
 {
   boot(); // required
 
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
   tunes.initChannel(PIN_SPEAKER_2);
-  audio.setup();
+  audio.begin();
 }
 
 /* Frame management */
@@ -686,14 +691,14 @@ unsigned char* Arduboy::getBuffer()
 
 boolean Arduboy::pressed(uint8_t buttons)
 {
- uint8_t button_state = getInput();
- return (button_state & buttons) == buttons;
+  uint8_t button_state = getInput();
+  return (button_state & buttons) == buttons;
 }
 
-boolean Arduboy::not_pressed(uint8_t buttons)
+boolean Arduboy::notPressed(uint8_t buttons)
 {
- uint8_t button_state = getInput();
- return (button_state & buttons) == 0;
+  uint8_t button_state = getInput();
+  return (button_state & buttons) == 0;
 }
 
 void Arduboy::swap(int16_t& a, int16_t& b)
