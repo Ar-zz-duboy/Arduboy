@@ -64,6 +64,12 @@
 #define PIN_SPEAKER_1 5
 #define PIN_SPEAKER_2 13
 
+#define PIN_SPEAKER_1_PORT &PORTC
+#define PIN_SPEAKER_2_PORT &PORTC
+
+#define PIN_SPEAKER_1_BITMASK _BV(6)
+#define PIN_SPEAKER_2_BITMASK _BV(7)
+
 #elif defined(AB_DEVKIT)
 
 #define CS 6
@@ -95,6 +101,12 @@
 
 #define PIN_SPEAKER_1 A2
 #define PIN_SPEAKER_2 A3
+
+#define PIN_SPEAKER_1_PORT &PORTF
+#define PIN_SPEAKER_2_PORT &PORTF
+
+#define PIN_SPEAKER_1_BITMASK _BV(5)
+#define PIN_SPEAKER_2_BITMASK _BV(4)
 
 #endif
 

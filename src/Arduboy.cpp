@@ -74,18 +74,21 @@ void Arduboy::bootLogo()
     }
   }
 
-  // pinMode(PIN_SPEAKER_1, OUTPUT);
-  // volatile byte *spkr  = PIN_SPEAKER_1_PORT;
-  // for (int16_t i = 0; i<200; i++) {
-  //    *spkr ^= PIN_SPEAKER_1_BITMASK;
-  //   delayMicroseconds(1500 + i*2);
-  // }
-  // for (int16_t i = 0; i<350; i++) {
-  //    *spkr ^= PIN_SPEAKER_1_BITMASK;
-  //   delayMicroseconds(1500 - i*4);
-  // }
-  // // speaker off
-  // *spkr &= ~PIN_SPEAKER_1_BITMASK;
+  // both outputs seem necessary on production unit
+  // to get any audio out of speaker
+  pinMode(PIN_SPEAKER_1, OUTPUT);
+  pinMode(PIN_SPEAKER_2, OUTPUT);
+  volatile byte *spkr  = PIN_SPEAKER_1_PORT;
+  for (int16_t i = 0; i<200; i++) {
+     *spkr ^= PIN_SPEAKER_1_BITMASK;
+    delayMicroseconds(1500 + i*2);
+  }
+  for (int16_t i = 0; i<350; i++) {
+     *spkr ^= PIN_SPEAKER_1_BITMASK;
+    delayMicroseconds(1500 - i*4);
+  }
+  // speaker off
+  *spkr &= ~PIN_SPEAKER_1_BITMASK;
 
   delay(750);
   setRGBled(0,0,0);
