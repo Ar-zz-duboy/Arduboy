@@ -304,6 +304,12 @@ void ArduboyCore::setRGBled(uint8_t red, uint8_t green, uint8_t blue)
 
 uint8_t ArduboyCore::getInput()
 {
+  return buttonsState();
+}
+
+
+uint8_t ArduboyCore::buttonsState()
+{
   uint8_t buttons;
   
   // using ports here is ~100 bytes smaller than digitalRead()
