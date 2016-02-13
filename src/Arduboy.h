@@ -50,6 +50,9 @@ public:
   /// Scrolls in the Arduboy logo
   void bootLogo();
 
+  /// Boot utils such as flashlight, etc
+  void inline bootUtils() __attribute__((always_inline));
+
   /// Clears display.
   void clear();
   void clearDisplay() __attribute__ ((deprecated("use clear() instead")));

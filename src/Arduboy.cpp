@@ -27,14 +27,7 @@ void Arduboy::start() // deprecated
 void Arduboy::begin()
 {
   boot(); // required
-
-  // flashlight
-  if(pressed(UP_BUTTON)) {
-    // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
-    blank();
-    setRGBled(255,255,255);
-    while(true) {}
-  }
+  bootUtils();
 
   bootLogo();
 
@@ -50,11 +43,23 @@ void Arduboy::begin()
 void Arduboy::beginWithoutArduboyBootLogo()
 {
   boot(); // required
+  bootUtils();
 
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
   tunes.initChannel(PIN_SPEAKER_2);
   audio.begin();
+}
+
+void Arduboy::bootUtils()
+{
+  // flashlight
+  if(pressed(UP_BUTTON)) {
+    // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
+    blank();
+    setRGBled(255,255,255);
+    while(true) {}
+  }
 }
 
 void Arduboy::bootLogo()
