@@ -60,7 +60,7 @@ void ArduboyAudio::off()
   power_timer3_disable();
 }
 
-void ArduboyAudio::save_on_off()
+void ArduboyAudio::saveOnOff()
 {
   EEPROM.write(EEPROM_AUDIO_ON_OFF, audio_enabled);
 }

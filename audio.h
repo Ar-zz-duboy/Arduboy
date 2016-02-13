@@ -19,7 +19,7 @@ public:
   void static begin();
   void static on();
   void static off();
-  void static save_on_off();
+  void static saveOnOff();
   bool static enabled();
 
 protected:
