@@ -29,7 +29,9 @@ void Arduboy::begin()
 
   // flashlight
   if(pressed(UP_BUTTON)) {
-    sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
+    // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
+    blank();
+    setRGBled(255,255,255);
     while(true) {}
   }
 
