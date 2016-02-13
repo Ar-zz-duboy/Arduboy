@@ -98,6 +98,19 @@
 
 #endif
 
+// OLED hardware (SSD1306)
+
+#define OLED_PIXELS_INVERTED 0xA7 // All pixels inverted
+#define OLED_PIXELS_NORMAL 0xA6 // All pixels normal
+
+#define OLED_ALL_PIXELS_ON 0xA5 // all pixels on
+#define OLED_PIXELS_FROM_RAM 0xA4 // pixels mapped to display RAM contents
+
+#define OLED_VERTICAL_FLIPPED 0xC0 // reversed COM scan direction
+#define OLED_VERTICAL_NORMAL 0xC8 // normal COM scan direction
+
+// -----
+
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
 #define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07  // 8 pages high
 

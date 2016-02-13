@@ -27,6 +27,14 @@ void Arduboy::begin()
 {
   boot(); // required
 
+  // flashlight
+  if(pressed(UP_BUTTON)) {
+    // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
+    blank();
+    setRGBled(255,255,255);
+    while(true) {}
+  }
+
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
   tunes.initChannel(PIN_SPEAKER_2);
