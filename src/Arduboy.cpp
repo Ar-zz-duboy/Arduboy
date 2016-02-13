@@ -44,6 +44,19 @@ void Arduboy::begin()
   audio.begin();
 }
 
+// this is pusposely duplicated (without logo) so that
+// whichever is actually used is linked and the one
+// that is not is gone without wasting any space in flash
+void Arduboy::beginWithoutArduboyBootLogo()
+{
+  boot(); // required
+
+  // Audio
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
+  audio.begin();
+}
+
 void Arduboy::bootLogo()
 {
   // setRGBled(10,0,0);

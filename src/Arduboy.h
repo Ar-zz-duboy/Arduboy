@@ -47,8 +47,10 @@ public:
    */
   boolean notPressed(uint8_t buttons);
 
-  /// Initializes the display.
+  /// Initializes the hardware
   void begin();
+  /// Initializes the hardware (but with no boot logo)
+  void beginWithoutArduboyBootLogo();
   void start() __attribute__ ((deprecated("use begin() instead")));
 
   /// Scrolls in the Arduboy logo
