@@ -46,8 +46,10 @@ void Arduboy::begin()
 
 void Arduboy::bootLogo()
 {
-  setRGBled(10,0,0);
-  for(int8_t y = -17; y<24; y++) {
+  // setRGBled(10,0,0);
+  for(int8_t y = -18; y<=24; y++) {
+    setRGBled(24-y, 0, 0);
+
     clear();
     drawBitmap(20,y, arduboy_logo, 88, 16, WHITE);
     display();
