@@ -124,9 +124,9 @@ public:
      * See the Arduboy class nextFrame() for an example of how to use idle()
      * in a frame loop.
      */
-    void idle();
+    void static idle();
 
-    void LCDDataMode(); //< put the display in data mode
+    void static LCDDataMode(); //< put the display in data mode
 
     /// put the display in command mode
     /**
@@ -136,10 +136,10 @@ public:
      * - https://www.adafruit.com/datasheets/SSD1306.pdf
      * - http://www.eimodule.com/download/SSD1306-OLED-Controller.pdf
      */
-    void LCDCommandMode();
+    void static LCDCommandMode();
 
-    uint8_t width();    //< return display width
-    uint8_t height();   // < return display height
+    uint8_t static width();    //< return display width
+    uint8_t static height();   // < return display height
 
     /// get current state of buttons (bitmask)
     /**
@@ -157,7 +157,7 @@ public:
      * LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
      */
 
-    uint8_t getInput();
+    uint8_t static getInput();
 
     // paints 8 pixels (vertically) from a single byte
     //  - 1 is lit, 0 is unlit
@@ -188,50 +188,49 @@ public:
     // ........                     X.X.....
     // ........ (end of page 1)     X.X..... (end of page 1)
     // ........ (page 2)            ........ (page 2)
-    void paint8Pixels(uint8_t pixels);
+    void static paint8Pixels(uint8_t pixels);
 
     /// paints an entire image directly to hardware (from PROGMEM)
     /*
      * Each byte will be 8 vertical pixels, painted in the same order as
      * explained above in paint8Pixels.
      */
-    void paintScreen(const unsigned char *image);
+    void static paintScreen(const unsigned char *image);
 
     /// paints an entire image directly to hardware (from RAM)
     /*
      * Each byte will be 8 vertical pixels, painted in the same order as
      * explained above in paint8Pixels.
      */
-    void paintScreen(unsigned char image[]);
+    void static paintScreen(unsigned char image[]);
 
     /// paints a blank (black) screen to hardware
-    void blank();
+    void static blank();
 
     /// invert the display or set to normal
     /**
      * when inverted, a pixel set to 0 will be on
      */
-    void invert(boolean inverse);
+    void static invert(boolean inverse);
 
     /// turn all display pixels on, or display the buffer contents
     /**
      * when set to all pixels on, the display buffer will be
      * ignored but not altered
      */
-    void allPixelsOn(boolean on);
+    void static allPixelsOn(boolean on);
 
     /// flip the display vertically or set to normal
-    void flipVertical(boolean flipped);
+    void static flipVertical(boolean flipped);
 
     /// flip the display horizontally or set to normal
-    void flipHorizontal(boolean flipped);
+    void static flipHorizontal(boolean flipped);
 
     /// send a single byte command to the OLED
-    void sendLCDCommand(uint8_t command);
+    void static sendLCDCommand(uint8_t command);
 
     /// set the light output of the RGB LEB
     void setRGBled(uint8_t red, uint8_t green, uint8_t blue);
-
 
 protected:
     /// boots the hardware
@@ -242,7 +241,7 @@ protected:
      * - kicks CPU down to 8Mhz if needed
      * - allows Safe mode to be entered
      */
-    void boot();
+    void static boot();
 
     /// Safe mode
     /**
@@ -255,18 +254,18 @@ protected:
      * This is most useful on Devkits because they lack a built-in reset
      * button.
      */
-    void safeMode() __attribute__((always_inline));
+    void static inline safeMode() __attribute__((always_inline));
 
     // internals
-    void bootLCD() __attribute__((always_inline));
-    void bootPins() __attribute__((always_inline));
-    void slowCPU() __attribute__((always_inline));
-    void saveMuchPower(); __attribute__((always_inline));
+    void static inline bootLCD() __attribute__((always_inline));
+    void static inline bootPins() __attribute__((always_inline));
+    void static inline slowCPU() __attribute__((always_inline));
+    void static inline saveMuchPower(); __attribute__((always_inline));
 
 
 private:
-    volatile uint8_t *mosiport, *csport, *dcport;
-    uint8_t mosipinmask, cspinmask, dcpinmask;
+    volatile static uint8_t *mosiport, *csport, *dcport;
+    uint8_t static mosipinmask, cspinmask, dcpinmask;
 
 };
 

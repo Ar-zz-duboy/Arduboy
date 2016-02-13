@@ -1,5 +1,11 @@
 #include "core.h"
 
+// need to redeclare these here since we declare them static in .h
+volatile uint8_t *ArduboyCore::mosiport, 
+  *ArduboyCore::csport, *ArduboyCore::dcport;
+uint8_t ArduboyCore::mosipinmask, 
+  ArduboyCore::cspinmask, ArduboyCore::dcpinmask;
+
 const uint8_t PROGMEM pinBootProgram[] = {
   // buttons
   PIN_LEFT_BUTTON, INPUT_PULLUP,
