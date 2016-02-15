@@ -100,7 +100,7 @@ void ArduboyCore::boot()
   bootLCD();
 
   #ifdef SAFE_MODE
-  if (getInput() == (LEFT_BUTTON | UP_BUTTON))
+  if (buttonsState() == (LEFT_BUTTON | UP_BUTTON))
     safeMode();
   #endif
 
