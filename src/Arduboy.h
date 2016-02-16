@@ -1,7 +1,7 @@
 #ifndef Arduboy_h
 #define Arduboy_h
 
-#include "core.h"
+#include "core/core.h"
 #include <SPI.h>
 #include <Print.h>
 #include <limits.h>
@@ -15,7 +15,7 @@
 #define EEPROM_STORAGE_SPACE_START 16 // and onward
 
 // eeprom settings above are neded for audio
-#include "audio.h"
+#include "audio/audio.h"
 
 #define PIXEL_SAFE_MODE
 
