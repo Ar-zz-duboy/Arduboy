@@ -9,3 +9,7 @@ Makefile
 ino.ini
 work
 *.eep
+
+# Ignore OS bookkeeping
+.DS_Store
+Thumbs.db
