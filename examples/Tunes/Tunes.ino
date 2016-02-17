@@ -1,5 +1,3 @@
-#include <SPI.h>
-#include <EEPROM.h>
 #include "Arduboy.h"
 
 const byte PROGMEM score [] = {
