@@ -40,7 +40,7 @@ void Arduboy::begin()
 // this is pusposely duplicated (without logo) so that
 // whichever is actually used is linked and the one
 // that is not is gone without wasting any space in flash
-void Arduboy::beginWithoutArduboyBootLogo()
+void Arduboy::beginNoLogo()
 {
   boot(); // required
   bootUtils();
