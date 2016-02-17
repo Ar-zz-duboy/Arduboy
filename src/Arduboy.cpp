@@ -1,5 +1,6 @@
 #include "Arduboy.h"
 #include "glcdfont.c"
+#include "ab_logo.h"
 
 Arduboy::Arduboy()
 {
@@ -26,7 +27,32 @@ void Arduboy::start() // deprecated
 void Arduboy::begin()
 {
   boot(); // required
+  bootUtils();
 
+  bootLogo();
+
+  // Audio
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
+  audio.begin();
+}
+
+// this is pusposely duplicated (without logo) so that
+// whichever is actually used is linked and the one
+// that is not is gone without wasting any space in flash
+void Arduboy::beginNoLogo()
+{
+  boot(); // required
+  bootUtils();
+
+  // Audio
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
+  audio.begin();
+}
+
+void Arduboy::bootUtils()
+{
   // flashlight
   if(pressed(UP_BUTTON)) {
     // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
@@ -34,11 +60,27 @@ void Arduboy::begin()
     setRGBled(255,255,255);
     while(true) {}
   }
+}
 
-  // Audio
-  tunes.initChannel(PIN_SPEAKER_1);
-  tunes.initChannel(PIN_SPEAKER_2);
-  audio.begin();
+void Arduboy::bootLogo()
+{
+  // setRGBled(10,0,0);
+  for(int8_t y = -18; y<=24; y++) {
+    setRGBled(24-y, 0, 0);
+
+    clear();
+    drawBitmap(20,y, arduboy_logo, 88, 16, WHITE);
+    display();
+    delay(27);
+    // longer delay post boot, we put it inside the loop to
+    // save the flash calling clear/delay again outside the loop
+    if (y==-16) {
+      delay(250);
+    }
+  }
+
+  delay(750);
+  setRGBled(0,0,0);
 }
 
 /* Frame management */
@@ -713,3 +755,4 @@ void Arduboy::swap(int16_t& a, int16_t& b)
   a = b;
   b = temp;
 }
+  
