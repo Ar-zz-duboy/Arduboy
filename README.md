@@ -17,7 +17,7 @@ The library should be installed into your user's home Arduino `libraries` direct
 
 **Linux**
 ```
-/home/username/Documents/Arduino/libraries
+/home/username/Arduino/libraries
 ```
 **Mac**
 ```
@@ -33,6 +33,8 @@ To use the Arduboy library in your own sketches, include the `Arduboy.h` header 
 ```C
 #include "Arduboy.h"
 ```
+
+You can have the Arduino IDE add `#include "Arduboy.h"` to your sketch automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
 
 ### Board Selection
 Select the **Leonardo** board as the target platform.
