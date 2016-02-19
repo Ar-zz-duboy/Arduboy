@@ -17,7 +17,7 @@ The library should be installed into your user's home Arduino `libraries` direct
 
 **Linux**
 ```
-/home/username/Arduino/libraries
+/home/username/Documents/Arduino/libraries
 ```
 **Mac**
 ```
@@ -27,6 +27,8 @@ The library should be installed into your user's home Arduino `libraries` direct
 ```
 C:\Users\username\My Documents\Arduino\libraries
 ```
+
+If you don't find the `libraries` folder in one of the above locations, you can determine its location using the navigation menu `File > Preferences`. In the `Settings` tab will be a `Sketchbook location:` field. The `libraries` folder will be in the folder set in this field.
 
 ### Include
 To use the Arduboy library in your own sketches, include the `Arduboy.h` header file. To do so, add the following line to the top of your `.ino` file.
