@@ -28,7 +28,6 @@ void Arduboy::begin()
 {
   boot(); // required
   bootUtils();
-
   bootLogo();
 
   // Audio
@@ -37,13 +36,9 @@ void Arduboy::begin()
   audio.begin();
 }
 
-// this is pusposely duplicated (without logo) so that
-// whichever is actually used is linked and the one
-// that is not is gone without wasting any space in flash
-void Arduboy::beginNoLogo()
+void Arduboy::beginMinimal()
 {
   boot(); // required
-  bootUtils();
 
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
@@ -51,14 +46,21 @@ void Arduboy::beginNoLogo()
   audio.begin();
 }
 
+void Arduboy::flashlight()
+{
+  // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
+  blank();
+  setRGBled(255,255,255);
+  while(!pressed(DOWN_BUTTON)) {
+    idle();
+  }
+  setRGBled(0,0,0);
+}
+
 void Arduboy::bootUtils()
 {
-  // flashlight
   if(pressed(UP_BUTTON)) {
-    // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
-    blank();
-    setRGBled(255,255,255);
-    while(true) {}
+    flashlight();
   }
 }
 

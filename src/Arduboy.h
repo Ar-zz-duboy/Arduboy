@@ -43,14 +43,23 @@ public:
 
   /// Initializes the hardware
   void begin();
-  /// Initializes the hardware (but with no boot logo)
-  void beginNoLogo();
+  /// Initializes the hardware (no logo, no other bootime niceities)
+  void beginMinimal();
   void start() __attribute__ ((deprecated("use begin() instead")));
 
   /// Scrolls in the Arduboy logo
   void bootLogo();
 
-  /// Boot utils such as flashlight, etc
+  /// Flashlight mode
+  /**
+   * Hold up key when booting to enable, press down key to exit
+   * or simply turn off your Arduboy.  Your sketches can also
+   * call this at any time.  It goes into a tight loop until the
+   * down buttn is pressed.
+   */
+  void flashlight();
+
+  /// Boot utility detection (such as flashlight, etc.)
   void inline bootUtils() __attribute__((always_inline));
 
   /// Clears display.
