@@ -43,6 +43,11 @@ bool ArduboyAudio::audio_enabled = false;
 
 void ArduboyAudio::on()
 {
+  // JIT audio init
+  if (_tune_num_chans == 0) {
+    ArduboyTunes::initChannel(PIN_SPEAKER_1);
+    ArduboyTunes::initChannel(PIN_SPEAKER_2);
+  }
   power_timer1_enable();
   power_timer3_enable();
   audio_enabled = true;

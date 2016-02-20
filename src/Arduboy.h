@@ -41,16 +41,25 @@ public:
    */
   boolean notPressed(uint8_t buttons);
 
-  /// Initializes the hardware
+  /// Initialize hardware, boot logo, boot utilities, etc.
   void begin();
-  /// Initializes the hardware (no logo, no other bootime niceities)
+
+  /// Init hardware, no logo, no boot utilities.
   /**
-   * If you want to build your own customized boot sequence compare
-   * begin() with beginMinimal() and just add back the things you wish
-   * to have in your own sequence, leaving out the things you do not
-   * desire.
-  **/
-  void beginMinimal();
+   * If you really want this functionality going foward we recommend
+   * just call `boot()` directly, then do any other custom init you
+   * desire before passing control into your main sketch.
+   *
+   * Look at the source for `begin()` and just rip out what you do not
+   * need and start there.
+   *
+   * The minimum functionality required is currently:
+   *
+   *     boot() // raw hardware init (from core)
+   *     audio.begin() // if you need audio
+   */
+  void beginNoLogo() __attribute__ ((deprecated("use boot() + custom code instead")));
+
   void start() __attribute__ ((deprecated("use begin() instead")));
 
   /// Scrolls in the Arduboy logo

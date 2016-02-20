@@ -26,27 +26,21 @@ void Arduboy::start() // deprecated
 
 void Arduboy::begin()
 {
-  boot();
+  boot(); // raw hardware
 
+  // utils
   if(pressed(UP_BUTTON)) {
     flashlight();
   }
 
   bootLogo();
 
-  // Audio
-  tunes.initChannel(PIN_SPEAKER_1);
-  tunes.initChannel(PIN_SPEAKER_2);
   audio.begin();
 }
 
-void Arduboy::beginMinimal()
+void Arduboy::beginNoLogo() // deprecated
 {
   boot();
-
-  // Audio
-  tunes.initChannel(PIN_SPEAKER_1);
-  tunes.initChannel(PIN_SPEAKER_2);
   audio.begin();
 }
 

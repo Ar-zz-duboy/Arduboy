@@ -33,7 +33,7 @@ public:
   // Playtune Functions
 
   /// Assign a timer to an output pin.
-  void initChannel(byte pin);
+  void static initChannel(byte pin);
 
   /// Start playing a polyphonic score.
   void playScore(const byte *score);
