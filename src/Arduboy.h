@@ -44,6 +44,12 @@ public:
   /// Initializes the hardware
   void begin();
   /// Initializes the hardware (no logo, no other bootime niceities)
+  /**
+   * If you want to build your own customized boot sequence compare
+   * begin() with beginMinimal() and just add back the things you wish
+   * to have in your own sequence, leaving out the things you do not
+   * desire.
+  **/
   void beginMinimal();
   void start() __attribute__ ((deprecated("use begin() instead")));
 
@@ -58,9 +64,6 @@ public:
    * down buttn is pressed.
    */
   void flashlight();
-
-  /// Boot utility detection (such as flashlight, etc.)
-  void inline bootUtils() __attribute__((always_inline));
 
   /// Clears display.
   void clear();

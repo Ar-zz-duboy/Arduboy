@@ -26,8 +26,12 @@ void Arduboy::start() // deprecated
 
 void Arduboy::begin()
 {
-  boot(); // required
-  bootUtils();
+  boot();
+
+  if(pressed(UP_BUTTON)) {
+    flashlight();
+  }
+
   bootLogo();
 
   // Audio
@@ -38,7 +42,7 @@ void Arduboy::begin()
 
 void Arduboy::beginMinimal()
 {
-  boot(); // required
+  boot();
 
   // Audio
   tunes.initChannel(PIN_SPEAKER_1);
@@ -55,13 +59,6 @@ void Arduboy::flashlight()
     idle();
   }
   setRGBled(0,0,0);
-}
-
-void Arduboy::bootUtils()
-{
-  if(pressed(UP_BUTTON)) {
-    flashlight();
-  }
 }
 
 void Arduboy::bootLogo()
