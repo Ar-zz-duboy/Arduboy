@@ -1,6 +1,6 @@
 #include "Arduboy.h"
 #include "glcdfont.c"
-#include "ab_logo.h"
+#include "ab_logo.c"
 
 Arduboy::Arduboy()
 {

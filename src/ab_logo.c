@@ -1,5 +1,7 @@
-#ifndef AB_LOGO_H
-#define AB_LOGO_H
+#include <avr/pgmspace.h>
+
+#ifndef ARDUBOY_LOGO_CREATED
+#define ARDUBOY_LOGO_CREATED
 
 // arduboy_logo.png
 // 88x16
