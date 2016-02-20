@@ -13,7 +13,7 @@ Arduboy::Arduboy()
   // lastFrameStart
   // lastFrameDurationMs
 
-  // font rendering  
+  // font rendering
   cursor_x = 0;
   cursor_y = 0;
   textsize = 1;
@@ -414,11 +414,11 @@ void Arduboy::fillRect
 
 void Arduboy::fillScreen(uint8_t color)
 {
-  // C version : 
+  // C version :
   //
   // if (color) color = 0xFF;  //change any nonzero argument to b11111111 and insert into screen array.
-  // for(int16_t i=0; i<1024; i++)  { sBuffer[i] = color; }  //sBuffer = (128*64) = 8192/8 = 1024 bytes. 
-  
+  // for(int16_t i=0; i<1024; i++)  { sBuffer[i] = color; }  //sBuffer = (128*64) = 8192/8 = 1024 bytes.
+
   asm volatile
   (
     // load color value into r27
@@ -588,7 +588,7 @@ void Arduboy::fillTriangle
 }
 
 void Arduboy::drawBitmap
-(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, 
+(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h,
  uint8_t color)
 {
   // no need to dar at all of we're offscreen
@@ -696,7 +696,7 @@ void Arduboy::setCursor(int16_t x, int16_t y)
 void Arduboy::setTextSize(uint8_t s)
 {
   // textsize must always be 1 or higher
-  textsize = max(1,s); 
+  textsize = max(1,s);
 }
 
 void Arduboy::setTextWrap(boolean w)
@@ -721,7 +721,7 @@ size_t Arduboy::write(uint8_t c)
     cursor_x += textsize*6;
     if (wrap && (cursor_x > (WIDTH - textsize*6)))
     {
-      // calling ourselves recursively for 'newline' is 
+      // calling ourselves recursively for 'newline' is
       // 12 bytes smaller than doing the same math here
       write('\n');
     }
@@ -755,4 +755,4 @@ void Arduboy::swap(int16_t& a, int16_t& b)
   a = b;
   b = temp;
 }
-  
+
