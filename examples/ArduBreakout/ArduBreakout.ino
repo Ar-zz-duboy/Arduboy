@@ -10,9 +10,12 @@
  */
 
 #include <Arduboy.h>
+#include "Arduboy.h"
+#include <ArduboyPlaytune.h>
 #include "breakout_bitmaps.h"
 
 Arduboy arduboy;
+ArduboyPlaytune tunes;
 
 const unsigned int COLUMNS = 13; //Columns of bricks
 const unsigned int ROWS = 4;     //Rows of bricks
@@ -54,6 +57,9 @@ void setup()
 {
   arduboy.begin();
   arduboy.setFrameRate(60);
+
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
 }
 
 void loop()
@@ -173,7 +179,7 @@ void moveBall()
     {
       yb = 2;
       dy = -dy;
-      arduboy.tunes.tone(523, 250);
+      tunes.tone(523, 250);
     }
 
     //Lose a life if bottom edge hit
@@ -185,7 +191,7 @@ void moveBall()
       released = false;
       lives--;
       drawLives();
-      arduboy.tunes.tone(175, 250);
+      tunes.tone(175, 250);
       if (random(0, 2) == 0)
       {
         dx = 1;
@@ -201,7 +207,7 @@ void moveBall()
     {
       xb = 2;
       dx = -dx;
-      arduboy.tunes.tone(523, 250);
+      tunes.tone(523, 250);
     }
 
     //Bounce off right side
@@ -209,7 +215,7 @@ void moveBall()
     {
       xb = WIDTH - 4;
       dx = -dx;
-      arduboy.tunes.tone(523, 250);
+      tunes.tone(523, 250);
     }
 
     //Bounce off paddle
@@ -221,7 +227,7 @@ void moveBall()
       if (dx == 0) {
         dx = (random(0,2) == 1) ? 1 : -1;
       }
-      arduboy.tunes.tone(200, 250);
+      tunes.tone(200, 250);
     }
 
     //Bounce off Bricks
@@ -255,7 +261,7 @@ void moveBall()
                 dy =- dy;
                 yb += dy;
                 bounced = true;
-                arduboy.tunes.tone(261, 250);
+                tunes.tone(261, 250);
               }
             }
 
@@ -268,7 +274,7 @@ void moveBall()
                 dx =- dx;
                 xb += dx;
                 bounced = true;
-                arduboy.tunes.tone(261, 250);
+                tunes.tone(261, 250);
               }
             }
           }
@@ -572,7 +578,7 @@ void enterInitials()
         index = 0;
       } else
       {
-        arduboy.tunes.tone(1046, 250);
+        tunes.tone(1046, 250);
       }
     }
 
@@ -583,14 +589,14 @@ void enterInitials()
       {
         index = 2;
       }  else {
-        arduboy.tunes.tone(1046, 250);
+        tunes.tone(1046, 250);
       }
     }
 
     if (arduboy.pressed(DOWN_BUTTON))
     {
       initials[index]++;
-      arduboy.tunes.tone(523, 250);
+      tunes.tone(523, 250);
       // A-Z 0-9 :-? !-/ ' '
       if (initials[index] == '0')
       {
@@ -613,7 +619,7 @@ void enterInitials()
     if (arduboy.pressed(UP_BUTTON))
     {
       initials[index]--;
-      arduboy.tunes.tone(523, 250);
+      tunes.tone(523, 250);
       if (initials[index] == ' ') {
         initials[index] = '?';
       }
@@ -633,9 +639,9 @@ void enterInitials()
       if (index < 2)
       {
         index++;
-        arduboy.tunes.tone(1046, 250);
+        tunes.tone(1046, 250);
       } else {
-        arduboy.tunes.tone(1046, 250);
+        tunes.tone(1046, 250);
         return;
       }
     }
