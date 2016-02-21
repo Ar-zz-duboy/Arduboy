@@ -90,7 +90,7 @@ ArduboyCore::ArduboyCore() {}
 void ArduboyCore::boot()
 {
   #if F_CPU == 8000000L
-  slowCPU();
+  bootCPUSpeed();
   #endif
 
   SPI.begin();
@@ -102,13 +102,13 @@ void ArduboyCore::boot()
     safeMode();
   #endif
 
-  saveMuchPower();
+  bootPowerSaving();
 }
 
 #if F_CPU == 8000000L
 // if we're compiling for 8Mhz we need to slow the CPU down because the
 // hardware clock on the Arduboy is 16MHz
-void ArduboyCore::slowCPU()
+void ArduboyCore::bootCPUSpeed()
 {
   uint8_t oldSREG = SREG;
   cli();                // suspend interrupts
@@ -188,7 +188,7 @@ void ArduboyCore::idle()
   sleep_mode();
 }
 
-void ArduboyCore::saveMuchPower()
+void ArduboyCore::bootPowerSaving()
 {
   power_adc_disable();
   power_usart0_disable();

@@ -286,8 +286,8 @@ protected:
     // internals
     void static inline bootOLED() __attribute__((always_inline));
     void static inline bootPins() __attribute__((always_inline));
-    void static inline slowCPU() __attribute__((always_inline));
-    void static inline saveMuchPower() __attribute__((always_inline));
+    void static inline bootCPUSpeed() __attribute__((always_inline));
+    void static inline bootPowerSaving() __attribute__((always_inline));
 
 
 private:
