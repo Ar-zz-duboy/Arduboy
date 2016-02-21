@@ -124,14 +124,14 @@
 #define OLED_HORIZ_FLIPPED 0xA0 // reversed segment re-map
 #define OLED_HORIZ_NORMAL 0xA1 // normal segment re-map
 
-
 // -----
-
-#define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
-#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07  // 8 pages high
 
 #define WIDTH 128
 #define HEIGHT 64
+
+#define COLUMN_ADDRESS_END (WIDTH - 1) & 127   // 128 pixels wide
+#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 7    // 8 pages high
+
 
 class ArduboyCore
 {
