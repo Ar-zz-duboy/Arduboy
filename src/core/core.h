@@ -21,7 +21,7 @@
  *
  *     // #define ARDUBOY_10
  *     #define AB_DEVKIT
- */     
+ */
 #define ARDUBOY_10   //< compile for the production Arduboy v1.0
 // #define AB_DEVKIT    //< compile for the official dev kit
 #endif
@@ -30,7 +30,7 @@
 #ifdef AB_DEVKIT
 #define DEVKIT       //< for compatibilty with older sketches
 #define SAFE_MODE    //< include safe mode (44 bytes)
-#endif 
+#endif
 
 
 #ifdef ARDUBOY_10
@@ -145,7 +145,7 @@ public:
      * will wake up the chip every 1ms - so even at 60 FPS a well written
      * app should be able to sleep maybe half the time in between rendering
      * it's own frames.
-     * 
+     *
      * See the Arduboy class nextFrame() for an example of how to use idle()
      * in a frame loop.
      */
@@ -156,7 +156,7 @@ public:
     /// put the display in command mode
     /**
      * See SSD1306 documents for available commands and command sequences.
-     * 
+     *
      * Links:
      * - https://www.adafruit.com/datasheets/SSD1306.pdf
      * - http://www.eimodule.com/download/SSD1306-OLED-Controller.pdf
@@ -170,13 +170,13 @@ public:
     /**
      * Bit mask that is returned:
      *
-     *           Hi   Low   
-     *  DevKit   00000000    - reserved                         
+     *           Hi   Low
+     *  DevKit   00000000    - reserved
      *           -DLU-RAB    D down
-     *                       U up       
+     *                       U up
      *  1.0      00000000    L left
      *           URLDAB--    R right
-     * 
+     *
      * Of course you shouldn't worry about bits (they may change with future
      * hardware revisions) and should instead use the button defines:
      * LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
@@ -258,7 +258,6 @@ public:
     /// set the light output of the RGB LEB
     void setRGBled(uint8_t red, uint8_t green, uint8_t blue);
 
-protected:
     /// boots the hardware
     /**
      * - sets input/output/pullup mode for pins
@@ -269,6 +268,8 @@ protected:
      */
     void static boot();
 
+protected:
+
     /// Safe mode
     /**
      * Safe Mode is engaged by holding down both the LEFT button and UP button
@@ -276,7 +277,7 @@ protected:
      * loop and allows it to be reprogrammed even if you have uploaded a very
      * broken sketch that interferes with the normal USB triggered auto-reboot
      * functionality of the device.
-     * 
+     *
      * This is most useful on Devkits because they lack a built-in reset
      * button.
      */
