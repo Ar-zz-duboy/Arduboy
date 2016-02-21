@@ -9,7 +9,7 @@ volatile byte *_tunes_timer3_pin_port;
 volatile byte _tunes_timer3_pin_mask;
 byte _tune_pins[AVAILABLE_TIMERS];
 byte _tune_num_chans = 0;
-volatile boolean tune_playing; // is the score still playing?
+volatile boolean tune_playing = false; // is the score still playing?
 volatile unsigned wait_timer_frequency2;       /* its current frequency */
 volatile boolean wait_timer_playing = false;   /* is it currently playing a note? */
 volatile boolean tonePlaying = false;
@@ -72,7 +72,6 @@ void ArduboyAudio::saveOnOff()
 
 void ArduboyAudio::begin()
 {
-  tune_playing = false;
   if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
     on();
 }
