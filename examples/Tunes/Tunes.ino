@@ -1,4 +1,5 @@
 #include "Arduboy.h"
+#include <ArduboyPlaytune.h>
 
 const byte PROGMEM score [] = {
   // Sinfonia No.12 in A major BWV.798 J.S.Bach
@@ -156,6 +157,7 @@ const byte PROGMEM score [] = {
 
 Arduboy arduboy;
 AbPrinter text(arduboy);
+ArduboyPlaytune tunes;
 
 void setup()
 {
@@ -163,8 +165,12 @@ void setup()
   text.setSize(4);
   text.setCursor(0,0);
   text.print("Music\nDemo");
-  arduboy.display();
 
+  // audio setup
+  tunes.initChannel(PIN_SPEAKER_1);
+  tunes.initChannel(PIN_SPEAKER_2);
+
+  arduboy.display();
 }
 
 
@@ -198,6 +204,6 @@ void loop ()
   arduboy.display();
 
   // play the tune if we aren't already
-  if (!arduboy.tunes.playing())
-    arduboy.tunes.playScore(score);
+  if (!tunes.playing())
+    tunes.playScore(score);
 }
