@@ -95,7 +95,7 @@ void ArduboyCore::boot()
 
   SPI.begin();
   bootPins();
-  bootLCD();
+  bootOLED();
 
   #ifdef SAFE_MODE
   if (buttonsState() == (LEFT_BUTTON | UP_BUTTON))
@@ -137,7 +137,7 @@ void ArduboyCore::bootPins()
   digitalWrite(RST, HIGH);  // bring out of reset
 }
 
-void ArduboyCore::bootLCD()
+void ArduboyCore::bootOLED()
 {
   // setup the ports we need to talk to the OLED
   csport = portOutputRegister(digitalPinToPort(CS));
