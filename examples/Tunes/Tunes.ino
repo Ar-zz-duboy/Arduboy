@@ -167,6 +167,7 @@ void setup()
   text.print("Music\nDemo");
 
   // audio setup
+  arduboy.audio.on();
   tunes.initChannel(PIN_SPEAKER_1);
   tunes.initChannel(PIN_SPEAKER_2);
 
