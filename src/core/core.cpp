@@ -274,9 +274,6 @@ void ArduboyCore::flipVertical(boolean flipped)
   sendLCDCommand(flipped ? OLED_VERTICAL_FLIPPED : OLED_VERTICAL_NORMAL);
 }
 
-#define OLED_HORIZ_FLIPPED 0xA0 // reversed segment re-map
-#define OLED_HORIZ_NORMAL 0xA1 // normal segment re-map
-
 // flip the display horizontally or set to normal
 void ArduboyCore::flipHorizontal(boolean flipped)
 {

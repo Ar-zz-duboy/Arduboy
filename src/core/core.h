@@ -121,6 +121,10 @@
 #define OLED_VERTICAL_FLIPPED 0xC0 // reversed COM scan direction
 #define OLED_VERTICAL_NORMAL 0xC8 // normal COM scan direction
 
+#define OLED_HORIZ_FLIPPED 0xA0 // reversed segment re-map
+#define OLED_HORIZ_NORMAL 0xA1 // normal segment re-map
+
+
 // -----
 
 #define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
