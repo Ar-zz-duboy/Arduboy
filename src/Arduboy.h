@@ -19,6 +19,11 @@
 
 #define PIXEL_SAFE_MODE
 
+// pixel colors
+#define INVERT 2 //< lit/unlit pixel
+#define WHITE 1 //< lit pixel
+#define BLACK 0 //< unlit pixel
+
 // compare Vcc to 1.1 bandgap
 #define ADC_VOLTAGE (_BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1))
 // compare temperature to 2.5 internal reference and _BV(MUX5)
