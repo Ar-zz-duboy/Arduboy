@@ -24,6 +24,9 @@ void Arduboy::start() // deprecated
   begin();
 }
 
+// functions called here should be public so users can create their
+// own init functions if they need different behavior than `begin`
+// provides by default
 void Arduboy::begin()
 {
   boot(); // raw hardware
@@ -35,12 +38,6 @@ void Arduboy::begin()
 
   bootLogo();
 
-  audio.begin();
-}
-
-void Arduboy::beginNoLogo() // deprecated
-{
-  boot();
   audio.begin();
 }
 

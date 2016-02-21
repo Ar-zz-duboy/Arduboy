@@ -44,21 +44,18 @@ public:
   /// Initialize hardware, boot logo, boot utilities, etc.
   void begin();
 
-  /// Init hardware, no logo, no boot utilities.
+  /// Init just hardware, no logo, no boot utilities.
   /**
-   * If you really want this functionality going foward we recommend
-   * just call `boot()` directly, then do any other custom init you
-   * desire before passing control into your main sketch.
-   *
    * Look at the source for `begin()` and just rip out what you do not
-   * need and start there.
+   * need and start there.  Calling just `boot()` might work also
+   * depending on your requirements.
    *
-   * The minimum functionality required is currently:
+   * The minimum recommended `begin` replacement:
    *
-   *     boot() // raw hardware init (from core)
-   *     audio.begin() // if you need audio
+   *   arduboy.boot()         // raw hardware init
+   *   arduboy.audio.begin()  // if you need audio
    */
-  void beginNoLogo() __attribute__ ((deprecated("use boot() + custom code instead")));
+  // void boot(); // defined in core.cpp
 
   void start() __attribute__ ((deprecated("use begin() instead")));
 
