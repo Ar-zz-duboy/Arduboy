@@ -291,8 +291,8 @@ protected:
 
 
 private:
-    volatile static uint8_t *mosiport, *csport, *dcport;
-    uint8_t static mosipinmask, cspinmask, dcpinmask;
+    volatile static uint8_t *csport, *dcport;
+    uint8_t static cspinmask, dcpinmask;
 
 };
 
