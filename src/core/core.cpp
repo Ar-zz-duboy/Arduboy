@@ -13,6 +13,15 @@ const uint8_t PROGMEM pinBootProgram[] = {
   PIN_A_BUTTON, INPUT_PULLUP,
   PIN_B_BUTTON, INPUT_PULLUP,
 
+  // speaker
+#ifdef ARDUBOY_10
+  PIN_SPEAKER_1, OUTPUT,
+  PIN_SPEAKER_1, OUTPUT,
+#elif defined(AB_DEVKIT)
+  PIN_SPEAKER_1, INPUT,
+  PIN_SPEAKER_2, INPUT,
+#endif
+
   // OLED SPI
   DC, OUTPUT,
   CS, OUTPUT,
