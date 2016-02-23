@@ -1,10 +1,8 @@
 #include "core.h"
 
 // need to redeclare these here since we declare them static in .h
-volatile uint8_t *ArduboyCore::mosiport, 
-  *ArduboyCore::csport, *ArduboyCore::dcport;
-uint8_t ArduboyCore::mosipinmask, 
-  ArduboyCore::cspinmask, ArduboyCore::dcpinmask;
+volatile uint8_t *ArduboyCore::csport, *ArduboyCore::dcport;
+uint8_t ArduboyCore::cspinmask, ArduboyCore::dcpinmask;
 
 const uint8_t PROGMEM pinBootProgram[] = {
   // buttons
@@ -29,57 +27,57 @@ const uint8_t PROGMEM lcdBootProgram[] = {
   // Further reading: https://www.adafruit.com/datasheets/SSD1306.pdf
   //
   // Display Off
-  // 0xAE,     
+  // 0xAE,
 
   // Set Display Clock Divisor v = 0xF0
   // default is 0x80
   0xD5, 0xF0,
 
   // Set Multiplex Ratio v = 0x3F
-  // 0xA8, 0x3F,   
+  // 0xA8, 0x3F,
 
   // Set Display Offset v = 0
-  // 0xD3, 0x00, 
+  // 0xD3, 0x00,
 
   // Set Start Line (0)
-  // 0x40,     
+  // 0x40,
 
   // Charge Pump Setting v = enable (0x14)
   // default is disabled
-  0x8D, 0x14,   
+  0x8D, 0x14,
 
   // Set Segment Re-map (A0) | (b0001)
   // default is (b0000)
-  0xA1,     
+  0xA1,
 
   // Set COM Output Scan Direction
-  0xC8,     
+  0xC8,
 
   // Set COM Pins v
-  // 0xDA, 0x12,   
+  // 0xDA, 0x12,
 
   // Set Contrast v = 0xCF
-  0x81, 0xCF,   
+  0x81, 0xCF,
 
   // Set Precharge = 0xF1
   0xD9, 0xF1,
-    
+
   // Set VCom Detect
-  // 0xDB, 0x40,   
+  // 0xDB, 0x40,
 
   // Entire Display ON
-  // 0xA4,     
+  // 0xA4,
 
   // Set normal/inverse display
-  // 0xA6,  
+  // 0xA6,
 
   // Display On
-  0xAF,     
+  0xAF,
 
   // set display mode = horizontal addressing mode (0x00)
-  0x20, 0x00,  
+  0x20, 0x00,
 
-  // set col address range 
+  // set col address range
   // 0x21, 0x00, COLUMN_ADDRESS_END,
 
   // set page address range
@@ -92,25 +90,25 @@ ArduboyCore::ArduboyCore() {}
 void ArduboyCore::boot()
 {
   #if F_CPU == 8000000L
-  slowCPU();
+  bootCPUSpeed();
   #endif
 
   SPI.begin();
   bootPins();
-  bootLCD();
+  bootOLED();
 
   #ifdef SAFE_MODE
   if (buttonsState() == (LEFT_BUTTON | UP_BUTTON))
     safeMode();
   #endif
 
-  saveMuchPower();
+  bootPowerSaving();
 }
 
 #if F_CPU == 8000000L
 // if we're compiling for 8Mhz we need to slow the CPU down because the
 // hardware clock on the Arduboy is 16MHz
-void ArduboyCore::slowCPU()
+void ArduboyCore::bootCPUSpeed()
 {
   uint8_t oldSREG = SREG;
   cli();                // suspend interrupts
@@ -139,7 +137,7 @@ void ArduboyCore::bootPins()
   digitalWrite(RST, HIGH);  // bring out of reset
 }
 
-void ArduboyCore::bootLCD()
+void ArduboyCore::bootOLED()
 {
   // setup the ports we need to talk to the OLED
   csport = portOutputRegister(digitalPinToPort(CS));
@@ -190,7 +188,7 @@ void ArduboyCore::idle()
   sleep_mode();
 }
 
-void ArduboyCore::saveMuchPower()
+void ArduboyCore::bootPowerSaving()
 {
   power_adc_disable();
   power_usart0_disable();
@@ -276,9 +274,6 @@ void ArduboyCore::flipVertical(boolean flipped)
   sendLCDCommand(flipped ? OLED_VERTICAL_FLIPPED : OLED_VERTICAL_NORMAL);
 }
 
-#define OLED_HORIZ_FLIPPED 0xA0 // reversed segment re-map
-#define OLED_HORIZ_NORMAL 0xA1 // normal segment re-map
-
 // flip the display horizontally or set to normal
 void ArduboyCore::flipHorizontal(boolean flipped)
 {
@@ -311,7 +306,7 @@ uint8_t ArduboyCore::getInput()
 uint8_t ArduboyCore::buttonsState()
 {
   uint8_t buttons;
-  
+
   // using ports here is ~100 bytes smaller than digitalRead()
 #ifdef AB_DEVKIT
   // down, left, up
@@ -328,6 +323,6 @@ uint8_t ArduboyCore::buttonsState()
   // B (right)
   buttons = buttons | (((~PINB) & B00010000) >> 2);
 #endif
-  
+
   return buttons;
 }

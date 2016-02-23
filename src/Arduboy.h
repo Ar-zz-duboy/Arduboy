@@ -2,7 +2,6 @@
 #define Arduboy_h
 
 #include "core/core.h"
-#include <SPI.h>
 #include <Print.h>
 #include <limits.h>
 
@@ -18,6 +17,11 @@
 #include "audio/audio.h"
 
 #define PIXEL_SAFE_MODE
+
+// pixel colors
+#define INVERT 2 //< lit/unlit pixel
+#define WHITE 1 //< lit pixel
+#define BLACK 0 //< unlit pixel
 
 // compare Vcc to 1.1 bandgap
 #define ADC_VOLTAGE (_BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1))
@@ -41,17 +45,35 @@ public:
    */
   boolean notPressed(uint8_t buttons);
 
-  /// Initializes the hardware
+  /// Initialize hardware, boot logo, boot utilities, etc.
   void begin();
-  /// Initializes the hardware (but with no boot logo)
-  void beginNoLogo();
+
+  /// Init just hardware, no logo, no boot utilities.
+  /**
+   * Look at the source for `begin()` and just rip out what you do not
+   * need and start there.  Calling just `boot()` might work also
+   * depending on your requirements.
+   *
+   * The minimum recommended `begin` replacement:
+   *
+   *   arduboy.boot()         // raw hardware init
+   *   arduboy.audio.begin()  // if you need audio
+   */
+  // void boot(); // defined in core.cpp
+
   void start() __attribute__ ((deprecated("use begin() instead")));
 
   /// Scrolls in the Arduboy logo
   void bootLogo();
 
-  /// Boot utils such as flashlight, etc
-  void inline bootUtils() __attribute__((always_inline));
+  /// Flashlight mode
+  /**
+   * Hold up key when booting to enable, press down key to exit
+   * or simply turn off your Arduboy.  Your sketches can also
+   * call this at any time.  It goes into a tight loop until the
+   * down buttn is pressed.
+   */
+  void flashlight();
 
   /// Clears display.
   void clear();
@@ -152,7 +174,7 @@ public:
 
   /// Writes a single ASCII character to the screen.
   virtual size_t write(uint8_t);
-  
+
   /// Seeds the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
   /**
    * This method is still most effective when called semi-randomly such
@@ -170,7 +192,7 @@ public:
   void setFrameRate(uint8_t rate);
   bool nextFrame();
   bool everyXFrames(uint8_t frames);
-  
+
   /// Returns the load on the CPU as a percentage.
   /**
    * This is based on how much of the time your app is spends rendering
@@ -178,7 +200,7 @@ public:
    * really slowly.
    */
   int cpuLoad();
-  
+
   uint8_t frameRate;
   uint16_t frameCount;
   uint8_t eachFrameMillis;

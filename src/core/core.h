@@ -21,7 +21,7 @@
  *
  *     // #define ARDUBOY_10
  *     #define AB_DEVKIT
- */     
+ */
 #define ARDUBOY_10   //< compile for the production Arduboy v1.0
 // #define AB_DEVKIT    //< compile for the official dev kit
 #endif
@@ -30,7 +30,7 @@
 #ifdef AB_DEVKIT
 #define DEVKIT       //< for compatibilty with older sketches
 #define SAFE_MODE    //< include safe mode (44 bytes)
-#endif 
+#endif
 
 
 #ifdef ARDUBOY_10
@@ -121,17 +121,17 @@
 #define OLED_VERTICAL_FLIPPED 0xC0 // reversed COM scan direction
 #define OLED_VERTICAL_NORMAL 0xC8 // normal COM scan direction
 
-// -----
+#define OLED_HORIZ_FLIPPED 0xA0 // reversed segment re-map
+#define OLED_HORIZ_NORMAL 0xA1 // normal segment re-map
 
-#define COLUMN_ADDRESS_END (WIDTH - 1) & 0x7F   // 128 pixels wide
-#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 0x07  // 8 pages high
+// -----
 
 #define WIDTH 128
 #define HEIGHT 64
 
-#define INVERT 2 //< lit/unlit pixel
-#define WHITE 1 //< lit pixel
-#define BLACK 0 //< unlit pixel
+#define COLUMN_ADDRESS_END (WIDTH - 1) & 127   // 128 pixels wide
+#define PAGE_ADDRESS_END ((HEIGHT/8)-1) & 7    // 8 pages high
+
 
 class ArduboyCore
 {
@@ -145,7 +145,7 @@ public:
      * will wake up the chip every 1ms - so even at 60 FPS a well written
      * app should be able to sleep maybe half the time in between rendering
      * it's own frames.
-     * 
+     *
      * See the Arduboy class nextFrame() for an example of how to use idle()
      * in a frame loop.
      */
@@ -156,7 +156,7 @@ public:
     /// put the display in command mode
     /**
      * See SSD1306 documents for available commands and command sequences.
-     * 
+     *
      * Links:
      * - https://www.adafruit.com/datasheets/SSD1306.pdf
      * - http://www.eimodule.com/download/SSD1306-OLED-Controller.pdf
@@ -170,13 +170,13 @@ public:
     /**
      * Bit mask that is returned:
      *
-     *           Hi   Low   
-     *  DevKit   00000000    - reserved                         
+     *           Hi   Low
+     *  DevKit   00000000    - reserved
      *           -DLU-RAB    D down
-     *                       U up       
+     *                       U up
      *  1.0      00000000    L left
      *           URLDAB--    R right
-     * 
+     *
      * Of course you shouldn't worry about bits (they may change with future
      * hardware revisions) and should instead use the button defines:
      * LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
@@ -258,7 +258,6 @@ public:
     /// set the light output of the RGB LEB
     void setRGBled(uint8_t red, uint8_t green, uint8_t blue);
 
-protected:
     /// boots the hardware
     /**
      * - sets input/output/pullup mode for pins
@@ -269,6 +268,8 @@ protected:
      */
     void static boot();
 
+protected:
+
     /// Safe mode
     /**
      * Safe Mode is engaged by holding down both the LEFT button and UP button
@@ -276,22 +277,22 @@ protected:
      * loop and allows it to be reprogrammed even if you have uploaded a very
      * broken sketch that interferes with the normal USB triggered auto-reboot
      * functionality of the device.
-     * 
+     *
      * This is most useful on Devkits because they lack a built-in reset
      * button.
      */
     void static inline safeMode() __attribute__((always_inline));
 
     // internals
-    void static inline bootLCD() __attribute__((always_inline));
+    void static inline bootOLED() __attribute__((always_inline));
     void static inline bootPins() __attribute__((always_inline));
-    void static inline slowCPU() __attribute__((always_inline));
-    void static inline saveMuchPower(); __attribute__((always_inline));
+    void static inline bootCPUSpeed() __attribute__((always_inline));
+    void static inline bootPowerSaving() __attribute__((always_inline));
 
 
 private:
-    volatile static uint8_t *mosiport, *csport, *dcport;
-    uint8_t static mosipinmask, cspinmask, dcpinmask;
+    volatile static uint8_t *csport, *dcport;
+    uint8_t static cspinmask, dcpinmask;
 
 };
 

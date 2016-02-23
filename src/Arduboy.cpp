@@ -13,7 +13,7 @@ Arduboy::Arduboy()
   // lastFrameStart
   // lastFrameDurationMs
 
-  // font rendering  
+  // font rendering
   cursor_x = 0;
   cursor_y = 0;
   textsize = 1;
@@ -24,42 +24,32 @@ void Arduboy::start() // deprecated
   begin();
 }
 
+// functions called here should be public so users can create their
+// own init functions if they need different behavior than `begin`
+// provides by default
 void Arduboy::begin()
 {
-  boot(); // required
-  bootUtils();
+  boot(); // raw hardware
+
+  // utils
+  if(pressed(UP_BUTTON)) {
+    flashlight();
+  }
 
   bootLogo();
 
-  // Audio
-  tunes.initChannel(PIN_SPEAKER_1);
-  tunes.initChannel(PIN_SPEAKER_2);
   audio.begin();
 }
 
-// this is pusposely duplicated (without logo) so that
-// whichever is actually used is linked and the one
-// that is not is gone without wasting any space in flash
-void Arduboy::beginNoLogo()
+void Arduboy::flashlight()
 {
-  boot(); // required
-  bootUtils();
-
-  // Audio
-  tunes.initChannel(PIN_SPEAKER_1);
-  tunes.initChannel(PIN_SPEAKER_2);
-  audio.begin();
-}
-
-void Arduboy::bootUtils()
-{
-  // flashlight
-  if(pressed(UP_BUTTON)) {
-    // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
-    blank();
-    setRGBled(255,255,255);
-    while(true) {}
+  // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
+  blank();
+  setRGBled(255,255,255);
+  while(!pressed(DOWN_BUTTON)) {
+    idle();
   }
+  setRGBled(0,0,0);
 }
 
 void Arduboy::bootLogo()
@@ -414,11 +404,11 @@ void Arduboy::fillRect
 
 void Arduboy::fillScreen(uint8_t color)
 {
-  // C version : 
+  // C version :
   //
   // if (color) color = 0xFF;  //change any nonzero argument to b11111111 and insert into screen array.
-  // for(int16_t i=0; i<1024; i++)  { sBuffer[i] = color; }  //sBuffer = (128*64) = 8192/8 = 1024 bytes. 
-  
+  // for(int16_t i=0; i<1024; i++)  { sBuffer[i] = color; }  //sBuffer = (128*64) = 8192/8 = 1024 bytes.
+
   asm volatile
   (
     // load color value into r27
@@ -588,7 +578,7 @@ void Arduboy::fillTriangle
 }
 
 void Arduboy::drawBitmap
-(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, 
+(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h,
  uint8_t color)
 {
   // no need to dar at all of we're offscreen
@@ -696,7 +686,7 @@ void Arduboy::setCursor(int16_t x, int16_t y)
 void Arduboy::setTextSize(uint8_t s)
 {
   // textsize must always be 1 or higher
-  textsize = max(1,s); 
+  textsize = max(1,s);
 }
 
 void Arduboy::setTextWrap(boolean w)
@@ -721,7 +711,7 @@ size_t Arduboy::write(uint8_t c)
     cursor_x += textsize*6;
     if (wrap && (cursor_x > (WIDTH - textsize*6)))
     {
-      // calling ourselves recursively for 'newline' is 
+      // calling ourselves recursively for 'newline' is
       // 12 bytes smaller than doing the same math here
       write('\n');
     }
@@ -755,4 +745,4 @@ void Arduboy::swap(int16_t& a, int16_t& b)
   a = b;
   b = temp;
 }
-  
+
