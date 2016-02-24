@@ -588,7 +588,7 @@ void Arduboy::drawBitmap
   int8_t yOffset = abs(y) % 8;
   int8_t sRow = y / 8;
 
-  if (y < 0) {
+  if (y < 0 && yOffset) {
     sRow--;
     yOffset = 8 - yOffset;
   }
