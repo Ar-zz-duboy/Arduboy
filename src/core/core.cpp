@@ -13,6 +13,10 @@ const uint8_t PROGMEM pinBootProgram[] = {
   PIN_A_BUTTON, INPUT_PULLUP,
   PIN_B_BUTTON, INPUT_PULLUP,
 
+  // audio is specifically not included here as those pins are handled
+  // separately by `audio.begin()`, `audio.on()` and `audio.off()` in order
+  // to respect the EEPROM audio settings
+
   // OLED SPI
   DC, OUTPUT,
   CS, OUTPUT,
