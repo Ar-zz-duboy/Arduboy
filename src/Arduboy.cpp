@@ -598,8 +598,9 @@ void Arduboy::drawBitmap
 
   for (uint8_t a = 0; a < rows; a++) {
     int8_t bRow = sRow + a;
-    if (bRow > (HEIGHT/8)-1) break;
-    if (bRow > -2) {
+    if (bRow > (HEIGHT/8)-1) { break; }
+    if (bRow < -1) { break; }
+    // if (bRow > -2) {
       for (uint8_t iCol = 0; iCol<w; iCol++) {
         if (iCol + x > (WIDTH-1)) break;
         if (iCol + x >= 0) {
@@ -615,7 +616,7 @@ void Arduboy::drawBitmap
           }
         }
       }
-    }
+    // }
   }
 }
 
