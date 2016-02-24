@@ -385,10 +385,47 @@ void Arduboy::drawFastVLine
 void Arduboy::drawFastHLine
 (int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
-  int end = x+w;
-  for (int a = max(0,x); a < min(end,WIDTH); a++)
+  // Do bounds/limit checks
+  if (y < 0 || y >= HEIGHT) {
+    return;
+  }
+
+  // make sure we don't try to draw below 0
+  if (x < 0) {
+    w += x;
+    x = 0;
+  }
+
+  // make sure we don't go off the edge of the display
+  if ((x + w) > WIDTH) {
+    w = (WIDTH - x);
+  }
+
+  // if our width is now negative, punt
+  if (w <= 0) {
+    return;
+  }
+
+  // buffer pointer plus row offset + x offset
+  register uint8_t *pBuf = sBuffer + ((y/8) * WIDTH) + x;
+
+  // pixel mask
+  register uint8_t mask = 1 << (y&7);
+
+  switch (color)
   {
-    drawPixel(a,y,color);
+    case WHITE:
+      while(w--) {
+        *pBuf++ |= mask;
+      };
+      break;
+
+    case BLACK:
+      mask = ~mask;
+      while(w--) {
+        *pBuf++ &= mask;
+      };
+      break;
   }
 }
 
