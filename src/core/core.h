@@ -284,9 +284,10 @@ protected:
     void static inline safeMode() __attribute__((always_inline));
 
     // internals
+    void static inline setCPUSpeed8MHz() __attribute__((always_inline));
+    void static inline setCPUSpeed4MHz() __attribute__((always_inline));
     void static inline bootOLED() __attribute__((always_inline));
     void static inline bootPins() __attribute__((always_inline));
-    void static inline bootCPUSpeed() __attribute__((always_inline));
     void static inline bootPowerSaving() __attribute__((always_inline));
 
 
