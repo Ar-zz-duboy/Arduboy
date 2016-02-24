@@ -594,38 +594,37 @@ void Arduboy::drawBitmap
   }
 
   int8_t rows = h/8;
-  if (h%8!=0) rows++;
+  if (h%8!=0) { rows++; }
 
   for (uint8_t a = 0; a < rows; a++) {
     int8_t bRow = sRow + a;
     if (bRow > (HEIGHT/8)-1) { break; }
     if (bRow < -1) { break; }
     for (uint8_t iCol = 0; iCol<w; iCol++) {
-      if (iCol + x > (WIDTH-1)) break;
-      if (iCol + x >= 0) {
-        if (bRow >= 0) {
-          if (color == WHITE) {
-            this->sBuffer[ (bRow*WIDTH) + x + iCol ] |=
-              pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
-          } else if (color == BLACK) {
-            this->sBuffer[ (bRow*WIDTH) + x + iCol ] &=
-              ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
-          } else {
-            this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^=
-              pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
-          }
+      if (iCol + x > (WIDTH-1)) { break; }
+      if (iCol + x < 0) { break; }
+      if (bRow >= 0) {
+        if (color == WHITE) {
+          this->sBuffer[ (bRow*WIDTH) + x + iCol ] |=
+            pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
+        } else if (color == BLACK) {
+          this->sBuffer[ (bRow*WIDTH) + x + iCol ] &=
+            ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
+        } else {
+          this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^=
+            pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
         }
-        if (yOffset && bRow<(HEIGHT/8)-1) {
-          if (color == WHITE) {
-            this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |=
-              pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
-          } else if (color == BLACK) {
-            this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &=
-              ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
-          } else {
-            this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^=
-              pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
-          }
+      }
+      if (yOffset && bRow<(HEIGHT/8)-1) {
+        if (color == WHITE) {
+          this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |=
+            pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
+        } else if (color == BLACK) {
+          this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &=
+            ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
+        } else {
+          this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^=
+            pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
         }
       }
     }
