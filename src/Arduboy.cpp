@@ -581,23 +581,26 @@ void Arduboy::drawBitmap
 (int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h,
  uint8_t color)
 {
-  // no need to dar at all of we're offscreen
+  // no need to draw at all of we're completely offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
 
-  int yOffset = abs(y) % 8;
-  int sRow = y / 8;
+  int8_t yOffset = abs(y) % 8;
+  int8_t sRow = y / 8;
+
   if (y < 0) {
     sRow--;
     yOffset = 8 - yOffset;
   }
-  int rows = h/8;
+
+  int8_t rows = h/8;
   if (h%8!=0) rows++;
-  for (int a = 0; a < rows; a++) {
-    int bRow = sRow + a;
+
+  for (uint8_t a = 0; a < rows; a++) {
+    int8_t bRow = sRow + a;
     if (bRow > (HEIGHT/8)-1) break;
     if (bRow > -2) {
-      for (int iCol = 0; iCol<w; iCol++) {
+      for (uint8_t iCol = 0; iCol<w; iCol++) {
         if (iCol + x > (WIDTH-1)) break;
         if (iCol + x >= 0) {
           if (bRow >= 0) {
