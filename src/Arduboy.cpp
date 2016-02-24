@@ -593,16 +593,17 @@ void Arduboy::drawBitmap
     yOffset = 8 - yOffset;
   }
 
-  int8_t rows = h/8;
-  if (h%8!=0) { rows++; }
+  int8_t rows = (h+7)/8; // round up
 
   for (uint8_t a = 0; a < rows; a++) {
     int8_t bRow = sRow + a;
     if (bRow > (HEIGHT/8)-1) { break; }
     if (bRow < -1) { break; }
+
     for (uint8_t iCol = 0; iCol<w; iCol++) {
       if (iCol + x > (WIDTH-1)) { break; }
       if (iCol + x < 0) { break; }
+
       if (bRow >= 0) {
         if (color == WHITE) {
           this->sBuffer[ (bRow*WIDTH) + x + iCol ] |=
