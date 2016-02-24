@@ -375,8 +375,10 @@ void Arduboy::drawRect
 void Arduboy::drawFastVLine
 (int16_t x, int16_t y, uint8_t h, uint8_t color)
 {
-  int end = y+h;
-  for (int a = max(0,y); a < min(end,HEIGHT); a++)
+  uint8_t y2 = min(y+h,HEIGHT);
+
+  // 16 bit because that's what drawPixel needs and it compiles smaller
+  for (uint16_t a = max(0,y); a < y2; a++)
   {
     drawPixel(x,a,color);
   }
@@ -385,8 +387,9 @@ void Arduboy::drawFastVLine
 void Arduboy::drawFastHLine
 (int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
-  int end = x+w;
-  for (int a = max(0,x); a < min(end,WIDTH); a++)
+  uint8_t x2 = min(x+w,WIDTH);
+  // 16 bit because that's what drawPixel needs and it compiles smaller
+  for (uint16_t a = max(0,x); a < x2; a++)
   {
     drawPixel(a,y,color);
   }
@@ -396,7 +399,9 @@ void Arduboy::fillRect
 (int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color)
 {
   // stupidest version - update in subclasses if desired!
-  for (int16_t i=x; i<x+w; i++)
+  uint8_t x2 = min(x+w,WIDTH);
+  // 16 bit because that's what drawFastVLine needs and it compiles smaller
+  for (uint16_t i = max(0,x); i<x2; i++)
   {
     drawFastVLine(i, y, h, color);
   }
