@@ -89,14 +89,29 @@ const uint8_t PROGMEM lcdBootProgram[] = {
 };
 
 
-ArduboyCore::ArduboyCore() {}
+ArduboyCore::ArduboyCore()
+{
+// ARDUBOY_16MHZ_HW_CLOCK will be set by the IDE using boards.txt
+#if F_CPU == 8000000L && defined(ARDUBOY_16MHZ_HW_CLOCK)
+  setCPUSpeed8MHz();
+#endif
+}
+
+#if F_CPU == 8000000L && defined(ARDUBOY_16MHZ_HW_CLOCK)
+// if we're compiling for 8MHz we need to slow the CPU down because the
+// hardware clock on the Arduboy is 16MHz
+void ArduboyCore::setCPUSpeed8MHz()
+{
+  uint8_t oldSREG = SREG;
+  cli();                // suspend interrupts
+  CLKPR = _BV(CLKPCE);  // allow reprogramming clock
+  CLKPR = 1;            // set clock divisor to 2 (0b0001)
+  SREG = oldSREG;       // restore interrupts
+}
+#endif
 
 void ArduboyCore::boot()
 {
-  #if F_CPU == 8000000L
-  bootCPUSpeed();
-  #endif
-
   SPI.begin();
   bootPins();
   bootOLED();
@@ -108,19 +123,6 @@ void ArduboyCore::boot()
 
   bootPowerSaving();
 }
-
-#if F_CPU == 8000000L
-// if we're compiling for 8Mhz we need to slow the CPU down because the
-// hardware clock on the Arduboy is 16MHz
-void ArduboyCore::bootCPUSpeed()
-{
-  uint8_t oldSREG = SREG;
-  cli();                // suspend interrupts
-  CLKPR = _BV(CLKPCE);  // allow reprogramming clock
-  CLKPR = 1;            // set clock divisor to 2 (0b0001)
-  SREG = oldSREG;       // restore interrupts
-}
-#endif
 
 void ArduboyCore::bootPins()
 {
