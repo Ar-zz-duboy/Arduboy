@@ -155,14 +155,16 @@ const byte PROGMEM score [] = {
   0x80, 0x81, 0x90,0x45, 0,91, 0,136, 0x80, 0x82, 0x90,0x45, 0x91,0x2D, 7,83, 0x80, 0x81, 0xf0};
 
 Arduboy arduboy;
+AbPrinter text(arduboy);
 
 void setup()
 {
   arduboy.begin();
-  arduboy.setTextSize(4);
-  arduboy.setCursor(0,0);
-  arduboy.print("Music\nDemo");
+  text.setSize(4);
+  text.setCursor(0,0);
+  text.print("Music\nDemo");
   arduboy.display();
+
 }
 
 
@@ -191,8 +193,8 @@ void loop ()
   }
 
   arduboy.clear();
-  arduboy.setCursor(x,y);
-  arduboy.print("Music\nDemo");
+  text.setCursor(x,y);
+  text.print("Music\nDemo");
   arduboy.display();
 
   // play the tune if we aren't already
