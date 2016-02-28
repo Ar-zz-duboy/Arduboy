@@ -9,7 +9,7 @@
  version 2.1 of the License, or (at your option) any later version.
  */
 
-#include "Arduboy.h"
+#include <Arduboy.h>
 #include "breakout_bitmaps.h"
 
 Arduboy arduboy;
@@ -50,22 +50,79 @@ byte bottomBrick;
 
 byte tick;
 
-#include "pins_arduino.h" // Arduino pre-1.0 needs this
-
-void intro()
+void setup()
 {
-  for(int i = -8; i < 28; i = i + 2)
+  arduboy.begin();
+  arduboy.setFrameRate(60);
+}
+
+void loop()
+{
+  // pause render until it's time for the next frame
+  if (!(arduboy.nextFrame()))
+    return;
+
+  //Title screen loop switches from title screen
+  //and high scores until FIRE is pressed
+  while (!start)
   {
-    arduboy.clear();
-    arduboy.setCursor(46, i);
-    arduboy.print("ARDUBOY");
-    arduboy.display();
+    start = titleScreen();
+    if (!start)
+    {
+      start = displayHighScores(2);
+    }
   }
 
-  arduboy.tunes.tone(987, 160);
-  delay(160);
-  arduboy.tunes.tone(1318, 400);
-  delay(2000);
+  //Initial level draw
+  if (!initialDraw)
+  {
+    //Clears the screen
+    arduboy.clear();
+    //Selects Font
+    //Draws the new level
+    newLevel();
+    initialDraw=true;
+  }
+
+  if (lives>0)
+  {
+    drawPaddle();
+
+    //Pause game if FIRE pressed
+    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
+
+    if(pad >1 && oldpad==0 && released)
+    {
+      oldpad2=0; //Forces pad loop 2 to run once
+      pause();
+    }
+
+    oldpad=pad;
+    drawBall();
+
+    if(brickCount == ROWS * COLUMNS)
+    {
+      level++;
+      newLevel();
+    }
+  }
+  else
+  {
+    drawGameOver();
+    if (score > 0)
+    {
+      enterHighScore(2);
+    }
+
+    arduboy.clear();
+    initialDraw=false;
+    start=false;
+    lives=3;
+    score=0;
+    newLevel();
+  }
+
+  arduboy.display();
 }
 
 void movePaddle()
@@ -654,86 +711,4 @@ void enterHighScore(byte file)
     }
   }
 }
-
-
-void setup()
-{
-  arduboy.begin();
-  arduboy.setFrameRate(60);
-  arduboy.print("Hello World!");
-  arduboy.display();
-  intro();
-}
-
-
-void loop()
-{
-  // pause render until it's time for the next frame
-  if (!(arduboy.nextFrame()))
-    return;
-
-  //Title screen loop switches from title screen
-  //and high scores until FIRE is pressed
-  while (!start)
-  {
-    start = titleScreen();
-    if (!start)
-    {
-      start = displayHighScores(2);
-    }
-  }
-
-  //Initial level draw
-  if (!initialDraw)
-  {
-    //Clears the screen
-    arduboy.display();
-    arduboy.clear();
-    //Selects Font
-    //Draws the new level
-    newLevel();
-    initialDraw=true;
-  }
-
-  if (lives>0)
-  {
-    drawPaddle();
-
-    //Pause game if FIRE pressed
-    pad = arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON);
-
-    if(pad >1 && oldpad==0 && released)
-    {
-      oldpad2=0; //Forces pad loop 2 to run once
-      pause();
-    }
-
-    oldpad=pad;
-    drawBall();
-
-    if(brickCount == ROWS * COLUMNS)
-    {
-      level++;
-      newLevel();
-    }
-  }
-  else
-  {
-    drawGameOver();
-    if (score > 0)
-    {
-      enterHighScore(2);
-    }
-
-    arduboy.clear();
-    initialDraw=false;
-    start=false;
-    lives=3;
-    score=0;
-    newLevel();
-  }
-
-  arduboy.display();
-}
-
 
