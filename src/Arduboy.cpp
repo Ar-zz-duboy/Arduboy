@@ -106,12 +106,25 @@ bool Arduboy::nextFrame()
 
   // pre-render
 
-  // technically next frame should be last frame + each frame but if we're
-  // running a slow render we would constnatly be behind the clock
-  // keep an eye on this and see how it works.  If it works well the
-  // lastFrameStart variable could be eliminated completely
-  nextFrameStart = now + eachFrameMillis;
+  // next frame should start from last frame start + frame duration
+  nextFrameStart = lastFrameStart + eachFrameMillis;
+  // If we're running CPU at 100%+ (too slow to complete each loop within
+  // the frame duration) then it's possible that we get "behind"... Say we
+  // took 5ms too long, resulting in nextFrameStart being 5ms in the PAST.
+  // In that case we simply schedule the next frame to start immediately.
+  //
+  // If we were to let the nextFrameStart slide further and further into
+  // the past AND eventually the CPU usage dropped then frame management
+  // would try to "catch up" (by speeding up the game) to make up for all
+  // that lost time.  That would not be good.  We allow frames to take too
+  // long (what choice do we have?), but we do not allow super-fast frames
+  // to make up for slow frames in the past.
+  if (nextFrameStart < now) {
+    nextFrameStart = now;
+  }
+
   lastFrameStart = now;
+
   post_render = true;
   return post_render;
 }
