@@ -16,9 +16,10 @@ version 2.1 of the License, or (at your option) any later version.
 
 // Make an instance of arduboy used for many functions
 Arduboy arduboy;
+AbPrinter text(arduboy);
 
 // Variables for your game go here.
-char text[] = "Press Buttons!";
+char title[] = "Press Buttons!";
 byte x;
 byte y;
 
@@ -52,7 +53,7 @@ void setup() {
   // here we set the framerate to 30, we do not need to run at default 60 and
   // it saves us battery life.
   arduboy.setFrameRate(30);
-  
+
   // set x and y to the middle of the screen
   x = (WIDTH / 2) - (NUM_CHARS * CHAR_WIDTH / 2);
   y = (HEIGHT / 2) - (CHAR_HEIGHT / 2);
@@ -96,10 +97,10 @@ void loop() {
   arduboy.clear();
 
   // we set our cursor x pixels to the right and y down from the top
-  arduboy.setCursor(x, y);
+  text.setCursor(x, y);
 
   // then we print to screen what is stored in our text variable we declared earlier
-  arduboy.print(text);
+  text.print(title);
 
   // then we finaly we tell the arduboy to display what we just wrote to the display.
   arduboy.display();
