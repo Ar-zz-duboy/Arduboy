@@ -100,13 +100,12 @@
 #define B_BUTTON _BV(0)
 
 #define PIN_SPEAKER_1 A2
-#define PIN_SPEAKER_2 A3
-
 #define PIN_SPEAKER_1_PORT &PORTF
-#define PIN_SPEAKER_2_PORT &PORTF
-
 #define PIN_SPEAKER_1_BITMASK _BV(5)
-#define PIN_SPEAKER_2_BITMASK _BV(4)
+// SPEAKER_2 is purposely not defined for DEVKIT as it could potentially
+// be dangerous and fry your hardware (because of the devkit wiring).
+//
+// Reference: https://github.com/Arduboy/Arduboy/issues/108
 
 #endif
 
