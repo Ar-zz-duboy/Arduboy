@@ -1,3 +1,5 @@
+#include <SPI.h>
+#include <EEPROM.h>
 #include "Arduboy.h"
 #include <ArduboyPlaytune.h>
 

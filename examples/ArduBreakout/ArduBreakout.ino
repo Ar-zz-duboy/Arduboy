@@ -9,6 +9,8 @@
  version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <SPI.h>
+#include <EEPROM.h>
 #include "Arduboy.h"
 #include <ArduboyPlaytune.h>
 #include "breakout_bitmaps.h"
