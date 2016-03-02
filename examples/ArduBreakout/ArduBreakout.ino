@@ -9,7 +9,6 @@
  version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <Arduboy.h>
 #include "Arduboy.h"
 #include <ArduboyPlaytune.h>
 #include "breakout_bitmaps.h"
