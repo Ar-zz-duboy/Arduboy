@@ -6,6 +6,12 @@
 #include <Print.h>
 #include <limits.h>
 
+// Library version.
+// For a version number in the form of x.y.z the value of the define will be
+// ((x * 10000) + (y * 100) + (z)) as a decimal number.
+// So, it will read as xxxyyzz, with no leading zeros on x.
+#define ARDUBOY_LIB_VER 10200
+
 // EEPROM settings
 #define EEPROM_VERSION 0
 #define EEPROM_BRIGHTNESS 1
