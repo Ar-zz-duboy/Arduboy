@@ -63,7 +63,7 @@ public:
    */
   // void boot(); // defined in core.cpp
 
-  void start() __attribute__ ((warning("use begin() instead")));
+  void start() __attribute__((deprecated)) __attribute__ ((warning("use begin() instead")));
 
   /// Scrolls in the Arduboy logo
   void bootLogo();
@@ -79,7 +79,7 @@ public:
 
   /// Clears display.
   void clear();
-  void clearDisplay() __attribute__ ((warning("use clear() instead")));
+  void clearDisplay() __attribute__((deprecated)) __attribute__ ((warning("use clear() instead")));
 
   /// Copies the contents of the screen buffer to the screen.
   /**
