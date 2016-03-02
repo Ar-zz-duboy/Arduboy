@@ -28,6 +28,7 @@ drawRect	KEYWORD2
 drawRoundRect	KEYWORD2
 drawSlowXYBitmap	KEYWORD2
 drawTriangle	KEYWORD2
+enabled	KEYWORD2
 everyXFrames	KEYWORD2
 fillCircle	KEYWORD2
 fillRect	KEYWORD2
@@ -43,9 +44,12 @@ initRandomSeed	KEYWORD2
 invert	KEYWORD2
 nextFrame	KEYWORD2
 notPressed	KEYWORD2
+off	KEYWORD2
+on	KEYWORD2
 paint8Pixels	KEYWORD2
 paintScreen	KEYWORD2
 pressed	KEYWORD2
+saveOnOff	KEYWORD2
 setCursor	KEYWORD2
 setFrameRate	KEYWORD2
 setRGBled 	KEYWORD2
