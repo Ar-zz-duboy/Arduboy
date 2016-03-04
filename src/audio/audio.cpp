@@ -20,7 +20,7 @@ void ArduboyAudio::off()
 
 void ArduboyAudio::saveOnOff()
 {
-  EEPROM.write(EEPROM_AUDIO_ON_OFF, audio_enabled);
+  EEPROM.update(EEPROM_AUDIO_ON_OFF, audio_enabled);
 }
 
 void ArduboyAudio::begin()
