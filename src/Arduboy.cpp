@@ -448,7 +448,7 @@ void Arduboy::fillRect
   }
 }
 
-void __attribute__ ((noinline)) Arduboy::fillScreen(uint8_t color)
+void Arduboy::fillScreen(uint8_t color)
 {
   // C version :
   //
