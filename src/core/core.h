@@ -1,7 +1,6 @@
 #ifndef ArduboyCore_h
 #define ArduboyCore_h
 
-#include <Arduino.h>
 #include <avr/power.h>
 #include <SPI.h>
 #include <avr/sleep.h>
