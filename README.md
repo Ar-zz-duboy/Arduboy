@@ -49,7 +49,7 @@ Find and play an example by opening it through the Arduino IDE, compiling, and u
 Examples can be found in the Arduino IDE in the navigation menu under, `File > Examples > Arduboy > Example_Name`.
 
 ### Running on a Development Board
-To run this library on a development Arduboy board, edit `src/core/core.h` so that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
+To run this library on a development Arduboy board, edit `utility/core.h` so that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
 
 ```cpp
 //#define ARDUBOY_10   //< compile for the production Arduboy v1.0
