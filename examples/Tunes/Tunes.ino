@@ -1,4 +1,4 @@
-#include "Arduboy.h"
+#include <Arduboy.h>
 #include <ArduboyPlaytune.h>
 
 const byte PROGMEM score [] = {
