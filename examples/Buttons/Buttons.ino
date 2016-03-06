@@ -12,7 +12,7 @@ License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version.
 */
 
-#include "Arduboy.h"
+#include <Arduboy.h>
 
 // Make an instance of arduboy used for many functions
 Arduboy arduboy;

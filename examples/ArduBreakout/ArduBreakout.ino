@@ -10,7 +10,6 @@
  */
 
 #include <Arduboy.h>
-#include "Arduboy.h"
 #include <ArduboyPlaytune.h>
 #include "breakout_bitmaps.h"
 
