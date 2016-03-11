@@ -31,7 +31,7 @@ byte y;
 
 // To get the number of characters, we subtract 1 from the length of
 // the array because there will be a NULL terminator at the end.
-#define NUM_CHARS (sizeof(text) - 1)
+#define NUM_CHARS (sizeof(title) - 1)
 
 // This is the highest value that x can be without the end of the text
 // going farther than the right side of the screen. We add one because
