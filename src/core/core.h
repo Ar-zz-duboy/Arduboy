@@ -236,20 +236,20 @@ public:
     /**
      * when inverted, a pixel set to 0 will be on
      */
-    void static invert(boolean inverse);
+    void static invert(bool inverse);
 
     /// turn all display pixels on, or display the buffer contents
     /**
      * when set to all pixels on, the display buffer will be
      * ignored but not altered
      */
-    void static allPixelsOn(boolean on);
+    void static allPixelsOn(bool on);
 
     /// flip the display vertically or set to normal
-    void static flipVertical(boolean flipped);
+    void static flipVertical(bool flipped);
 
     /// flip the display horizontally or set to normal
-    void static flipHorizontal(boolean flipped);
+    void static flipHorizontal(bool flipped);
 
     /// send a single byte command to the OLED
     void static sendLCDCommand(uint8_t command);
