@@ -260,26 +260,26 @@ void ArduboyCore::sendLCDCommand(uint8_t command)
 
 // invert the display or set to normal
 // when inverted, a pixel set to 0 will be on
-void ArduboyCore::invert(boolean inverse)
+void ArduboyCore::invert(bool inverse)
 {
   sendLCDCommand(inverse ? OLED_PIXELS_INVERTED : OLED_PIXELS_NORMAL);
 }
 
 // turn all display pixels on, ignoring buffer contents
 // or set to normal buffer display
-void ArduboyCore::allPixelsOn(boolean on)
+void ArduboyCore::allPixelsOn(bool on)
 {
   sendLCDCommand(on ? OLED_ALL_PIXELS_ON : OLED_PIXELS_FROM_RAM);
 }
 
 // flip the display vertically or set to normal
-void ArduboyCore::flipVertical(boolean flipped)
+void ArduboyCore::flipVertical(bool flipped)
 {
   sendLCDCommand(flipped ? OLED_VERTICAL_FLIPPED : OLED_VERTICAL_NORMAL);
 }
 
 // flip the display horizontally or set to normal
-void ArduboyCore::flipHorizontal(boolean flipped)
+void ArduboyCore::flipHorizontal(bool flipped)
 {
   sendLCDCommand(flipped ? OLED_HORIZ_FLIPPED : OLED_HORIZ_NORMAL);
 }
