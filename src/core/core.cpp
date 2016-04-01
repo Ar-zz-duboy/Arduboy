@@ -93,9 +93,10 @@ ArduboyCore::ArduboyCore() {}
 
 void ArduboyCore::boot()
 {
-  #if F_CPU == 8000000L
-  bootCPUSpeed();
-  #endif
+#ifdef ARDUBOY_SET_CPU_8MHZ
+// ARDUBOY_SET_CPU_8MHZ will be set by the IDE using boards.txt
+  setCPUSpeed8MHz();
+#endif
 
   SPI.begin();
   bootPins();
@@ -109,15 +110,19 @@ void ArduboyCore::boot()
   bootPowerSaving();
 }
 
-#if F_CPU == 8000000L
-// if we're compiling for 8Mhz we need to slow the CPU down because the
-// hardware clock on the Arduboy is 16MHz
-void ArduboyCore::bootCPUSpeed()
+#ifdef ARDUBOY_SET_CPU_8MHZ
+// If we're compiling for 8MHz we need to slow the CPU down because the
+// hardware clock on the Arduboy is 16MHz.
+// We also need to readjust the PLL prescaler because the Arduino USB code
+// likely will have incorrectly set it for an 8MHz hardware clock.
+void ArduboyCore::setCPUSpeed8MHz()
 {
   uint8_t oldSREG = SREG;
   cli();                // suspend interrupts
+  PLLCSR = _BV(PINDIV); // dissable the PLL and set prescale for 16MHz)
   CLKPR = _BV(CLKPCE);  // allow reprogramming clock
   CLKPR = 1;            // set clock divisor to 2 (0b0001)
+  PLLCSR = _BV(PLLE) | _BV(PINDIV); // enable the PLL (with 16MHz prescale)
   SREG = oldSREG;       // restore interrupts
 }
 #endif
