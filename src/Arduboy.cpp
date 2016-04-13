@@ -9,6 +9,8 @@ Arduboy::Arduboy()
   frameCount = 0;
   nextFrameStart = 0;
   post_render = false;
+  pause_countdown = 0;
+  pause_countdown_set_val = 30; //default half a second at 60fps
 
   // init not necessary, will be reset after first use
   // lastFrameStart
@@ -750,3 +752,24 @@ void Arduboy::swap(int16_t& a, int16_t& b)
   b = temp;
 }
 
+void Arduboy::setupPause(byte countdown_var){
+  pause_countdown_set_val = countdown_var;
+}
+
+bool Arduboy::checkPause(bool isPaused){
+   if(pressed(RIGHT_BUTTON) && pressed(LEFT_BUTTON)
+  && pressed(UP_BUTTON) && pressed(DOWN_BUTTON)){
+    if (pause_countdown <= 0){
+      if (isPaused == false){
+        isPaused = true;
+        pause_countdown = pause_countdown_set_val;
+      }
+      else{
+        isPaused = false;
+        pause_countdown = pause_countdown_set_val;
+      }
+    }
+  }
+  if (pause_countdown > 0)  pause_countdown--;
+  return isPaused;
+}
