@@ -192,6 +192,22 @@ public:
    */
   int cpuLoad();
 
+  ///Sets the length of time (in frames) between pausing and unpausing.
+  /**
+    * Simple enough. Sets the protected var pause_countdown_set_val to its value.
+    * This value is then used to set the countdown every time the pause is triggered.
+    */
+  void setupPause(byte countdown_var);
+
+  ///Checks all 4 keys of the dpad, then decides if the game needs to pause or
+  ///unpause, and returns a bool. True = paused, false = unpaused.
+  /**
+    * As stated above, this relies on a countdown that is at default set at
+    * 30, but that the programmer can change with setup_pause. 
+    * 30 is half a second at 30fps so is a good value.
+    */
+  bool checkPause(bool isPaused);
+
   uint8_t frameRate;
   uint16_t frameCount;
   uint8_t eachFrameMillis;
@@ -212,6 +228,8 @@ protected:
   int16_t cursor_y;
   uint8_t textsize;
   boolean wrap; // If set, 'wrap' text at right edge of display
+  byte pause_countdown;
+  byte pause_countdown_set_val;
 };
 
 #endif

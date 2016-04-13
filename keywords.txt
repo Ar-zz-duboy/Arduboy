@@ -55,6 +55,8 @@ setFrameRate	KEYWORD2
 setRGBled 	KEYWORD2
 setTextSize	KEYWORD2
 setTextWrap	KEYWORD2
+setupPause	KEYWORD2
+checkPause	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

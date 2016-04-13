@@ -18,3 +18,8 @@
   https://github.com/LenShustek/arduino-playtune
   GNU General Public License v3
   (C) Copyright 2011, 2015, Len Shustek
+
+- arduboy-pause-check
+  https://github.com/gnargle/arduboy-pause-check
+  GNU General Public License v3
+  (C) Copyright 2016, Nicholas Allen
