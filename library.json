@@ -1,0 +1,12 @@
+{
+    "name": "Arduboy",
+    "keywords": "games",
+    "description": "Core library for the Arduboy.",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/Arduboy/Arduboy.git"
+    },
+    "frameworks": "arduino",
+    "platforms": "atmelavr"
+}
