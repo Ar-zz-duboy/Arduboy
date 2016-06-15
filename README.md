@@ -1,14 +1,18 @@
 Arduboy Library
 ===============
-This library provides Arduboy's  core functionality.
+This library provides Arduboy's core functionality.
 
 ## Using the Library
 To use the Arduboy library, it must be installed and then included in your project.
 
+There are two branches. The stable branch should be used for developing games. The master branch is the development branch, and is experiemental and subject to change.
+
 ### Install
-Install the library by cloning its repository.
+Install the library by cloning its repository, and switching to the stable branch.
 ```	
 $ git clone https://github.com/Arduboy/Arduboy.git
+$ git fetch
+$ git checkout stable
 ```
 
 #### Where to Install
