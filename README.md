@@ -9,10 +9,14 @@ This an open-source library providing function to an Arduboy.
 
 ### Using the `ekem/develop` Branch
 
-This is a development branch. The `develop` branch for the Arduboy Library
-holds the bleeding-edge release for the Arduboy project.
+This is a development branch. 
 
-**Stable Branch** - Please use the `stable` branch for the current stable build.
+**`develop` Branch**
+The `develop` branch for the Arduboy Library holds the bleeding-edge release
+for the Arduboy project.
+
+**`stable` Branch**
+Please use the `stable` branch for the current stable build.
 
 
 ### Using the Aruboy Library
