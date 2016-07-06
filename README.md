@@ -11,9 +11,9 @@ This is the branch main development branch for the Arduboy Library.
 
 Please use the `stable` branch for the current stable build.
 
-## About
+## About the Aruboy Library
 
-This library provides Arduboy's  core functionality.
+This an open-source library providing function to an Arduboy.
 
 ## Using the Library
 
@@ -36,21 +36,15 @@ directory. Refer to the following list for the location of the Arduino
 
 **Linux**
 
-```
-/home/username/Documents/Arduino/libraries
-```
+    /home/username/Documents/Arduino/libraries
 
 **Mac**
 
-```
-/Users/username/Documents/Arduino/libraries
-```
+    /Users/username/Documents/Arduino/libraries
 
 **Windows**
 
-```
-C:\Users\username\My Documents\Arduino\libraries
-```
+    C:\Users\username\My Documents\Arduino\libraries
 
 If you don't find the `libraries` folder in one of the above locations, you can
 determine its location using the navigation menu `File > Preferences`. In the
@@ -62,14 +56,13 @@ will be in the folder set in this field.
 To use the Arduboy library in your own sketches, include the `Arduboy.h` header
 file. To do so, add the following line to the top of your `.ino` file.
 
-```
-#include "Arduboy.h"
-```
+    #include "Arduboy.h"
 
 You can have the Arduino IDE add `#include "Arduboy.h"` to your sketch 
 automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
 
 ### Board Selection
+
 Select the **Leonardo** board as the target platform.
 
 ### Examples
@@ -89,12 +82,11 @@ Examples can be found in the Arduino IDE in the navigation menu under,
 To run this library on a development Arduboy board, edit `src/core/core.h` so 
 that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
 
-```
-//#define ARDUBOY_10   //< compile for the production Arduboy v1.0
-#define AB_DEVKIT    //< compile for the official dev kit
-```
+    //#define ARDUBOY_10   //< compile for the production Arduboy v1.0
+    #define AB_DEVKIT    //< compile for the official dev kit
 
 ### Sketches Already Including the Arduboy Library
+
 Sketches that include copies of the Arduboy library may not compile if the
 Arduboy library has been installed system wide. In these cases the Arduino 
 compiler will try and link the system Arduboy library source with the local 
@@ -118,7 +110,7 @@ Doxygen can be used to create the reference documentation.
 To create the documentation, run `doxygen` if the root of the project folder.
 
 ### Prerequisites
+
 The following packages must be installed.
-```
-doxygen graphviz
-```
+
+    doxygen graphviz
