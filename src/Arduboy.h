@@ -133,6 +133,8 @@ public:
 
   /**
    * Flashlight mode, provide off button only.
+   * \fn flashlight
+   * \param off_button The button to turn off flashlight mode.
    * \param off_button uint8_t button to press to turn off flashlight.
    */
   void flashlight(uint8_t off_button);
@@ -183,6 +185,7 @@ public:
    * \fn drawPixel
    * \param x integer for an x position
    * \param y integer for a y position
+   * \param color Default color for pixel is set to white.
    */
   void drawPixel(int x, int y, uint8_t color);
 
@@ -563,14 +566,14 @@ public:
   /**
    * Writes a single ASCII character to the screen.
    * \fn write
-   * \param char Takes character to write.
+   * \param uint8_t Takes character to write.
    * \return returns size_t.
    */
   virtual size_t write(uint8_t);
 
   /**
    * Sets the location of the text cursor.
-   * \fn setCursore
+   * \fn setCursor
    * \param x
    * \param y
    */

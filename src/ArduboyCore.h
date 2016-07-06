@@ -189,14 +189,14 @@ public:
 
   /**
    * Return the display height.
-   * \fn heigth
+   * \fn height
    * \return Display height as uin8_t.
    */
   uint8_t static height();
 
   /**
    * Get current state of all buttons (bitmask).
-   * \fn buttonState
+   * \fn buttonsState
    * \details
    * Bit mask that is returned:
    *
@@ -260,7 +260,7 @@ public:
   /**
    * Paints an entire image directly to hardware (from RAM)
    * \fn paintScreen
-   * \param image**
+   * \param image[]
    * \details
    * \see paint8Pixels()
    * Each byte will be 8 vertical pixels, painted in the same order.
@@ -282,10 +282,12 @@ public:
   void static invert(bool inverse);
 
   /**
-   * \fn turn all display pixels on, or display the buffer contents
+   * Turn all display pixels on, or display the buffer contents
+   * \fn allPixelsOn
+   * \parameter on
    * \details
-   * when set to all pixels on, the display buffer will be
-   * ignored but not altered
+   * When set to all pixels on, the display buffer will be ignored but not
+   * altered.
    */
   void static allPixelsOn(bool on);
 
