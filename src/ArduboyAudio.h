@@ -12,28 +12,34 @@
 class ArduboyAudio
 {
 public:
+
   /**
-   * \fn begin
+   * Run begin routines for ArduboyAudio.
    */
   void static begin();
+
   /**
-   * \fn on
+   * Turn on audio system.
    */
   void static on();
+
   /**
-   * \fn off
+   * Turn off the audio system.
    */
   void static off();
+
   /**
-   * \fn saveOnOff
+   * Save on off state.
    */
   void static saveOnOff();
+
   /**
-   * \fn enabled
+   * Check if audio is enabled.
    */
   bool static enabled();
 
 protected:
+
   /**
    * Boolean flag to determine if audio is enabled.
    */

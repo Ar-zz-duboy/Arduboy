@@ -49,9 +49,9 @@ class ArduboyBase : public ArduboyCore
 {
 public:
   /**
-   * Arduboy constructor
-   * /details
-   * Constuctor for ArduboyBase sets up frame managment
+   * ArduboyBase constructor
+   * \details
+   * Constuctor for ArduboyBase. Frame management is initialized.
    */
   ArduboyBase();
 
@@ -63,7 +63,6 @@ public:
 
   /**
    * Returns true if buttons in button_mask are pressed.
-   * \fn pressed
    * \param buttons uint8_t argument for a button mask.
    * \return Returns true if all button in button mask are pressed.
    * \details
@@ -75,7 +74,6 @@ public:
 
   /**
    * Returns true if the button mask passed in not pressed.
-   * \fn notPressed
    * \param buttons uint8_t argument for a button mask.
    * \return Returns true if every button is not pressed.
    * \see pressed()
@@ -88,7 +86,6 @@ public:
 
   /**
    * Initialize hardware, boot logo, boot utilities, etc.
-   * \fn begin
    * \details
    * Look at the source for `begin()` and just rip out what you do not
    * need and start there.  Calling just `boot()` might work also
@@ -106,7 +103,6 @@ public:
 
   /**
    * Scrolls in the Arduboy logo
-   * \fn bootLogo
    * \details
    * Scrolls the logo stored in memory for Arduboy down the screen. LEDs will
    * flash during the boot sequence.
@@ -115,14 +111,13 @@ public:
 
   /**
    * Clears display.
-   * \fn clear
+   * \details
    * Clear the image buffer for the controlled Arduboy.
    */
   void clear();
 
   /**
    * Provide flashlight mode, providing a default on and off button..
-   * \fn flashlight
    * \details
    * The flashlight mode will places the programmble LED on an Arduboy to white
    * and turn all of the pixels on the screen on. The default buttons provided
@@ -133,14 +128,12 @@ public:
 
   /**
    * Flashlight mode, provide off button only.
-   * \fn flashlight
    * \param off_button The button to turn off flashlight mode.
    */
   void flashlight(uint8_t off_button);
 
   /**
    * Flashlight mode, provide on and off button.
-   * \fn flashlight
    * \param on_button uint8_t button to check before turning on flashlight.
    * \param off_button uint8_t button to press to turn off flashlight.
    * \details
@@ -157,7 +150,6 @@ public:
 
   /**
    * Copies the contents of the screen buffer to the screen.
-   * \fn display
    * \details
    * X and Y positions on the display are from the top left corner, thus a Y of
    * 64 is the bottom of the screen and an X of 128 is the right side of the
@@ -169,7 +161,6 @@ public:
 
   /**
    * Managed draw function for an Arduboy.
-   * \fn draw
    * \param *f a pointer to a function to be called.
    * \return Returns a uint8_t for status. 0 for no errors.
    * \details
@@ -181,7 +172,6 @@ public:
 
   /**
    * Sets a pixel in the screen buffer to on or off. Default is on (white).
-   * \fn drawPixel
    * \param x integer for an x position
    * \param y integer for a y position
    * \param color Default color for pixel is set to white.
@@ -191,7 +181,6 @@ public:
   /**
    * Get the value of a pixel from the screen buffer at a specified x and y 
    * coordinate.
-   * \fn getPixel
    * \param x int for an x position to draw at.
    * \param y int for an y position to draw at.
    * \param color a uint8_t for a color.
@@ -201,7 +190,6 @@ public:
 
   /**
    * Draw a circle of a defined radius.
-   * \fn drawCircle
    * \param x0
    * \param y0
    * \param r
@@ -214,7 +202,6 @@ public:
 
   /**
    * Draws one or more "corners" of a circle.
-   * \fn drawCircleHelper
    * \param x0
    * \param y0
    * \param r
@@ -231,7 +218,6 @@ public:
 
   /**
    * Draws a filled-in circle.
-   * \fn fillCircle
    * \param x0
    * \param y0
    * \param r
@@ -241,7 +227,6 @@ public:
 
    /**
     * Draws one or both vertical halves of a filled-in circle.
-    * \fn fillCircleHelper
     * \param x0
     * \param y0
     * \param r
@@ -258,7 +243,6 @@ public:
 
   /**
    * Draws a line between two points.
-   * \fn drawLine
    * \param x0
    * \param y0
    * \param x1
@@ -270,7 +254,6 @@ public:
 
   /**
    * Draws a rectangle of a width and height.
-   * \fn drawRect
    * \param x
    * \param y
    * \param w
@@ -281,7 +264,6 @@ public:
 
   /**
    * Draws vertical line.
-   * \fn drawFastVLine
    * \param x
    * \param y
    * \param h
@@ -291,7 +273,6 @@ public:
 
   /**
    * Draws a horizontal line.
-   * \fn drawFastHLine
    * \param x
    * \param y
    * \param w
@@ -301,7 +282,6 @@ public:
 
   /**
    * Draws a filled-in rectangle.
-   * \fn fillRect
    * \param x
    * \param y
    * \param w
@@ -319,7 +299,6 @@ public:
 
   /**
    * Draws a rectangle with rounded edges.
-   * \fn drawRoundRect
    * \param x
    * \param y
    * \param w
@@ -336,7 +315,6 @@ public:
 
   /**
    * Draws a filled-in rectangle with rounded edges.
-   * \fn fillRoundRect
    * \param x
    * \param y
    * \param w
@@ -353,7 +331,6 @@ public:
 
   /**
    * Draws the outline of a triangle.
-   * \fn drawTriangle
    * \param x0
    * \param y0
    * \param x1
@@ -372,7 +349,6 @@ public:
 
   /**
    * Draws a filled-in triangle.
-   * \fn drawTriangle
    * \param x0
    * \param y0
    * \param x1
@@ -391,7 +367,6 @@ public:
 
   /**
    * Draws a bitmap from program memory to a specific X/Y
-   * \fn drawBitmap
    * \param x
    * \param y
    * \param *bitmap
@@ -408,13 +383,13 @@ public:
 
   /**
    * Draws images that are bit-oriented horizontally.
-   * \fn drawSlowXYBitmap
    * \param x
    * \param y
    * \param *bitmap
    * \param w
    * \param h
    * \param color
+   * \details
    * This requires a lot of additional CPU power and will draw images slower
    * than drawBitmap, where the images are stored in a format that
    * allows them to be directly written to the screen. It is
@@ -429,7 +404,6 @@ public:
 
   /**
    * Draws an ASCII character at a point.
-   * \fn drawChar
    * \param x
    * \param y
    * \param c
@@ -446,7 +420,6 @@ public:
 
   /**
    * Get a pointer to the display buffer.
-   * \fn getBuffer
    * \return Returns the basepointer to the Arduboy image buffer array 
    * sBuffer[].
    */
@@ -455,7 +428,6 @@ public:
   /**
    * Seeds the random number generator with entropy from the temperature, 
    * voltage reading, and microseconds since boot.
-   * \fn initRandomSeed
    * \details
    * This method is still most effective when called semi-randomly such
    * as after a user hits a button to start a game or other semi-random
@@ -465,7 +437,6 @@ public:
 
   /**
    * Swap the references of two pointers.
-   * \fn swap
    * \param &a reference to an int16_t to swap with b
    * \param &b reference to int16_t to swap with a
    */
@@ -473,7 +444,6 @@ public:
 
   /**
    * Sets the number of frames displayed per second to the screen.
-   * \fn setFrameRate
    * \param rate Rate to draw frames.
    */
   void setFrameRate(uint8_t rate);
@@ -481,13 +451,11 @@ public:
   /**
    * Returns 'true' if the system is ready to draw the next frame.
    * \return Returns true if the Arduboy is ready to draw the next frame.
-   * \fn nextFrame
    */
   bool nextFrame();
 
   /**
    * Returns true if the current frame number is evenly divisible by the
-   * \fn everyXFrames
    * \param frames
    * \return returns true if frames divides the current frame count.
    * \details
@@ -498,7 +466,6 @@ public:
 
   /**
    * Returns the load on the CPU as a percentage.
-   * \fn cpuLoad
    * \todo can this return a uint_8 of 100?
    * \return return an int representing the percentage of cpu use.
    * \details
@@ -510,7 +477,6 @@ public:
 
   /**
    * useful for getting raw approximate voltage values
-   * \fn rawADC
    * \param adc_bits byte to specificy adc bits
    * \return Return ADC as an unsigned 16 bit integer.
    */
@@ -518,7 +484,6 @@ public:
 
   /**
    * Provide system control during the boot sequence.
-   * \fn systemButtons
    * \details
    * An opportunity to provide a level of system control is given during the
    * boot sequence. Control is given to systemSetup() if specified buttons 
@@ -564,7 +529,6 @@ public:
 
   /**
    * Writes a single ASCII character to the screen.
-   * \fn write
    * \param uint8_t Takes character to write.
    * \return returns size_t.
    */
@@ -572,7 +536,6 @@ public:
 
   /**
    * Sets the location of the text cursor.
-   * \fn setCursor
    * \param x
    * \param y
    */
@@ -580,19 +543,16 @@ public:
 
   /**
    * Get the text cursor X position.
-   * \fn getCursorX
    */
   uint16_t getCursorX();
 
   /**
    * Get the text cursor Y position.
-   * \fn getCursorY
    */
   uint16_t getCursorY();
 
   /**
    * Sets the text foreground color.
-   * \fn setTextColor
    * \param color Pass a usigned byte to set as color.
    */
   void setTextColor(uint8_t color);
@@ -602,7 +562,6 @@ public:
 
   /**
    * Set the text size.
-   * \fn setTextSize
    * \param s Size of text passed as uint8_t.
    * \details
    * Individual ASCII characters are 6x8 pixels
@@ -613,14 +572,12 @@ public:
 
   /**
    * Sets whether text will wrap at screen edges.
-   * \fn setTextWrap
    * \param w uint8_t
    */
   void setTextWrap(bool w);
 
   /**
    * Clears the display and sets the cursor to 0, 0
-   * \fn clear
    * \param w bool
    */
   void clear();

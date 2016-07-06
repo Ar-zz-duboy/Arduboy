@@ -147,7 +147,6 @@ public:
 
   /**
    * allows the CPU to idle between frames
-   * \fn idle
    * \see nextFrame()
    * \see idle()
    * \details
@@ -170,7 +169,6 @@ public:
 
   /**
    * Put the display in command mode.
-   * \fn LCDCommandMode
    * \details
    * See SSD1306 documents for available commands and command sequences.
    *
@@ -182,7 +180,6 @@ public:
 
   /**
    * Return the display width.
-   * \fn width
    * \return Display width as uin8_t.
    */
   uint8_t static width();
@@ -196,7 +193,6 @@ public:
 
   /**
    * Get current state of all buttons (bitmask).
-   * \fn buttonsState
    * \details
    * Bit mask that is returned:
    *
@@ -215,7 +211,6 @@ public:
 
   /**
    * Paints 8 pixels (vertically) from a single byte. 1 is on, 0 is off.
-   * \fn paint8Pixels
    * \param pixels uint8_t
    * \details
    * NOTE: You probably wouldn't actually use this, you'd build something
@@ -249,8 +244,7 @@ public:
 
   /**
    * Paints an entire image directly to hardware (from PROGMEM).
-   * \fn paintScreen
-   * \param *image const uint8_t
+   * \param *image
    * \details
    * Each byte will be 8 vertical pixels, painted in the same order as
    * explained above in paint8Pixels.
@@ -259,7 +253,6 @@ public:
 
   /**
    * Paints an entire image directly to hardware (from RAM)
-   * \fn paintScreen
    * \param image[]
    * \see paint8Pixels()
    * \details
@@ -269,13 +262,11 @@ public:
 
   /**
    * Paints a blank (black) screen to the screen
-   * \fn blank
    */
   void static blank();
 
   /**
    * Invert the display or set to normal.
-   * \fn invert
    * \param inverse
    * When inverted, a pixel set to 0 will be on.
    */
@@ -283,7 +274,6 @@ public:
 
   /**
    * Turn all display pixels on, or display the buffer contents
-   * \fn allPixelsOn
    * \parameter on
    * \details
    * When set to all pixels on, the display buffer will be ignored but not
@@ -302,7 +292,6 @@ public:
 
   /**
    * Set the light output of the RGB LED.
-   * \fn setRGBled
    * \param red
    * \param green
    * \param blue
@@ -314,7 +303,6 @@ public:
 
   /**
    * Set the RGB LEDs digitally, to either fully on or fully off.
-   * \fn digitalWriteRGB
    * \param red
    * \param green
    * \param blue
@@ -325,7 +313,6 @@ public:
 
   /**
    * Boots the hardware.
-   * \fn boot
    * \details
    * - sets input/output/pullup mode for pins
    * - powers up the OLED screen and initializes it properly
@@ -339,7 +326,6 @@ protected:
 
   /**
    * Safe mode
-   * \fn safeMode
    * \details
    * Safe Mode is engaged by holding down both the LEFT button and UP button
    * when plugging the device into USB.  It puts your device into a tight
