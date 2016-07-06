@@ -76,3 +76,11 @@ To compile sketches that have included copies of the Aruboy Library,
 >**OR**
 >
 >Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add `#include "CustomArduboy.h"` to the `.ino` sketch file. 
+
+## Using `Doxygen`
+
+### Prerequisites
+The following packages must be installed.
+```
+doxygen graphviz
+```

@@ -5,8 +5,8 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "Arduboy"
-PROJECT_NUMBER         =
-PROJECT_BRIEF          =
+PROJECT_NUMBER         = 1.2.0
+PROJECT_BRIEF          = Open source library for the original Arduboy unit.
 PROJECT_LOGO           = ./extras/assets/arduboy_screen.png
 OUTPUT_DIRECTORY       = ./doxygen
 CREATE_SUBDIRS         = YES
@@ -15,8 +15,8 @@ OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
 REPEAT_BRIEF           = YES
 ABBREVIATE_BRIEF       =
-ALWAYS_DETAILED_SEC    = NO
-INLINE_INHERITED_MEMB  = NO
+ALWAYS_DETAILED_SEC    = YES
+INLINE_INHERITED_MEMB  = YES
 FULL_PATH_NAMES        = YES
 STRIP_FROM_PATH        =
 STRIP_FROM_INC_PATH    =
@@ -26,14 +26,14 @@ QT_AUTOBRIEF           = NO
 MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
-TAB_SIZE               = 4
+TAB_SIZE               = 2
 ALIASES                =
 TCL_SUBST              =
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO
 OPTIMIZE_FOR_FORTRAN   = NO
 OPTIMIZE_OUTPUT_VHDL   = NO
-EXTENSION_MAPPING      =
+EXTENSION_MAPPING      = ino=c
 MARKDOWN_SUPPORT       = YES
 AUTOLINK_SUPPORT       = YES
 BUILTIN_STL_SUPPORT    = NO
@@ -101,8 +101,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 INPUT                  = .
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c *.cc *.cxx *.cpp *.c++ *.h *.hh *.hxx *.hpp *.h++ 
-                         *.markdown *.md *.ino
+FILE_PATTERNS          = *.c *.cc *.cxx *.cpp *.c++ *.h *.hh *.hxx *.hpp *.h++ *.markdown *.md *.ino
 RECURSIVE              = YES
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
@@ -214,7 +213,7 @@ USE_PDFLATEX           = YES
 LATEX_BATCHMODE        = YES
 LATEX_HIDE_INDICES     = NO
 LATEX_SOURCE_CODE      = YES
-LATEX_BIB_STYLE        = ieeetr
+LATEX_BIB_STYLE        = plain
 #---------------------------------------------------------------------------
 # Configuration options related to the RTF output
 #---------------------------------------------------------------------------

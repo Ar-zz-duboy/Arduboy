@@ -19,13 +19,6 @@
  */
 #define ARDUBOY_LIB_VER 10200 // 1.2.0
 
-/**
- * EEPROM settings for audio
- * \defgroup EEPROM
- *
- * \{
- */
-
 /// Define EEPROM version.
 #define EEPROM_VERSION 0
 /// Set EEPROM brightness.
@@ -34,16 +27,8 @@
 #define EEPROM_AUDIO_ON_OFF 2
 /// Reserve the first 16 bytes of EEPROM for system use.
 #define EEPROM_STORAGE_SPACE_START 16
-/** \} */
 
 #include "ArduboyAudio.h"
-
-/**
- * Color settings
- * \defgroup COLOR
- *
- * \{
- */
 
 /// Definition for PIXEL_SAFE_MODE.
 #define PIXEL_SAFE_MODE
@@ -54,18 +39,11 @@
 #define WHITE  1 // pixel on
 /// Value for black pixel (off).
 #define BLACK  0 // pixel off
-/** \} */
 
-/**
- * \defgroup ADC_SETTINGS
- *
- * \{
- */
 /// Compare Vcc to 1.1 bandgap.
 #define ADC_VOLTAGE (_BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1))
 /// Compare temperature to 2.5 internal reference and _BV(MUX5).
 #define ADC_TEMP (_BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0))
-/** \} */
 
 class ArduboyBase : public ArduboyCore
 {
