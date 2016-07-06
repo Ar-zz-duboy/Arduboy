@@ -99,7 +99,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ./src ./README.md
+INPUT                  = ./src ./README.md ./examples
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c *.cc *.cxx *.cpp *.c++ *.h *.hh *.hxx *.hpp *.h++ *.ino
 RECURSIVE              = YES
@@ -107,9 +107,9 @@ EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        =
-EXAMPLE_PATH           = ./examples 
+EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       =
-EXAMPLE_RECURSIVE      = YES
+EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             =
 INPUT_FILTER           =
 FILTER_PATTERNS        =
