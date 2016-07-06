@@ -1,5 +1,5 @@
 /** 
- * \file Arduboy.cpp
+ * @file Arduboy.cpp
  * \brief Implementation of the Arduboy class.
  *
  */

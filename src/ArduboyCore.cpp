@@ -1,5 +1,5 @@
 /** 
- * \file ArduboyCore.cpp
+ * @file ArduboyCore.cpp
  * \brief A class implementing the core functionality of an Arduboy.
  *
  */
@@ -104,7 +104,6 @@ const uint8_t PROGMEM lcdBootProgram[] = {
   // 0x22, 0x00, PAGE_ADDRESS_END
 };
 
-
 ArduboyCore::ArduboyCore() {}
 
 void ArduboyCore::boot()
@@ -195,8 +194,6 @@ void ArduboyCore::LCDCommandMode()
   *csport &= ~cspinmask;
 }
 
-
-
 void ArduboyCore::safeMode()
 {
   blank(); // clear screen to avoid writing random bytes in image buffer
@@ -204,7 +201,6 @@ void ArduboyCore::safeMode()
     asm volatile("nop \n");
   }
 }
-
 
 /* Power Management */
 
@@ -318,7 +314,7 @@ void ArduboyCore::setRGBled(uint8_t red, uint8_t green, uint8_t blue)
 #endif
 }
 
-  void ArduboyCore::digitalWriteRGB(uint8_t red, uint8_t green, uint8_t blue)
+void ArduboyCore::digitalWriteRGB(uint8_t red, uint8_t green, uint8_t blue)
 {
 #ifdef ARDUBOY_10
   digitalWrite(RED_LED, red);

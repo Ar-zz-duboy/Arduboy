@@ -1,5 +1,5 @@
 /**
- * \file ArduboyAudio.cpp
+ * @file ArduboyAudio.cpp
  * \brief A class implementing the audio functionality for an Arduboy.
  *
  */

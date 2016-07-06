@@ -1,9 +1,8 @@
 /**
- * \file ArduboyCore.h
+ * @file ArduboyCore.h
  * \brief A class implementing the core functionality for the Arduboy.
- *
- * The Arduboy uses the Arduino library to create the environment to run
- * the Arduboy environment.
+ * \details The Arduboy uses the Arduino library to create the environment 
+ * to run the Arduboy environment.
  */
 
 #ifndef ARDUBOY_CORE_H
@@ -146,8 +145,12 @@ class ArduboyCore
 public:
   ArduboyCore();
 
-  /// allows the CPU to idle between frames
   /**
+   * allows the CPU to idle between frames
+   * \fn idle
+   * \see nextFrame()
+   * \see idle()
+   * \details
    * This puts the CPU in "Idle" sleep mode.  You should call this as often
    * as you can for the best power savings.  The timer 0 overflow interrupt
    * will wake up the chip every 1ms - so even at 60 FPS a well written
@@ -159,10 +162,16 @@ public:
    */
   void static idle();
 
-  void static LCDDataMode(); //< put the display in data mode
-
-  /// put the display in command mode
   /**
+   * Put the display in data mode
+   * \fn LCDDataMode
+   */
+  void static LCDDataMode();
+
+  /**
+   * Put the display in command mode.
+   * \fn LCDCommandMode
+   * \details
    * See SSD1306 documents for available commands and command sequences.
    *
    * Links:
@@ -171,11 +180,24 @@ public:
    */
   void static LCDCommandMode();
 
-  uint8_t static width();    //< return display width
-  uint8_t static height();   // < return display height
-
-  /// get current state of all buttons (bitmask)
   /**
+   * Return the display width.
+   * \fn width
+   * \return Display width as uin8_t.
+   */
+  uint8_t static width();
+
+  /**
+   * Return the display height.
+   * \fn heigth
+   * \return Display height as uin8_t.
+   */
+  uint8_t static height();
+
+  /**
+   * Get current state of all buttons (bitmask).
+   * \fn buttonState
+   * \details
    * Bit mask that is returned:
    *
    *           Hi   Low
@@ -185,69 +207,83 @@ public:
    *  1.0      00000000    L left
    *           URLDAB--    R right
    *
-   * Of course you shouldn't worry about bits (they may change with future
-   * hardware revisions) and should instead use the button defines:
-   * LEFT_BUTTON, A_BUTTON, UP_BUTTON, etc.
+   * The specific bits for a button press may change with a release.
+   * It is prefered to use the button defines:
+   *  A_BUTTON, B_BUTTON, UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON and RIGHT_BUTTON
    */
-
   uint8_t static buttonsState();
 
-  // paints 8 pixels (vertically) from a single byte
-  //  - 1 is lit, 0 is unlit
-  //
-  // NOTE: You probably wouldn't actually use this, you'd build something
-  // higher level that does it's own calls to SPI.transfer().  It's
-  // included for completeness since it seems there should be some very
-  // rudimentary low-level draw function in the core that supports the
-  // minimum unit that the hardware allows (which is a strip of 8 pixels)
-  //
-  // This routine starts in the top left and then across the screen.
-  // After each "page" (row) of 8 pixels is drawn it will shift down
-  // to start drawing the next page.  To paint the full screen you call
-  // this function 1,024 times.
-  //
-  // Example:
-  //
-  // X = painted pixels, . = unpainted
-  //
-  // blank()                      paint8Pixels() 0xFF, 0, 0x0F, 0, 0xF0
-  // v TOP LEFT corner (8x9)      v TOP LEFT corner
-  // ........ (page 1)            X...X... (page 1)
-  // ........                     X...X...
-  // ........                     X...X...
-  // ........                     X...X...
-  // ........                     X.X.....
-  // ........                     X.X.....
-  // ........                     X.X.....
-  // ........ (end of page 1)     X.X..... (end of page 1)
-  // ........ (page 2)            ........ (page 2)
+  /**
+   * Paints 8 pixels (vertically) from a single byte. 1 is on, 0 is off.
+   * \fn paint8Pixels
+   * \param pixels uint8_t
+   * \details
+   * NOTE: You probably wouldn't actually use this, you'd build something
+   * higher level that does it's own calls to SPI.transfer().  It's
+   * included for completeness since it seems there should be some very
+   * rudimentary low-level draw function in the core that supports the
+   * minimum unit that the hardware allows (which is a strip of 8 pixels)
+   *
+   * This routine starts in the top left and then across the screen.
+   * After each "page" (row) of 8 pixels is drawn it will shift down
+   * to start drawing the next page.  To paint the full screen you call
+   * this function 1,024 times.
+   *
+   * Example:
+   *
+   * X = painted pixels, . = unpainted
+   *
+   * blank()                      paint8Pixels() 0xFF, 0, 0x0F, 0, 0xF0
+   * v TOP LEFT corner (8x9)      v TOP LEFT corner
+   * ........ (page 1)            X...X... (page 1)
+   * ........                     X...X...
+   * ........                     X...X...
+   * ........                     X...X...
+   * ........                     X.X.....
+   * ........                     X.X.....
+   * ........                     X.X.....
+   * ........ (end of page 1)     X.X..... (end of page 1)
+   * ........ (page 2)            ........ (page 2)
+   */
   void static paint8Pixels(uint8_t pixels);
 
-  /// paints an entire image directly to hardware (from PROGMEM)
-  /*
+  /**
+   * Paints an entire image directly to hardware (from PROGMEM).
+   * \fn paintScreen
+   * \param *image const uint8_t
+   * \details
    * Each byte will be 8 vertical pixels, painted in the same order as
    * explained above in paint8Pixels.
    */
   void static paintScreen(const uint8_t *image);
 
-  /// paints an entire image directly to hardware (from RAM)
-  /*
-   * Each byte will be 8 vertical pixels, painted in the same order as
-   * explained above in paint8Pixels.
+  /**
+   * Paints an entire image directly to hardware (from RAM)
+   * \fn paintScreen
+   * \param image**
+   * \details
+   * \see paint8Pixels()
+   * Each byte will be 8 vertical pixels, painted in the same order.
    */
   void static paintScreen(uint8_t image[]);
 
-  /// paints a blank (black) screen to hardware
+  /**
+   * Paints a blank (black) screen to the screen
+   * \fn blank
+   */
   void static blank();
 
-  /// invert the display or set to normal
   /**
-   * when inverted, a pixel set to 0 will be on
+   * Invert the display or set to normal.
+   * \fn invert
+   * \param inverse
+   * When inverted, a pixel set to 0 will be on.
    */
   void static invert(bool inverse);
 
-  /// turn all display pixels on, or display the buffer contents
   /**
+   * \fn turn all display pixels on, or display the buffer contents
+   * \details
    * when set to all pixels on, the display buffer will be
    * ignored but not altered
    */
@@ -262,33 +298,47 @@ public:
   /// send a single byte command to the OLED
   void static sendLCDCommand(uint8_t command);
 
-  /// set the light output of the RGB LED
   /**
+   * Set the light output of the RGB LED.
+   * \fn setRGBled
+   * \param red
+   * \param green
+   * \param blue
+   * \details
    * The brightness of each LED can be set to a value from
    * 0 (fully off) to 255 (fully on).
    */
   void static setRGBled(uint8_t red, uint8_t green, uint8_t blue);
 
-  /// set the RGB LEDs digitally, to either fully on or fully off
   /**
+   * Set the RGB LEDs digitally, to either fully on or fully off.
+   * \fn digitalWriteRGB
+   * \param red
+   * \param green
+   * \param blue
+   * \details
    * Use value RGB_ON or RGB_OFF for each color of LED.
    */
   void static digitalWriteRGB(uint8_t red, uint8_t green, uint8_t blue);
 
-  /// boots the hardware
   /**
+   * Boots the hardware.
+   * \fn boot
+   * \details
    * - sets input/output/pullup mode for pins
    * - powers up the OLED screen and initializes it properly
    * - sets up power saving
    * - kicks CPU down to 8Mhz if needed
    * - allows Safe mode to be entered
-     */
-    void static boot();
+   */
+  void static boot();
 
 protected:
 
-  /// Safe mode
   /**
+   * Safe mode
+   * \fn safeMode
+   * \details
    * Safe Mode is engaged by holding down both the LEFT button and UP button
    * when plugging the device into USB.  It puts your device into a tight
    * loop and allows it to be reprogrammed even if you have uploaded a very

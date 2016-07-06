@@ -183,7 +183,6 @@ public:
    * \fn drawPixel
    * \param x integer for an x position
    * \param y integer for a y position
-   * \return void return
    */
   void drawPixel(int x, int y, uint8_t color);
 
@@ -194,6 +193,7 @@ public:
    * \param x int for an x position to draw at.
    * \param y int for an y position to draw at.
    * \param color a uint8_t for a color.
+   * \return Pixel value as unsigned byte.
    */
   uint8_t getPixel(uint8_t x, uint8_t y);
 
@@ -434,7 +434,6 @@ public:
    * \param color
    * \param bg
    * \param size
-   *
    */
   void drawChar(int16_t x,
                 int16_t y,
@@ -458,15 +457,15 @@ public:
    * \details
    * This method is still most effective when called semi-randomly such
    * as after a user hits a button to start a game or other semi-random
-   * events
+   * events.
    */
   void initRandomSeed();
 
   /**
    * Swap the references of two pointers.
    * \fn swap
-   * \param reference to an int16_t to swap with b
-   * \param reference to int16_t to swap with a
+   * \param &a reference to an int16_t to swap with b
+   * \param &b reference to int16_t to swap with a
    */
   void swap(int16_t &a, int16_t &b);
 
@@ -479,24 +478,27 @@ public:
 
   /**
    * Returns 'true' if the system is ready to draw the next frame.
+   * \return Returns true if the Arduboy is ready to draw the next frame.
    * \fn nextFrame
    */
   bool nextFrame();
 
   /**
-   * Returns 'true' if the current frame number is evenly divisible by the
-   * passed integers
+   * Returns true if the current frame number is evenly divisible by the
    * \fn everyXFrames
    * \param frames
+   * \return returns true if frames divides the current frame count.
    * \details
-   * If called with the same value each time, will return "true" if the given
-   * number of frames has elapsed since the last frame in which it was "true".
+   * If called with the same value each time, then this function will return 
+   * true if the same number of 'frames' has elapsed since the last frame. 
    */
   bool everyXFrames(uint8_t frames);
 
   /**
    * Returns the load on the CPU as a percentage.
    * \fn cpuLoad
+   * \todo can this return a uint_8 of 100?
+   * \return return an int representing the percentage of cpu use.
    * \details
    * This is based on how much of the time your app is spends rendering
    * frames.  This number can be higher than 100 if your app is rendering
@@ -508,6 +510,7 @@ public:
    * useful for getting raw approximate voltage values
    * \fn rawADC
    * \param adc_bits byte to specificy adc bits
+   * \return Return ADC as an unsigned 16 bit integer.
    */
   uint16_t rawADC(byte adc_bits);
 
