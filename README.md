@@ -11,12 +11,19 @@ This an open-source library providing function to an Arduboy.
 
 This is a development branch. 
 
-**`develop` Branch**
+#### Branches
+A list of imporant Arduboy branches.
+
+**`stable`**
+
+Please use the `stable` branch for the current stable build. If you are unsure
+which branch to use for your game, then this is the branch you are looking for.
+
+**`develop`**
+
 The `develop` branch for the Arduboy Library holds the bleeding-edge release
 for the Arduboy project.
 
-**`stable` Branch**
-Please use the `stable` branch for the current stable build.
 
 
 ### Using the Aruboy Library
