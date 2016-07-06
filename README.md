@@ -99,13 +99,16 @@ compiler will try and link the system Arduboy library source with the local
 header file, which can cause compilation errors if the local library source 
 differs from the system's Arduboy source.
 
-To compile sketches that have included copies of the Aruboy Library,
+Use one of the following options to compile sketches that have included copies
+of the Aruboy Library,
+
+**Option 1.**
 
 > Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
 > This will only work in some cases.
->
-> **OR**
->
+
+**Option 2.**
+
 > Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
 > `#include "CustomArduboy.h"` to the `.ino` sketch file. 
 
