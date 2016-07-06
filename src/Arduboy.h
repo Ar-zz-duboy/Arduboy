@@ -135,7 +135,6 @@ public:
    * Flashlight mode, provide off button only.
    * \fn flashlight
    * \param off_button The button to turn off flashlight mode.
-   * \param off_button uint8_t button to press to turn off flashlight.
    */
   void flashlight(uint8_t off_button);
 
