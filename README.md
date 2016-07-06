@@ -1,24 +1,19 @@
 Arduboy Library
 ===============
 
-`develop`
+## Arduboy Libary: `develop` branch
 
 This is the `develop` branch for the Arduboy Library.
 
-## This is a Development Branch
-
-This is the branch main development branch for the Arduboy Library.
-
 Please use the `stable` branch for the current stable build.
 
-## About the Aruboy Library
+## About
 
 This an open-source library providing function to an Arduboy.
 
 ## Using the Library
 
-To use the Arduboy library, it must be installed and then included in your
-project.
+To use the Arduboy library, it must be installed and then included in your project.
 
 ### Installation
 
@@ -28,9 +23,11 @@ Install the library by cloning its repository.
 
 #### Where to Install
 
-The library should be installed into your user's home Arduino `libraries` 
+The library should be installed into your user's home Arduino `libraries`
 directory. Refer to the following list for the location of the Arduino
 `libraries` folder.
+
+##### Arduino Library Locations by OS
 
 **Linux**
 
@@ -43,6 +40,8 @@ directory. Refer to the following list for the location of the Arduino
 **Windows**
 
     C:\Users\username\My Documents\Arduino\libraries
+
+##### Find the Location of Arduino `libraries\`
 
 If you don't find the `libraries` folder in one of the above locations, you can
 determine its location using the navigation menu `File > Preferences`. In the
@@ -97,13 +96,11 @@ differs from the system's Arduboy source.
 
 To compile sketches that have included copies of the Aruboy Library,
 
->Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
->This will only work in some cases.
->
->**OR**
->
->Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
->`#include "CustomArduboy.h"` to the `.ino` sketch file. 
+> Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
+> This will only work in some cases.
+> **OR**
+> Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
+> `#include "CustomArduboy.h"` to the `.ino` sketch file. 
 
 ## Using `Doxygen`
 
