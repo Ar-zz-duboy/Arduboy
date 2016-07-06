@@ -274,7 +274,7 @@ public:
 
   /**
    * Turn all display pixels on, or display the buffer contents
-   * \parameter on
+   * \param on
    * \details
    * When set to all pixels on, the display buffer will be ignored but not
    * altered.

@@ -183,7 +183,6 @@ public:
    * coordinate.
    * \param x int for an x position to draw at.
    * \param y int for an y position to draw at.
-   * \param color a uint8_t for a color.
    * \return Pixel value as unsigned byte.
    */
   uint8_t getPixel(uint8_t x, uint8_t y);
@@ -578,7 +577,6 @@ public:
 
   /**
    * Clears the display and sets the cursor to 0, 0
-   * \param w bool
    */
   void clear();
 
