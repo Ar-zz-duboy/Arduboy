@@ -107,13 +107,13 @@ of the Aruboy Library,
 
 **Option 1.**
 
-> Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
-> This will only work in some cases.
+Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
+This will only work in some cases.
 
 **Option 2.**
 
-> Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
-> `#include "CustomArduboy.h"` to the `.ino` sketch file. 
+Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
+`#include "CustomArduboy.h"` to the `.ino` sketch file. 
 
 ## Using `Doxygen`
 
