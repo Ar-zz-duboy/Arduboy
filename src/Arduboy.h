@@ -528,7 +528,6 @@ public:
 
   /**
    * Writes a single ASCII character to the screen.
-   * \param uint8_t Takes character to write.
    * \return returns size_t.
    */
   virtual size_t write(uint8_t);
