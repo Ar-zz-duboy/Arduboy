@@ -1,22 +1,23 @@
-/*
-Buttons example
-June 11, 2015
-Copyright (C) 2015 David Martinez
-All rights reserved.
-This code is the most basic barebones code for showing how to use buttons in
-Arduboy.
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-*/
+/**
+ * @file Buttons.ino
+ * \brief Buttons example
+ * \details
+ * June 11, 2015
+ * Copyright (C) 2015 David Martinez
+ * All rights reserved.
+ * This code is the most basic barebones code for showing how to use buttons in
+ * Arduboy.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ */
 
 #include <Arduboy.h>
 
 // Make an instance of arduboy used for many functions
 Arduboy arduboy;
-AbPrinter text(arduboy);
 
 // Variables for your game go here.
 char title[] = "Press Buttons!";
@@ -64,8 +65,7 @@ void setup() {
 // this is where our game logic goes.
 void loop() {
   // pause render until it's time for the next frame
-  if (!(arduboy.nextFrame()))
-    return;
+  if (!(arduboy.nextFrame())) return;
 
   // the next couple of lines will deal with checking if the D-pad buttons
   // are pressed and move our text accordingly.
@@ -73,22 +73,23 @@ void loop() {
   // text on the screen.
 
   // if the right button is pressed move 1 pixel to the right every frame
-  if(arduboy.pressed(RIGHT_BUTTON) && (x < X_MAX)) {
+  if (arduboy.pressed(RIGHT_BUTTON) && (x < X_MAX)) {
     x++;
   }
 
   // if the left button is pressed move 1 pixel to the left every frame
-  if(arduboy.pressed(LEFT_BUTTON) && (x > 0)) {
+  if (arduboy.pressed(LEFT_BUTTON) && (x > 0)) {
     x--;
   }
 
   // if the up button or B button is pressed move 1 pixel up every frame
-  if((arduboy.pressed(UP_BUTTON) || arduboy.pressed(B_BUTTON)) && (y > 0)) {
+  if ((arduboy.pressed(UP_BUTTON) || arduboy.pressed(B_BUTTON)) && (y > 0)) {
     y--;
   }
 
   // if the down button or A button is pressed move 1 pixel down every frame
-  if((arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(A_BUTTON)) && (y < Y_MAX)) {
+  if ((arduboy.pressed(DOWN_BUTTON) || arduboy.pressed(A_BUTTON)) && 
+                                       (y < Y_MAX)) {
     y++;
   }
 
@@ -97,11 +98,11 @@ void loop() {
   arduboy.clear();
 
   // we set our cursor x pixels to the right and y down from the top
-  text.setCursor(x, y);
+  arduboy.setCursor(x, y);
 
-  // then we print to screen what is stored in our text variable we declared earlier
-  text.print(title);
+  // then print to screen what's stored in the text variable we declared earlier
+  arduboy.print(title);
 
-  // then we finaly we tell the arduboy to display what we just wrote to the display.
+  // then we tell the arduboy to display what we just wrote to the display.
   arduboy.display();
 }

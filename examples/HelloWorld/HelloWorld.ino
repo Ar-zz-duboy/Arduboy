@@ -1,21 +1,22 @@
-/*
-Hello, World! example
-June 11, 2015
-Copyright (C) 2015 David Martinez
-All rights reserved.
-This code is the most basic barebones code for writing a program for Arduboy.
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-*/
+/**
+ * @file HelloWorld.ino
+ * \details
+ * Hello, World! example
+ * June 11, 2015
+ * Copyright (C) 2015 David Martinez
+ * All rights reserved.
+ * This code is the most basic barebones code for writing a program for Arduboy.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ */
 
 #include <Arduboy.h>
 
 // make an instance of arduboy used for many functions
 Arduboy arduboy;
-AbPrinter text(arduboy);
 
 
 // This function runs once in your game.
@@ -33,7 +34,6 @@ void setup() {
 // our main game loop, this runs once every cycle/frame.
 // this is where our game logic goes.
 void loop() {
-  /*
   // pause render until it's time for the next frame
   if (!(arduboy.nextFrame()))
     return;
@@ -50,11 +50,4 @@ void loop() {
 
   // then we finaly we tell the arduboy to display what we just wrote to the display
   arduboy.display();
-  */
-  arduboy.draw(draw);
-}
-
-void draw() {
-  arduboy.setCursor(4, 9);
-  arduboy.print(F("Hello, world!"));
 }

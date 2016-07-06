@@ -1,3 +1,7 @@
+/**
+ * @file breakout_bitmaps.h
+ */
+
 #ifndef BREAKOUT_BITMAPS_H
 #define BREAKOUT_BITMAPS_H
 

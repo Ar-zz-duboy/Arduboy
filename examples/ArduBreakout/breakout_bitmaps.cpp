@@ -1,3 +1,7 @@
+/**
+ * @file breakout_bitmaps.cpp
+ */
+
 #include "breakout_bitmaps.h"
 
 PROGMEM const unsigned char title[] =

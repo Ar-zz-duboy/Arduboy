@@ -7,16 +7,21 @@
 #######################################
 
 Arduboy	KEYWORD1
+ArduboyBase	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
 allPixelsOn	KEYWORD2
+begin	KEYWORD2
 blank	KEYWORD2
+boot	KEYWORD2
+bootLogo	KEYWORD2
 buttonsState	KEYWORD2
 clear	KEYWORD2
 cpuLoad	KEYWORD2
+digitalWriteRGB	KEYWORD2
 display	KEYWORD2
 drawBitmap	KEYWORD2
 drawChar	KEYWORD2
@@ -36,9 +41,13 @@ fillRect	KEYWORD2
 fillRoundRect	KEYWORD2
 fillScreen	KEYWORD2
 fillTriangle	KEYWORD2
+flashlight	KEYWORD2
 flipVertical	KEYWORD2
 flipHorizontal	KEYWORD2
 getBuffer	KEYWORD2
+getCursorX	KEYWORD2
+getCursorY	KEYWORD2
+height	KEYWORD2
 idle	KEYWORD2
 initRandomSeed	KEYWORD2
 invert	KEYWORD2
@@ -52,14 +61,39 @@ pressed	KEYWORD2
 saveOnOff	KEYWORD2
 setCursor	KEYWORD2
 setFrameRate	KEYWORD2
-setRGBled 	KEYWORD2
+setRGBled	KEYWORD2
+setTextColor	KEYWORD2
+setTextBackground	KEYWORD2
 setTextSize	KEYWORD2
 setTextWrap	KEYWORD2
+systemButtons	KEYWORD2
+width	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
 
+HEIGHT	LITERAL1
+WIDTH	LITERAL1
+COLUMN_ADDRESS_END	LITERAL1
+PAGE_ADDRESS_END	LITERAL1
+
 BLACK	LITERAL1
 WHITE	LITERAL1
 
+A_BUTTON	LITERAL1
+B_BUTTON	LITERAL1
+DOWN_BUTTON	LITERAL1
+LEFT_BUTTON	LITERAL1
+RIGHT_BUTTON	LITERAL1
+UP_BUTTON	LITERAL1
+
+PIN_SPEAKER_1	LITERAL1
+PIN_SPEAKER_2	LITERAL1
+
+BLUE_LED	LITERAL1
+GREEN_LED	LITERAL1
+RED_LED	LITERAL1
+
+RGB_OFF	LITERAL1
+RGB_ON	LITERAL1

@@ -1,4 +1,26 @@
-#include <Arduboy.h>
+/**
+ * @file PlayTune.ino
+ * \details
+ * Play a musical composition in the background while
+ * the main sketch code runs in the foreground.
+ *
+ * The ArduboyPlaytune library must be installed to use this sketch
+ * https://github.com/Arduboy/ArduboyPlayTune
+ *
+ * The D-Pad buttons will move the text and play a tone.
+ *
+ * The A button mutes the sound.
+ * The screen is inverted when sound is muted.
+ * 
+ * The B button will turn sound back on if it's muted.
+ *
+ * Note: The score that is played contains three parts.
+ *       The ArduboyPlaytune library can only play the first two
+ *       parts and ignores the third, so it sounds a bit strange
+ *       in some places. With the DevKit, only the first part plays.
+ */
+
+#include <Arduboy2.h>
 #include <ArduboyPlaytune.h>
 
 const byte PROGMEM score [] = {
@@ -156,28 +178,33 @@ const byte PROGMEM score [] = {
   0x80, 0x81, 0x90,0x45, 0,91, 0,136, 0x80, 0x82, 0x90,0x45, 0x91,0x2D, 7,83, 0x80, 0x81, 0xf0};
 
 Arduboy arduboy;
-AbPrinter text(arduboy);
-ArduboyPlaytune tunes;
+ArduboyPlaytune tunes(arduboy.audio.enabled);
 
 void setup()
 {
   arduboy.begin();
-  text.setSize(4);
-  text.setCursor(0,0);
-  text.print("Music\nDemo");
+
+  arduboy.setFrameRate(10);
+  arduboy.setTextSize(3);
 
   // audio setup
-  arduboy.audio.on();
   tunes.initChannel(PIN_SPEAKER_1);
+#ifndef AB_DEVKIT
+  // if not a DevKit
   tunes.initChannel(PIN_SPEAKER_2);
+#else
+  // if it's a Devkit
+  tunes.initChannel(PIN_SPEAKER_1); // use the same pin for both channels
+  tunes.toneMutesScore(true);       // mute the score when a tone is sounding
+#endif
 
-  arduboy.display();
+  arduboy.invert(!arduboy.audio.enabled()); // invert display if sound muted
 }
 
 
-int x = 0, y = 0;
+int x = 20, y = 10; // initial text position
 
-void loop ()
+void loop()
 {
   // pause render until it's time for the next frame
   if (!(arduboy.nextFrame()))
@@ -185,23 +212,31 @@ void loop ()
 
   if (arduboy.pressed(UP_BUTTON)) {
     y-=1;
+    tunes.tone(1175,300);
   } else if (arduboy.pressed(DOWN_BUTTON)) {
     y+=1;
+    tunes.tone(1397,300);
   } else if (arduboy.pressed(LEFT_BUTTON)) {
     x-=1;
+    tunes.tone(1047,300);
   } else if (arduboy.pressed(RIGHT_BUTTON)) {
     x+=1;
+    tunes.tone(1319,300);
   }
 
   if (arduboy.pressed(A_BUTTON)) {
     arduboy.invert(true);
+    arduboy.audio.off();
   } else if (arduboy.pressed(B_BUTTON)) {
     arduboy.invert(false);
+    arduboy.audio.on();
   }
 
   arduboy.clear();
-  text.setCursor(x,y);
-  text.print("Music\nDemo");
+  arduboy.setCursor(x,y);
+  arduboy.print("Music");
+  arduboy.setCursor(x+8,y+24);
+  arduboy.print("Demo");
   arduboy.display();
 
   // play the tune if we aren't already
