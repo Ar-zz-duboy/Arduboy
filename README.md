@@ -3,7 +3,9 @@ Arduboy Library
 
 ## Arduboy Libary: `develop` branch
 
-This is the `develop` branch for the Arduboy Library.
+This is the `develop` branch for the Arduboy Library and holds the
+bleeding-edge release for the Arduboy project.
+
 
 Please use the `stable` branch for the current stable build.
 
@@ -13,21 +15,23 @@ This an open-source library providing function to an Arduboy.
 
 ## Using the Library
 
-To use the Arduboy library, it must be installed and then included in your project.
+To use the Arduboy library, it must be installed and then included in your
+project. An Arduboy or Leonardo must board must be selected as a target board.
+Compile and upload the source to an Arduboy.
 
-### Installation
+## Installation
 
 Install the library by cloning its repository.
 
     $ git clone https://github.com/Arduboy/Arduboy.git
 
-#### Where to Install
+### Where to Install
 
 The library should be installed into your user's home Arduino `libraries`
 directory. Refer to the following list for the location of the Arduino
 `libraries` folder.
 
-##### Arduino Library Locations by OS
+#### Arduino Library Locations by OS
 
 **Linux**
 
@@ -41,7 +45,7 @@ directory. Refer to the following list for the location of the Arduino
 
     C:\Users\username\My Documents\Arduino\libraries
 
-##### Find the Location of Arduino `libraries\`
+#### Find the Location of Arduino `libraries\`
 
 If you don't find the `libraries` folder in one of the above locations, you can
 determine its location using the navigation menu `File > Preferences`. In the
@@ -64,7 +68,7 @@ automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
 
 Select the **Leonardo** board as the target platform.
 
-### Examples
+### Arduboy Examples
 
 Example games and source can be found in the `examples` directory.
 
