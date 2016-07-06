@@ -1,5 +1,5 @@
 /**
- * \file Arduboy.h
+ * @file Arduboy.h
  * \brief The Arduboy class definition.
  *
  */
