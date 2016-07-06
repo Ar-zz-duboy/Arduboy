@@ -1,13 +1,13 @@
-Arduboy Library · `ekem/develop`
+Arduboy Library · `develop`
 ===============
 
-Description of the Arduboy Library, using the `ekem/develop` branch.
+Description of the Arduboy Library, using the `develop` branch.
 
 ## About
 
 This an open-source library providing function to an Arduboy.
 
-### Using the `ekem/develop` Branch
+### Using the `develop` Branch
 
 This is a development branch. 
 
@@ -23,8 +23,6 @@ which branch to use for your game, then this is the branch you are looking for.
 
 The `develop` branch for the Arduboy Library holds the bleeding-edge release
 for the Arduboy project.
-
-
 
 ### Using the Aruboy Library
 
