@@ -7,7 +7,7 @@ Description of the Arduboy Library, `develop` branch.
 
 This an open-source library providing function to an Arduboy.
 
-### Arduboy · `ekem/develop` branch
+### Using the `ekem/develop` Branch
 
 This is a development branch. The `develop` branch for the Arduboy Library
 holds the bleeding-edge release for the Arduboy project.
@@ -15,7 +15,7 @@ holds the bleeding-edge release for the Arduboy project.
 **Stable Branch** - Please use the `stable` branch for the current stable build.
 
 
-### Using the Library
+### Using the Aruboy Library
 
 To use the Arduboy library, it must be installed and then included in your
 project. An Arduboy or Leonardo must board must be selected as a target board.
