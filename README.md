@@ -1,7 +1,7 @@
 Arduboy Library · `ekem/develop`
 ===============
 
-Description of the Arduboy Library, `develop` branch.
+Description of the Arduboy Library, using the `ekem/develop` branch.
 
 ## About
 
