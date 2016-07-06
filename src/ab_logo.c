@@ -1,3 +1,7 @@
+/**
+ * @file ab_logo.c
+ */
+
 #include <avr/pgmspace.h>
 
 #ifndef ARDUBOY_LOGO_CREATED
