@@ -48,46 +48,48 @@
 class ArduboyBase : public ArduboyCore
 {
 public:
-  /// Arduboy constructor
   /**
+   * Arduboy constructor
+   * /details
    * Constuctor for ArduboyBase sets up frame managment
    */
   ArduboyBase();
 
-  /// implement audio
   /**
-   * Class used to offer a general API for creating audio on an Arduboy
+   * Implement audio for an Arduboy.
+   * \details Class used to offer a general API for creating audio on an Arduboy
    */
   ArduboyAudio audio;
 
-  /// Returns true if buttons in button_mask are pressed.
   /**
+   * Returns true if buttons in button_mask are pressed.
    * \fn pressed
    * \param buttons uint8_t argument for a button mask.
    * \return Returns true if all button in button mask are pressed.
-   *
+   * \details
    * example:
    *   if (pressed(LEFT_BUTTON + A_BUTTON))
    *
    */
   boolean pressed(uint8_t buttons);
 
-  /// Returns true if the button mask passed in not pressed.
   /**
+   * Returns true if the button mask passed in not pressed.
    * \fn notPressed
    * \param buttons uint8_t argument for a button mask.
    * \return Returns true if every button is not pressed.
    * \see pressed()
-   *
+   * \details
    * example:
    *  if (notPressed(LEFT_BUTTON))
    *
    */
   boolean notPressed(uint8_t buttons);
 
-  /// Initialize hardware, boot logo, boot utilities, etc.
   /**
+   * Initialize hardware, boot logo, boot utilities, etc.
    * \fn begin
+   * \details
    * Look at the source for `begin()` and just rip out what you do not
    * need and start there.  Calling just `boot()` might work also
    * depending on your requirements.
@@ -102,24 +104,26 @@ public:
   /// Depreciated function. Use begin instead.
   void start() __attribute__((deprecated, warning("use begin() instead")));
 
-  /// Scrolls in the Arduboy logo
-  /*
+  /**
+   * Scrolls in the Arduboy logo
    * \fn bootLogo
+   * \details
    * Scrolls the logo stored in memory for Arduboy down the screen. LEDs will
    * flash during the boot sequence.
    */
   void bootLogo();
 
-  /// Clears display.
-  /*
+  /**
+   * Clears display.
    * \fn clear
    * Clear the image buffer for the controlled Arduboy.
    */
   void clear();
 
-  /// Provide flashlight mode, providing a default on and off button..
   /**
+   * Provide flashlight mode, providing a default on and off button..
    * \fn flashlight
+   * \details
    * The flashlight mode will places the programmble LED on an Arduboy to white
    * and turn all of the pixels on the screen on. The default buttons provided
    * to check before turning on the flashlight are UP_BUTTON and DOWN_BUTTON
@@ -127,17 +131,18 @@ public:
    */
   void flashlight();
 
-  /// Flashlight mode, provide off button only.
   /**
+   * Flashlight mode, provide off button only.
    * \param off_button uint8_t button to press to turn off flashlight.
    */
   void flashlight(uint8_t off_button);
 
-  /// Flashlight mode, provide on and off button.
   /**
+   * Flashlight mode, provide on and off button.
    * \fn flashlight
    * \param on_button uint8_t button to check before turning on flashlight.
    * \param off_button uint8_t button to press to turn off flashlight.
+   * \details
    * Hold a key when booting to enable, press a provided key to exit;
    * or simply turn off your Arduboy.  Your sketches can also
    * call this at any time.  It goes into a tight loop until the
@@ -149,9 +154,10 @@ public:
   void clearDisplay() 
       __attribute__((deprecated, warning("use clear() instead")));
 
-  /// Copies the contents of the screen buffer to the screen.
   /**
+   * Copies the contents of the screen buffer to the screen.
    * \fn display
+   * \details
    * X and Y positions on the display are from the top left corner, thus a Y of
    * 64 is the bottom of the screen and an X of 128 is the right side of the
    * screen. "Color" or "value" means choosing whether a pixel is lit or not - 
@@ -160,19 +166,20 @@ public:
    */
   void display();
 
-  /// Managed draw function for an Arduboy.
   /**
+   * Managed draw function for an Arduboy.
    * \fn draw
    * \param *f a pointer to a function to be called.
    * \return Returns a uint8_t for status. 0 for no errors.
+   * \details
    * The managed draw function for Arduboy. Checks if frame is ready to be
    * drawn, returns if not. The function passed a parameter is executed along
    * with any cleanup routine.
    */
   uint8_t draw(void (*f)());
 
-  /// Sets a pixel in the screen buffer to on or off. Default is on (white).
   /**
+   * Sets a pixel in the screen buffer to on or off. Default is on (white).
    * \fn drawPixel
    * \param x integer for an x position
    * \param y integer for a y position
@@ -180,37 +187,38 @@ public:
    */
   void drawPixel(int x, int y, uint8_t color);
 
-  /// Get the value of a pixel from the screen buffer at a specified x and y 
-  /// coordinate.
   /**
+   * Get the value of a pixel from the screen buffer at a specified x and y 
+   * coordinate.
    * \fn getPixel
    * \param x int for an x position to draw at.
    * \param y int for an y position to draw at.
    * \param color a uint8_t for a color.
-   *
    */
   uint8_t getPixel(uint8_t x, uint8_t y);
 
-  /// Draw a circle of a defined radius.
   /**
+   * Draw a circle of a defined radius.
    * \fn drawCircle
    * \param x0
    * \param y0
    * \param r
    * \param color
+   * \details
    * Draws a circle in white or black. X and Y are the center point of the
    * circle.
    */
   void drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color);
 
-  /// Draws one or more "corners" of a circle.
   /**
+   * Draws one or more "corners" of a circle.
    * \fn drawCircleHelper
    * \param x0
    * \param y0
    * \param r
    * \param cornername
    * \param color
+   * \details
    * Helper function to draw the corners of a circle at a given x and y origin.
    */
   void drawCircleHelper(int16_t x0,
@@ -219,19 +227,18 @@ public:
                         uint8_t cornername,
                         uint8_t color);
 
-  /// Draws a filled-in circle.
   /**
+   * Draws a filled-in circle.
    * \fn fillCircle
    * \param x0
    * \param y0
    * \param r
    * \param color
-   *
    */
   void fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color);
 
-   /// Draws one or both vertical halves of a filled-in circle.
    /**
+    * Draws one or both vertical halves of a filled-in circle.
     * \fn fillCircleHelper
     * \param x0
     * \param y0
@@ -247,19 +254,20 @@ public:
                         int16_t delta,
                         uint8_t color);
 
-  /// Draws a line between two points.
   /**
+   * Draws a line between two points.
    * \fn drawLine
    * \param x0
    * \param y0
    * \param x1
    * \param y1
    * \param color
-   * Uses Bresenham's algorithm.
+   * \details Uses Bresenham's algorithm.
    */
   void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color);
 
   /**
+   * Draws a rectangle of a width and height.
    * \fn drawRect
    * \param x
    * \param y
@@ -267,30 +275,30 @@ public:
    * \param h
    * \param color
    */
-  /// Draws a rectangle of a width and height.
   void drawRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color);
 
   /**
+   * Draws vertical line.
    * \fn drawFastVLine
    * \param x
    * \param y
    * \param h
    * \param color
    */
-  /// Draws vertical line.
   void drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color);
 
   /**
+   * Draws a horizontal line.
    * \fn drawFastHLine
    * \param x
    * \param y
    * \param w
    * \param color
    */
-  /// Draws a horizontal line.
   void drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color);
 
   /**
+   * Draws a filled-in rectangle.
    * \fn fillRect
    * \param x
    * \param y
@@ -298,18 +306,17 @@ public:
    * \param h
    * \param color
    */
-  /// Draws a filled-in rectangle.
   void fillRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color);
 
   /**
+   * Fills the screen buffer with white or black.
    * \fn fillScreen
    * \param color
    */
-  /// Fills the screen buffer with white or black.
   void fillScreen(uint8_t color);
 
-  /// Draws a rectangle with rounded edges.
   /**
+   * Draws a rectangle with rounded edges.
    * \fn drawRoundRect
    * \param x
    * \param y
@@ -325,8 +332,8 @@ public:
                      uint8_t r,
                      uint8_t color);
 
-  /// Draws a filled-in rectangle with rounded edges.
   /**
+   * Draws a filled-in rectangle with rounded edges.
    * \fn fillRoundRect
    * \param x
    * \param y
@@ -342,8 +349,8 @@ public:
                      uint8_t r,
                      uint8_t color);
 
-   /// Draws the outline of a triangle.
   /**
+   * Draws the outline of a triangle.
    * \fn drawTriangle
    * \param x0
    * \param y0
@@ -361,8 +368,8 @@ public:
                     int16_t y2,
                     uint8_t color);
 
-  /// Draws a filled-in triangle.
   /**
+   * Draws a filled-in triangle.
    * \fn drawTriangle
    * \param x0
    * \param y0
@@ -380,8 +387,8 @@ public:
                      int16_t y2,
                      uint8_t color);
 
-  /// Draws a bitmap from program memory to a specific X/Y
   /**
+   * Draws a bitmap from program memory to a specific X/Y
    * \fn drawBitmap
    * \param x
    * \param y
@@ -397,8 +404,8 @@ public:
                   uint8_t h,
                   uint8_t color);
 
-  /// Draws images that are bit-oriented horizontally.
   /**
+   * Draws images that are bit-oriented horizontally.
    * \fn drawSlowXYBitmap
    * \param x
    * \param y
@@ -418,8 +425,8 @@ public:
                         uint8_t h,
                         uint8_t color);
 
-  /// Draws an ASCII character at a point.
   /**
+   * Draws an ASCII character at a point.
    * \fn drawChar
    * \param x
    * \param y
@@ -436,74 +443,78 @@ public:
                 uint8_t bg,
                 uint8_t size);
 
-  /// Get a pointer to the display buffer.
   /**
+   * Get a pointer to the display buffer.
    * \fn getBuffer
    * \return Returns the basepointer to the Arduboy image buffer array 
    * sBuffer[].
    */
   unsigned char* getBuffer();
 
-  /// Seeds the random number generator with entropy from the temperature, voltage reading, and microseconds since boot.
   /**
+   * Seeds the random number generator with entropy from the temperature, 
+   * voltage reading, and microseconds since boot.
    * \fn initRandomSeed
+   * \details
    * This method is still most effective when called semi-randomly such
    * as after a user hits a button to start a game or other semi-random
    * events
    */
   void initRandomSeed();
 
-  /// Swap the references of two pointers.
   /**
+   * Swap the references of two pointers.
    * \fn swap
    * \param reference to an int16_t to swap with b
    * \param reference to int16_t to swap with a
    */
   void swap(int16_t &a, int16_t &b);
 
-  /// Sets the number of frames displayed per second to the screen.
   /**
+   * Sets the number of frames displayed per second to the screen.
    * \fn setFrameRate
    * \param rate Rate to draw frames.
    */
   void setFrameRate(uint8_t rate);
 
-  /// Returns 'true' if the system is ready to draw the next frame.
   /**
+   * Returns 'true' if the system is ready to draw the next frame.
    * \fn nextFrame
-   *
    */
   bool nextFrame();
 
-  /// Returns 'true' if the current frame number is evenly divisible by the
-  /// passed integers
   /**
+   * Returns 'true' if the current frame number is evenly divisible by the
+   * passed integers
    * \fn everyXFrames
    * \param frames
+   * \details
    * If called with the same value each time, will return "true" if the given
    * number of frames has elapsed since the last frame in which it was "true".
    */
   bool everyXFrames(uint8_t frames);
 
-  /// Returns the load on the CPU as a percentage.
   /**
+   * Returns the load on the CPU as a percentage.
    * \fn cpuLoad
+   * \details
    * This is based on how much of the time your app is spends rendering
    * frames.  This number can be higher than 100 if your app is rendering
    * really slowly.
    */
   int cpuLoad();
 
-  /// useful for getting raw approximate voltage values
   /**
+   * useful for getting raw approximate voltage values
    * \fn rawADC
    * \param adc_bits byte to specificy adc bits
    */
   uint16_t rawADC(byte adc_bits);
 
-  /// Provide system control during the boot sequence.
   /**
+   * Provide system control during the boot sequence.
    * \fn systemButtons
+   * \details
    * An opportunity to provide a level of system control is given during the
    * boot sequence. Control is given to systemSetup() if specified buttons 
    * are held during an Arduboy's startup.
@@ -512,10 +523,10 @@ public:
 
 protected:
 
-  // helper to toggle sound from system control
+  /// Helper to toggle sound from system control.
   void sysCtrlSound(uint8_t buttons, uint8_t led, uint8_t eeVal);
 
-  // screen buffer
+  /// The Arduboy screen buffer.
   static uint8_t sBuffer[(HEIGHT * WIDTH) / 8];
 
   /// Framerate to update image buffer at.
@@ -546,41 +557,38 @@ public:
   /// Arduboy constructor.
   Arduboy();
 
-  /// Writes a single ASCII character to the screen.
-  /*
+  /**
+   * Writes a single ASCII character to the screen.
    * \fn write
    * \param char Takes character to write.
    * \return returns size_t.
    */
   virtual size_t write(uint8_t);
 
-  /// Sets the location of the text cursor.
-  /*
+  /**
+   * Sets the location of the text cursor.
    * \fn setCursore
    * \param x
    * \param y
-   *
    */
   void setCursor(int16_t x, int16_t y);
 
-  /// Get the text cursor X position
-  /*
+  /**
+   * Get the text cursor X position.
    * \fn
    * \param x int16_t for x position.
    * \param x int16_t for y position.
-   *
    */
   uint16_t getCursorX();
 
-  /// Get the text cursor Y position
-  /*
+  /**
+   * Get the text cursor Y position.
    * \fn getCursorX
-   *
    */
   uint16_t getCursorY();
 
-  /// Sets the text foreground color
   /**
+   * Sets the text foreground color.
    * \fn setTextColor
    * \param color Pass a usigned byte to set as color.
    */
@@ -589,20 +597,29 @@ public:
   /// Sets the text background color
   void setTextBackground(uint8_t bg);
 
-  /// Set the text size
   /**
+   * Set the text size.
    * \fn setTextSize
    * \param s Size of text passed as uint8_t.
+   * \details
    * Individual ASCII characters are 6x8 pixels
    * (5x7 with spacing on two edges). The size is a pixel multiplier,
    * so a size of 2 means each character will be 12x16, etc.
    */
   void setTextSize(uint8_t s);
 
-  /// Sets whether text will wrap at screen edges.
+  /**
+   * Sets whether text will wrap at screen edges.
+   * \fn
+   * \param w uint8_t
+   */
   void setTextWrap(bool w);
 
-  /// Clears the display and sets the cursor to 0, 0
+  /**
+   * Clears the display and sets the cursor to 0, 0
+   * \fn
+   * \param w bool
+   */
   void clear();
 
 protected:
