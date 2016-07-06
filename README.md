@@ -3,12 +3,12 @@ Arduboy Library: `develop`
 
 Description of the Arduboy Library, `develop` branch.
 
-# Arduboy: `develop` branch
+## Arduboy: `develop` branch
 
 This is a development branch. The `develop` branch for the Arduboy Library
 holds the bleeding-edge release for the Arduboy project.
 
-**Stable Branch** Please use the `stable` branch for the current stable build.
+**Stable Branch** - Please use the `stable` branch for the current stable build.
 
 ## About
 
@@ -103,7 +103,9 @@ To compile sketches that have included copies of the Aruboy Library,
 
 > Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
 > This will only work in some cases.
+>
 > **OR**
+>
 > Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
 > `#include "CustomArduboy.h"` to the `.ino` sketch file. 
 
