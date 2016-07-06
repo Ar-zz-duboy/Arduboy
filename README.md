@@ -1,26 +1,27 @@
-Arduboy Library: `ekem/develop`
+Arduboy Library · `ekem/develop`
 ===============
 
 Description of the Arduboy Library, `develop` branch.
 
-## Arduboy: `ekem/develop` branch
+## About
+
+This an open-source library providing function to an Arduboy.
+
+### Arduboy · `ekem/develop` branch
 
 This is a development branch. The `develop` branch for the Arduboy Library
 holds the bleeding-edge release for the Arduboy project.
 
 **Stable Branch** - Please use the `stable` branch for the current stable build.
 
-## About
 
-This an open-source library providing function to an Arduboy.
-
-## Using the Library
+### Using the Library
 
 To use the Arduboy library, it must be installed and then included in your
 project. An Arduboy or Leonardo must board must be selected as a target board.
 Compile and upload the source to an Arduboy.
 
-## Installation
+## Install
 
 Install the library by cloning its repository.
 
@@ -33,6 +34,8 @@ directory. Refer to the following list for the location of the Arduino
 `libraries` folder.
 
 #### Arduino Library Locations by OS
+
+Arduino library locations listed by operating system (OS).
 
 **Linux**
 
@@ -53,7 +56,7 @@ determine its location using the navigation menu `File > Preferences`. In the
 `Settings` tab will be a `Sketchbook location:` field. The `libraries` folder
 will be in the folder set in this field.
 
-### Include
+## Include
 
 To use the Arduboy library in your own sketches, include the `Arduboy.h` header
 file. To do so, add the following line to the top of your `.ino` file.
@@ -65,15 +68,15 @@ file. To do so, add the following line to the top of your `.ino` file.
 You can have the Arduino IDE add `#include "Arduboy.h"` to your sketch 
 automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
 
-### Board Selection
+## Board Selection
 
 Select the **Leonardo** board as the target platform.
 
-### Arduboy Examples
+## Arduboy Examples
 
 Example games and source can be found in the `examples` directory.
 
-#### Playing Examples
+### Playing Examples
 
 Find and play an example by opening it through the Arduino IDE, compiling, 
 and uploading the example to the Arduboy.
@@ -81,7 +84,7 @@ and uploading the example to the Arduboy.
 Examples can be found in the Arduino IDE in the navigation menu under, 
 `File > Examples > Arduboy > Example_Name`.
 
-### Running on a Development Board
+## Running on a Development Board
 
 To run this library on a development Arduboy board, edit `src/core/core.h` so 
 that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
@@ -91,7 +94,7 @@ that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
     #define AB_DEVKIT    //< compile for the official dev kit
 ~~~~~~~~~~~~~~~
 
-### Sketches Already Including the Arduboy Library
+## Sketches Already Including the Arduboy Library
 
 Sketches that include copies of the Arduboy library may not compile if the
 Arduboy library has been installed system wide. In these cases the Arduino 
