@@ -581,15 +581,13 @@ public:
 
   /**
    * Get the text cursor X position.
-   * \fn
-   * \param x int16_t for x position.
-   * \param x int16_t for y position.
+   * \fn getCursorX
    */
   uint16_t getCursorX();
 
   /**
    * Get the text cursor Y position.
-   * \fn getCursorX
+   * \fn getCursorY
    */
   uint16_t getCursorY();
 
@@ -616,14 +614,14 @@ public:
 
   /**
    * Sets whether text will wrap at screen edges.
-   * \fn
+   * \fn setTextWrap
    * \param w uint8_t
    */
   void setTextWrap(bool w);
 
   /**
    * Clears the display and sets the cursor to 0, 0
-   * \fn
+   * \fn clear
    * \param w bool
    */
   void clear();

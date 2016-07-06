@@ -260,9 +260,9 @@ public:
   /**
    * Paints an entire image directly to hardware (from RAM)
    * \fn paintScreen
-   * \param image[]
-   * \details
+   * \param **image
    * \see paint8Pixels()
+   * \details
    * Each byte will be 8 vertical pixels, painted in the same order.
    */
   void static paintScreen(uint8_t image[]);
