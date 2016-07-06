@@ -26,9 +26,9 @@ project.
 ---
 
 Install the library by cloning its repository.
-```	
+~~~
 $ git clone https://github.com/Arduboy/Arduboy.git
-```
+~~~
 
 #### Where to Install
 
@@ -38,21 +38,21 @@ directory. Refer to the following list for the location of the Arduino
 
 **Linux**
 
-<pre lang="bash">
+~~~
 /home/username/Documents/Arduino/libraries
-</pre>
+~~~
 
 **Mac**
 
-<pre lang="bash">
+~~~
 /Users/username/Documents/Arduino/libraries
-</pre>
+~~~
 
 **Windows**
 
-<pre lang="bash">
+~~~
 C:\Users\username\My Documents\Arduino\libraries
-</pre>
+~~~
 
 If you don't find the `libraries` folder in one of the above locations, you can
 determine its location using the navigation menu `File > Preferences`. In the
@@ -64,9 +64,9 @@ will be in the folder set in this field.
 To use the Arduboy library in your own sketches, include the `Arduboy.h` header
 file. To do so, add the following line to the top of your `.ino` file.
 
-<pre lang="bash">
+~~~
 #include "Arduboy.h"
-</pre>
+~~~
 
 You can have the Arduino IDE add `#include "Arduboy.h"` to your sketch 
 automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
@@ -91,10 +91,10 @@ Examples can be found in the Arduino IDE in the navigation menu under,
 To run this library on a development Arduboy board, edit `src/core/core.h` so 
 that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
 
-<pre lang="cpp">
+~~~
 //#define ARDUBOY_10   //< compile for the production Arduboy v1.0
 #define AB_DEVKIT    //< compile for the official dev kit
-</pre>
+~~~
 
 ### Sketches Already Including the Arduboy Library
 Sketches that include copies of the Arduboy library may not compile if the
@@ -121,6 +121,6 @@ To create the documentation, run `doxygen` if the root of the project folder.
 
 ### Prerequisites
 The following packages must be installed.
-<pre lang="bash">
+~~~
 doxygen graphviz
-</pre>
+~~~
