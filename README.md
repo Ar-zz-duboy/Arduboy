@@ -8,9 +8,7 @@ Description of the Arduboy Library, `develop` branch.
 This is a development branch. The `develop` branch for the Arduboy Library
 holds the bleeding-edge release for the Arduboy project.
 
-## Stable Branch
-
-Please use the `stable` branch for the current stable build.
+**Stable Branch** Please use the `stable` branch for the current stable build.
 
 ## About
 
