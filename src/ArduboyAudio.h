@@ -1,10 +1,14 @@
-#ifndef ArduboyAudio_h
-#define ArduboyAudio_h
+/** 
+ * \file ArduboyAudio.h
+ * \brief A class implementing the audio functionality for an Arduboy.
+ *
+ */
+
+#ifndef ARDUBOY_AUDIO_H
+#define ARDUBOY_AUDIO_H
 
 #include <Arduino.h>
 #include <EEPROM.h>
-#include <avr/pgmspace.h>
-#include <avr/power.h>
 
 class ArduboyAudio
 {

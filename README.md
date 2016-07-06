@@ -1,8 +1,18 @@
 Arduboy Library
 ===============
+_`ekem/develop`_
+
+# This is Development Branch
+This is the branch for ekem's development work.
+
+Please use the `stable` branch for the current stable build.
+Use `develop` for the team development build.
+
 This library provides Arduboy's  core functionality.
 
 ## Using the Library
+---
+
 To use the Arduboy library, it must be installed and then included in your project.
 
 ### Install

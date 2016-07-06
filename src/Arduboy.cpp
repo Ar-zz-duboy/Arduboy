@@ -1,21 +1,27 @@
+/** 
+ * \file Arduboy.cpp
+ * \brief Implementation of the Arduboy class.
+ *
+ */
+
 #include "Arduboy.h"
-#include "glcdfont.c"
 #include "ab_logo.c"
+#include "glcdfont.c"
 
-Arduboy::Arduboy()
+uint8_t ArduboyBase::sBuffer[(HEIGHT * WIDTH) / 8];
+
+ArduboyBase::ArduboyBase()
 {
-  // frame management
-  setFrameRate(60);
-  frameCount = 0;
-  nextFrameStart = 0;
-  post_render = false;
-
-  // init not necessary, will be reset after first use
-  // lastFrameStart
-  // lastFrameDurationMs
+  // Constructor for ArduboyBase
+ 
+  // Initialize frame management
+  setFrameRate(60);    // set default frame rate
+  frameCount = 0;      // set frame count to 0
+  nextFrameStart = 0;  // first start point set to 0
+  post_render = false; // don't perform post render on first frame
 }
 
-void Arduboy::start() // deprecated
+void ArduboyBase::start()
 {
   begin();
 }
@@ -23,79 +29,125 @@ void Arduboy::start() // deprecated
 // functions called here should be public so users can create their
 // own init functions if they need different behavior than `begin`
 // provides by default
-void Arduboy::begin()
+void ArduboyBase::begin()
 {
-  boot(); // raw hardware
+  boot();       // raw hardware
+  blank();      // blank the display
 
-  // utils
-  if(pressed(UP_BUTTON)) {
-    flashlight();
-  }
+  // start the flashlight
+  flashlight(UP_BUTTON, DOWN_BUTTON);
 
-  bootLogo();
-
-  audio.begin();
+  systemButtons(); // check for the presence of any held system buttons
+  bootLogo();      // display the boot logo
+  audio.begin();   // start the audio
 }
 
-void Arduboy::flashlight()
+void ArduboyBase::flashlight(uint8_t on_button, uint8_t off_button)
 {
-  // sendLCDCommand(OLED_ALL_PIXELS_ON); // smaller than allPixelsOn()
-  blank();
-  setRGBled(255,255,255);
-  while(!pressed(DOWN_BUTTON)) {
+  if (pressed(on_button)) flashlight(off_button);
+}
+
+void ArduboyBase::flashlight(uint8_t off_button)
+{
+  // turn all pixels on
+  sendLCDCommand(OLED_ALL_PIXELS_ON);
+  // turn red, green and blue LEDS on for white light
+  digitalWriteRGB(RGB_ON, RGB_ON, RGB_ON);
+
+  // until the down button is pressed, stay in flashlight mode.
+  while (!pressed(off_button))
     idle();
-  }
-  setRGBled(0,0,0);
+
+  digitalWriteRGB(RGB_OFF, RGB_OFF, RGB_OFF);
+  sendLCDCommand(OLED_PIXELS_FROM_RAM);
 }
 
-void Arduboy::bootLogo()
+void ArduboyBase::flashlight()
 {
-  // setRGBled(10,0,0);
-  for(int8_t y = -18; y<=24; y++) {
-    setRGBled(24-y, 0, 0);
+  flashlight(UP_BUTTON, DOWN_BUTTON);
+}
+
+void ArduboyBase::systemButtons()
+{
+  while (pressed(B_BUTTON))
+  {
+    digitalWrite(BLUE_LED, RGB_ON);
+    sysCtrlSound(UP_BUTTON + B_BUTTON, GREEN_LED, 0xff);
+    sysCtrlSound(DOWN_BUTTON + B_BUTTON, RED_LED, 0);
+    delay(200);
+  }
+}
+
+void ArduboyBase::sysCtrlSound(uint8_t buttons, uint8_t led, uint8_t eeVal)
+{
+  if (pressed(buttons))
+  {
+    digitalWrite(BLUE_LED, RGB_OFF); // turn off blue LED
+    delay(200);
+    digitalWrite(led, RGB_ON); // turn on "acknowledge" LED
+    EEPROM.update(EEPROM_AUDIO_ON_OFF, eeVal);
+    delay(500);
+    digitalWrite(led, RGB_OFF); // turn off "acknowledge" LED
+
+    while (pressed(buttons)) {} // Wait for button release
+  }
+}
+
+void ArduboyBase::bootLogo()
+{
+  digitalWrite(RED_LED, RGB_ON);
+
+  for (int8_t y = -18; y <= 24; y++)
+  {
+    if (y == -4)
+      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF);
+
+    if (y == -4)
+      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF);
 
     clear();
-    drawBitmap(20,y, arduboy_logo, 88, 16, WHITE);
+    drawBitmap(20, y, arduboy_logo, 88, 16, WHITE);
     display();
     delay(27);
     // longer delay post boot, we put it inside the loop to
     // save the flash calling clear/delay again outside the loop
-    if (y==-16) {
+    if (y == -16)
       delay(250);
-    }
   }
 
   delay(750);
-  setRGBled(0,0,0);
+  digitalWrite(BLUE_LED, RGB_OFF);
 }
 
 /* Frame management */
 
-void Arduboy::setFrameRate(uint8_t rate)
+void ArduboyBase::setFrameRate(uint8_t rate)
 {
   frameRate = rate;
   eachFrameMillis = 1000/rate;
 }
 
-bool Arduboy::everyXFrames(uint8_t frames)
+bool ArduboyBase::everyXFrames(uint8_t frames)
 {
   return frameCount % frames == 0;
 }
 
-bool Arduboy::nextFrame()
+bool ArduboyBase::nextFrame()
 {
   long now = millis();
   uint8_t remaining;
 
   // post render
-  if (post_render) {
+  if (post_render)
+  {
     lastFrameDurationMs = now - lastFrameStart;
     frameCount++;
     post_render = false;
   }
 
   // if it's not time for the next frame yet
-  if (now < nextFrameStart) {
+  if (now < nextFrameStart)
+  {
     remaining = nextFrameStart - now;
     // if we have more than 1ms to spare, lets sleep
     // we should be woken up by timer0 every 1ms, so this should be ok
@@ -119,9 +171,8 @@ bool Arduboy::nextFrame()
   // that lost time.  That would not be good.  We allow frames to take too
   // long (what choice do we have?), but we do not allow super-fast frames
   // to make up for slow frames in the past.
-  if (nextFrameStart < now) {
+  if (nextFrameStart < now)
     nextFrameStart = now;
-  }
 
   lastFrameStart = now;
 
@@ -129,28 +180,27 @@ bool Arduboy::nextFrame()
   return post_render;
 }
 
-int Arduboy::cpuLoad()
+int ArduboyBase::cpuLoad()
 {
   return lastFrameDurationMs*100 / eachFrameMillis;
 }
 
-void Arduboy::initRandomSeed()
+void ArduboyBase::initRandomSeed()
 {
-  power_adc_enable(); // ADC on
+  power_adc_enable();  // ADC on
   randomSeed(~rawADC(ADC_TEMP) * ~rawADC(ADC_VOLTAGE) * ~micros() + micros());
   power_adc_disable(); // ADC off
 }
 
-uint16_t Arduboy::rawADC(byte adc_bits)
+uint16_t ArduboyBase::rawADC(byte adc_bits)
 {
   ADMUX = adc_bits;
   // we also need MUX5 for temperature check
-  if (adc_bits == ADC_TEMP) {
+  if (adc_bits == ADC_TEMP)
     ADCSRB = _BV(MUX5);
-  }
 
-  delay(2); // Wait for ADMUX setting to settle
-  ADCSRA |= _BV(ADSC); // Start conversion
+  delay(2);                        // Wait for ADMUX setting to settle
+  ADCSRA |= _BV(ADSC);             // Start conversion
   while (bit_is_set(ADCSRA,ADSC)); // measuring
 
   return ADC;
@@ -158,44 +208,56 @@ uint16_t Arduboy::rawADC(byte adc_bits)
 
 /* Graphics */
 
-void Arduboy::clearDisplay() // deprecated
-{
-  clear();
-}
-
-void Arduboy::clear()
+void ArduboyBase::clear()
 {
   fillScreen(BLACK);
 }
 
-void Arduboy::drawPixel(int x, int y, uint8_t color)
+void ArduboyBase::clearDisplay() // deprecated
+{
+  clear();
+}
+
+int ArduboyBase::draw(void (*f)())
+{
+  // pause render until it's time for the next frame
+  if (!(this->nextFrame()))
+    return 1;
+
+  // clear the buffer
+  this->clear();
+
+  // call the function passed as paramter to draw
+  (*f)();
+
+  // draw the buffer
+  this->display();
+
+  return 0;
+}
+
+void ArduboyBase::drawPixel(int x, int y, uint8_t color = WHITE)
 {
   #ifdef PIXEL_SAFE_MODE
   if (x < 0 || x > (WIDTH-1) || y < 0 || y > (HEIGHT-1))
-  {
     return;
-  }
   #endif
 
   uint8_t row = (uint8_t)y / 8;
   if (color)
-  {
     sBuffer[(row*WIDTH) + (uint8_t)x] |=   _BV((uint8_t)y % 8);
-  }
   else
-  {
     sBuffer[(row*WIDTH) + (uint8_t)x] &= ~ _BV((uint8_t)y % 8);
-  }
 }
 
-uint8_t Arduboy::getPixel(uint8_t x, uint8_t y)
+uint8_t ArduboyBase::getPixel(uint8_t x, uint8_t y)
 {
   uint8_t row = y / 8;
   uint8_t bit_position = y % 8;
   return (sBuffer[(row*WIDTH) + x] & _BV(bit_position)) >> bit_position;
 }
 
-void Arduboy::drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
+void ArduboyBase::drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -232,8 +294,8 @@ void Arduboy::drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
   }
 }
 
-void Arduboy::drawCircleHelper
-(int16_t x0, int16_t y0, uint8_t r, uint8_t cornername, uint8_t color)
+void ArduboyBase::drawCircleHelper(int16_t x0, int16_t y0, uint8_t r, 
+                                   uint8_t cornername, uint8_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -277,15 +339,19 @@ void Arduboy::drawCircleHelper
   }
 }
 
-void Arduboy::fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
+void ArduboyBase::fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
 {
   drawFastVLine(x0, y0-r, 2*r+1, color);
   fillCircleHelper(x0, y0, r, 3, 0, color);
 }
 
-void Arduboy::fillCircleHelper
-(int16_t x0, int16_t y0, uint8_t r, uint8_t cornername, int16_t delta,
- uint8_t color)
+void ArduboyBase::fillCircleHelper(
+    int16_t x0,
+    int16_t y0,
+    uint8_t r,
+    uint8_t cornername,
+    int16_t delta,
+    uint8_t color)
 {
   // used to do circles and roundrects!
   int16_t f = 1 - r;
@@ -321,17 +387,19 @@ void Arduboy::fillCircleHelper
   }
 }
 
-void Arduboy::drawLine
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color)
+void ArduboyBase::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+                           uint8_t color)
 {
   // bresenham's algorithm - thx wikpedia
   boolean steep = abs(y1 - y0) > abs(x1 - x0);
-  if (steep) {
+  if (steep)
+  {
     swap(x0, y0);
     swap(x1, y1);
   }
 
-  if (x0 > x1) {
+  if (x0 > x1)
+  {
     swap(x0, x1);
     swap(y0, y1);
   }
@@ -344,24 +412,16 @@ void Arduboy::drawLine
   int8_t ystep;
 
   if (y0 < y1)
-  {
     ystep = 1;
-  }
   else
-  {
     ystep = -1;
-  }
 
   for (; x0 <= x1; x0++)
   {
     if (steep)
-    {
       drawPixel(y0, x0, color);
-    }
     else
-    {
       drawPixel(x0, y0, color);
-    }
 
     err -= dy;
     if (err < 0)
@@ -372,8 +432,8 @@ void Arduboy::drawLine
   }
 }
 
-void Arduboy::drawRect
-(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color)
+void ArduboyBase::drawRect(int16_t x, int16_t y, uint8_t w, uint8_t h,
+                           uint8_t color)
 {
   drawFastHLine(x, y, w, color);
   drawFastHLine(x, y+h-1, w, color);
@@ -381,39 +441,33 @@ void Arduboy::drawRect
   drawFastVLine(x+w-1, y, h, color);
 }
 
-void Arduboy::drawFastVLine
-(int16_t x, int16_t y, uint8_t h, uint8_t color)
+void ArduboyBase::drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color)
 {
   int end = y+h;
   for (int a = max(0,y); a < min(end,HEIGHT); a++)
-  {
     drawPixel(x,a,color);
-  }
 }
 
-void Arduboy::drawFastHLine
-(int16_t x, int16_t y, uint8_t w, uint8_t color)
+void ArduboyBase::drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
   // Do bounds/limit checks
-  if (y < 0 || y >= HEIGHT) {
+  if (y < 0 || y >= HEIGHT)
     return;
-  }
 
   // make sure we don't try to draw below 0
-  if (x < 0) {
+  if (x < 0)
+  {
     w += x;
     x = 0;
   }
 
   // make sure we don't go off the edge of the display
-  if ((x + w) > WIDTH) {
+  if ((x + w) > WIDTH)
     w = (WIDTH - x);
-  }
 
   // if our width is now negative, punt
-  if (w <= 0) {
+  if (w <= 0)
     return;
-  }
 
   // buffer pointer plus row offset + x offset
   register uint8_t *pBuf = sBuffer + ((y/8) * WIDTH) + x;
@@ -424,31 +478,29 @@ void Arduboy::drawFastHLine
   switch (color)
   {
     case WHITE:
-      while(w--) {
+      while (w--) {
         *pBuf++ |= mask;
       };
       break;
 
     case BLACK:
       mask = ~mask;
-      while(w--) {
+      while (w--) {
         *pBuf++ &= mask;
       };
       break;
   }
 }
 
-void Arduboy::fillRect
-(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color)
+void ArduboyBase::fillRect(int16_t x, int16_t y, uint8_t w, uint8_t h,
+                           uint8_t color)
 {
-  // stupidest version - update in subclasses if desired!
+  // least efficient version; update in subclasses if desired!
   for (int16_t i=x; i<x+w; i++)
-  {
     drawFastVLine(i, y, h, color);
-  }
 }
 
-void Arduboy::fillScreen(uint8_t color)
+void ArduboyBase::fillScreen(uint8_t color)
 {
   // C version :
   //
@@ -486,8 +538,8 @@ void Arduboy::fillScreen(uint8_t color)
   );
 }
 
-void Arduboy::drawRoundRect
-(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t r, uint8_t color)
+void ArduboyBase::drawRoundRect(int16_t x, int16_t y, uint8_t w, uint8_t h,
+                                uint8_t r, uint8_t color)
 {
   // smarter version
   drawFastHLine(x+r, y, w-2*r, color); // Top
@@ -501,8 +553,8 @@ void Arduboy::drawRoundRect
   drawCircleHelper(x+r, y+h-r-1, r, 8, color);
 }
 
-void Arduboy::fillRoundRect
-(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t r, uint8_t color)
+void ArduboyBase::fillRoundRect(int16_t x, int16_t y, uint8_t w, uint8_t h,
+                                uint8_t r, uint8_t color)
 {
   // smarter version
   fillRect(x+r, y, w-2*r, h, color);
@@ -512,52 +564,38 @@ void Arduboy::fillRoundRect
   fillCircleHelper(x+r, y+r, r, 2, h-2*r-1, color);
 }
 
-void Arduboy::drawTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
+void ArduboyBase::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+                               int16_t x2, int16_t y2, uint8_t color)
 {
   drawLine(x0, y0, x1, y1, color);
   drawLine(x1, y1, x2, y2, color);
   drawLine(x2, y2, x0, y0, color);
 }
 
-void Arduboy::fillTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
+void ArduboyBase::fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, 
+                               int16_t x2, int16_t y2, uint8_t color)
 {
 
   int16_t a, b, y, last;
   // Sort coordinates by Y order (y2 >= y1 >= y0)
   if (y0 > y1)
-  {
     swap(y0, y1); swap(x0, x1);
-  }
   if (y1 > y2)
-  {
     swap(y2, y1); swap(x2, x1);
-  }
   if (y0 > y1)
-  {
     swap(y0, y1); swap(x0, x1);
-  }
 
-  if(y0 == y2)
+  if (y0 == y2)
   { // Handle awkward all-on-same-line case as its own thing
     a = b = x0;
-    if(x1 < a)
-    {
+    if (x1 < a)
       a = x1;
-    }
-    else if(x1 > b)
-    {
+    else if (x1 > b)
       b = x1;
-    }
-    if(x2 < a)
-    {
+    if (x2 < a)
       a = x2;
-    }
-    else if(x2 > b)
-    {
+    else if (x2 > b)
       b = x2;
-    }
     drawFastHLine(a, y0, b-a+1, color);
     return;
   }
@@ -578,26 +616,20 @@ void Arduboy::fillTriangle
   // in the second loop...which also avoids a /0 error here if y0=y1
   // (flat-topped triangle).
   if (y1 == y2)
-  {
     last = y1;   // Include y1 scanline
-  }
   else
-  {
     last = y1-1; // Skip it
-  }
 
 
-  for(y = y0; y <= last; y++)
+  for (y = y0; y <= last; y++)
   {
     a   = x0 + sa / dy01;
     b   = x0 + sb / dy02;
     sa += dx01;
     sb += dx02;
 
-    if(a > b)
-    {
+    if (a > b)
       swap(a,b);
-    }
 
     drawFastHLine(a, y, b-a+1, color);
   }
@@ -607,25 +639,22 @@ void Arduboy::fillTriangle
   sa = dx12 * (y - y1);
   sb = dx02 * (y - y0);
 
-  for(; y <= y2; y++)
+  for (; y <= y2; y++)
   {
     a   = x1 + sa / dy12;
     b   = x0 + sb / dy02;
     sa += dx12;
     sb += dx02;
 
-    if(a > b)
-    {
+    if (a > b)
       swap(a,b);
-    }
 
     drawFastHLine(a, y, b-a+1, color);
   }
 }
 
-void Arduboy::drawBitmap
-(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h,
- uint8_t color)
+void ArduboyBase::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap,
+                             uint8_t w, uint8_t h, uint8_t color)
 {
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
@@ -637,24 +666,54 @@ void Arduboy::drawBitmap
     sRow--;
     yOffset = 8 - yOffset;
   }
+
   int rows = h/8;
-  if (h%8!=0) rows++;
+  if (h % 8 != 0) rows++;
   for (int a = 0; a < rows; a++) {
     int bRow = sRow + a;
-    if (bRow > (HEIGHT/8)-1) break;
-    if (bRow > -2) {
-      for (int iCol = 0; iCol<w; iCol++) {
-        if (iCol + x > (WIDTH-1)) break;
-        if (iCol + x >= 0) {
-          if (bRow >= 0) {
-            if      (color == WHITE) this->sBuffer[ (bRow*WIDTH) + x + iCol ] |= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
-            else if (color == BLACK) this->sBuffer[ (bRow*WIDTH) + x + iCol ] &= ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
-            else                     this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
+    if (bRow > (HEIGHT / 8) - 1) break;
+    if (bRow > -2)
+    {
+      for (int iCol = 0; iCol < w; iCol++)
+      {
+        if ((iCol + x) > (WIDTH-1)) break;
+        if ((iCol + x) >= 0)
+        {
+          if (bRow >= 0)
+          {
+            if (color == WHITE)
+            {
+              this->sBuffer[ (bRow*WIDTH) + x + iCol ] |=
+                pgm_read_byte(bitmap + (a * w) + iCol) << yOffset;
+            }
+            else if (color == BLACK)
+            {
+              this->sBuffer[ (bRow*WIDTH) + x + iCol ] &=
+                ~(pgm_read_byte(bitmap + (a * w) + iCol) << yOffset);
+            }
+            else
+            {
+              this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^=
+                pgm_read_byte(bitmap + (a * w) + iCol) << yOffset;
+            }
           }
-          if (yOffset && bRow<(HEIGHT/8)-1 && bRow > -2) {
-            if      (color == WHITE) this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |= pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
-            else if (color == BLACK) this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &= ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
-            else                     this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^= pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
+          if (yOffset && (bRow < ((HEIGHT / 8) - 1)) && (bRow > -2)) 
+          {
+            if (color == WHITE) 
+            {
+              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |= 
+                pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset);
+            }
+            else if (color == BLACK) 
+            {
+              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &=
+                ~(pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset));
+            }
+            else
+            {
+              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^=
+                pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset);
+            }
           }
         }
       }
@@ -663,59 +722,54 @@ void Arduboy::drawBitmap
 }
 
 
-void Arduboy::drawSlowXYBitmap
-(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, uint8_t color)
+void ArduboyBase::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap,
+                               uint8_t w, uint8_t h, uint8_t color)
 {
   // no need to dar at all of we're offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
 
   int16_t xi, yi, byteWidth = (w + 7) / 8;
-  for(yi = 0; yi < h; yi++) {
-    for(xi = 0; xi < w; xi++ ) {
-      if(pgm_read_byte(bitmap + yi * byteWidth + xi / 8) & (128 >> (xi & 7))) {
+  for(yi = 0; yi < h; yi++)
+  {
+    for(xi = 0; xi < w; xi++ )
+    {
+      if(pgm_read_byte(bitmap + yi * byteWidth + xi / 8) & (128 >> (xi & 7)))
         drawPixel(x + xi, y + yi, color);
-      }
     }
   }
 }
 
 
-void Arduboy::drawChar
+void ArduboyBase::drawChar
 (int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
 {
   boolean draw_background = bg != color;
 
-  if ((x >= WIDTH) ||         // Clip right
-    (y >= HEIGHT) ||        // Clip bottom
-    ((x + 5 * size - 1) < 0) ||   // Clip left
-    ((y + 8 * size - 1) < 0)    // Clip top
-  )
-  {
-    return;
-  }
+  if ((x >= WIDTH) ||            // Clip right
+     (y >= HEIGHT) ||            // Clip bottom
+     ((x + 5 * size - 1) < 0) || // Clip left
+     ((y + 8 * size - 1) < 0)    // Clip top
+  ) return;
 
-  for (int8_t i=0; i<6; i++ )
+  for (int8_t i=0; i<6; i++)
   {
     uint8_t line;
     if (i == 5)
-    {
       line = 0x0;
-    }
     else
-    {
-      line = pgm_read_byte(font+(c*5)+i);
-    }
+      line = pgm_read_byte(font + (5 * c) + i);
 
-    for (int8_t j = 0; j<8; j++)
+    for (int8_t j = 0; j < 8; j++)
     {
       uint8_t draw_color = (line & 0x1) ? color : bg;
 
-      if (draw_color || draw_background) {
-        for (uint8_t a = 0; a < size; a++ ) {
-          for (uint8_t b = 0; b < size; b++ ) {
+      if (draw_color || draw_background)
+      {
+        for (uint8_t a = 0; a < size; a++ )
+        {
+          for (uint8_t b = 0; b < size; b++ )
             drawPixel(x + (i * size) + a, y + (j * size) + b, draw_color);
-          }
         }
       }
       line >>= 1;
@@ -723,30 +777,108 @@ void Arduboy::drawChar
   }
 }
 
-void Arduboy::display()
+void ArduboyBase::display()
 {
+  // copy data to draw to buffer
   this->paintScreen(sBuffer);
 }
 
-unsigned char* Arduboy::getBuffer()
+unsigned char* ArduboyBase::getBuffer()
 {
   return sBuffer;
 }
 
-boolean Arduboy::pressed(uint8_t buttons)
+boolean ArduboyBase::pressed(uint8_t buttons)
 {
   return (buttonsState() & buttons) == buttons;
 }
 
-boolean Arduboy::notPressed(uint8_t buttons)
+boolean ArduboyBase::notPressed(uint8_t buttons)
 {
   return (buttonsState() & buttons) == 0;
 }
 
-void Arduboy::swap(int16_t& a, int16_t& b)
+void ArduboyBase::swap(int16_t& a, int16_t& b)
 {
   int temp = a;
   a = b;
   b = temp;
 }
 
+/*
+ * Arduboy Class
+ */
+
+Arduboy::Arduboy()
+{
+  cursor_x = 0;
+  cursor_y = 0;
+  textColor = 1;
+  textBackground = 0;
+  textSize = 1;
+  textWrap = 0;
+}
+
+size_t Arduboy::write(uint8_t c)
+{
+  if (c == '\n')
+  {
+    cursor_y += textSize * 8;
+    cursor_x = 0;
+  }
+  else if (c == '\r') ; // skip carriage returns
+  else
+  {
+    drawChar(cursor_x, cursor_y, c, textColor, textBackground, textSize);
+    cursor_x += textSize * 6;
+    if (textWrap && (cursor_x > (WIDTH - textSize * 6)))
+    {
+      // calling ourselves recursively for 'newline' is 
+      // 12 bytes smaller than doing the same math here
+      write('\n');
+    }
+  }
+}
+
+void Arduboy::setCursor(int16_t x, int16_t y)
+{
+  cursor_x = x;
+  cursor_y = y;
+}
+
+uint16_t Arduboy::getCursorX()
+{
+  return cursor_x;
+}
+
+uint16_t Arduboy::getCursorY()
+{
+  return cursor_y;
+}
+
+void Arduboy::setTextColor(uint8_t color)
+{
+  textColor = color;
+}
+
+void Arduboy::setTextBackground(uint8_t bg)
+{
+  textBackground = bg;
+}
+
+void Arduboy::setTextSize(uint8_t s)
+{
+  // size must always be 1 or higher
+  textSize = max(1, s);
+}
+
+void Arduboy::setTextWrap(bool w)
+{
+  textWrap = w;
+}
+
+void Arduboy::clear()
+{
+  ArduboyBase::clear();
+  cursor_x = cursor_y = 0;
+}

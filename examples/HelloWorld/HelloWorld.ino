@@ -33,10 +33,11 @@ void setup() {
 // our main game loop, this runs once every cycle/frame.
 // this is where our game logic goes.
 void loop() {
+  /*
   // pause render until it's time for the next frame
   if (!(arduboy.nextFrame()))
     return;
-
+  
   // first we clear our screen to black
   arduboy.clear();
 
@@ -49,4 +50,11 @@ void loop() {
 
   // then we finaly we tell the arduboy to display what we just wrote to the display
   arduboy.display();
+  */
+  arduboy.draw(draw);
+}
+
+void draw() {
+  arduboy.setCursor(4, 9);
+  arduboy.print(F("Hello, world!"));
 }

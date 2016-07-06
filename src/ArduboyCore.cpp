@@ -1,4 +1,10 @@
-#include "core.h"
+/** 
+ * \file ArduboyCore.cpp
+ * \brief A class implementing the core functionality of an Arduboy.
+ *
+ */
+
+#include "ArduboyCore.h"
 
 // need to redeclare these here since we declare them static in .h
 volatile uint8_t *ArduboyCore::csport, *ArduboyCore::dcport;
@@ -12,6 +18,16 @@ const uint8_t PROGMEM pinBootProgram[] = {
   PIN_DOWN_BUTTON, INPUT_PULLUP,
   PIN_A_BUTTON, INPUT_PULLUP,
   PIN_B_BUTTON, INPUT_PULLUP,
+
+  // RGB LED (or single blue LED on the DevKit)
+#ifdef ARDUBOY_10
+  RED_LED, INPUT_PULLUP,  // set INPUT_PULLUP to make the pin high when
+  RED_LED, OUTPUT,        //   set to OUTPUT
+  GREEN_LED, INPUT_PULLUP,
+  GREEN_LED, OUTPUT,
+#endif
+  BLUE_LED, INPUT_PULLUP,
+  BLUE_LED, OUTPUT,
 
   // audio is specifically not included here as those pins are handled
   // separately by `audio.begin()`, `audio.on()` and `audio.off()` in order
@@ -132,7 +148,8 @@ void ArduboyCore::bootPins()
   uint8_t pin, mode;
   const uint8_t *i = pinBootProgram;
 
-  while(true) {
+  while (true)
+  {
     pin = pgm_read_byte(i++);
     mode = pgm_read_byte(i++);
     if (pin==0) break;
@@ -159,9 +176,9 @@ void ArduboyCore::bootOLED()
   LCDCommandMode();
   // run our customized boot-up command sequence against the
   // OLED to initialize it properly for Arduboy
-  for (int8_t i=0; i < sizeof(lcdBootProgram); i++) {
+  for (int8_t i = 0; i < sizeof(lcdBootProgram); i++)
     SPI.transfer(pgm_read_byte(lcdBootProgram + i));
-  }
+
   LCDDataMode();
 }
 
@@ -182,7 +199,7 @@ void ArduboyCore::LCDCommandMode()
 
 void ArduboyCore::safeMode()
 {
-  blank(); // too avoid random gibberish
+  blank(); // clear screen to avoid writing random bytes in image buffer
   while (true) {
     asm volatile("nop \n");
   }
@@ -214,7 +231,6 @@ uint8_t ArduboyCore::width() { return WIDTH; }
 
 uint8_t ArduboyCore::height() { return HEIGHT; }
 
-
 /* Drawing */
 
 void ArduboyCore::paint8Pixels(uint8_t pixels)
@@ -222,19 +238,17 @@ void ArduboyCore::paint8Pixels(uint8_t pixels)
   SPI.transfer(pixels);
 }
 
-void ArduboyCore::paintScreen(const unsigned char *image)
+void ArduboyCore::paintScreen(const uint8_t *image)
 {
   for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
-  {
     SPI.transfer(pgm_read_byte(image + i));
-  }
 }
 
 // paint from a memory buffer, this should be FAST as it's likely what
 // will be used by any buffer based subclass
-void ArduboyCore::paintScreen(unsigned char image[])
+void ArduboyCore::paintScreen(uint8_t image[])
 {
-  for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
+  for (int i = 0; i < (HEIGHT * WIDTH) / 8; i++)
   {
     // SPI.transfer(image[i]);
 
@@ -252,7 +266,7 @@ void ArduboyCore::paintScreen(unsigned char image[])
 
 void ArduboyCore::blank()
 {
-  for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
+  for (int i = 0; i < (HEIGHT * WIDTH) / 8; i++)
     SPI.transfer(0x00);
 }
 
@@ -304,13 +318,18 @@ void ArduboyCore::setRGBled(uint8_t red, uint8_t green, uint8_t blue)
 #endif
 }
 
-/* Buttons */
-
-uint8_t ArduboyCore::getInput()
+  void ArduboyCore::digitalWriteRGB(uint8_t red, uint8_t green, uint8_t blue)
 {
-  return buttonsState();
+#ifdef ARDUBOY_10
+  digitalWrite(RED_LED, red);
+  digitalWrite(GREEN_LED, green);
+  digitalWrite(BLUE_LED, blue);
+#elif defined(AB_DEVKIT)
+  digitalWrite(BLUE_LED, blue);
+#endif
 }
 
+/* Buttons */
 
 uint8_t ArduboyCore::buttonsState()
 {
