@@ -1,11 +1,14 @@
-Arduboy Library
+Arduboy Library: `develop`
 ===============
 
-## Arduboy Libary: `develop` branch
+Description of the Arduboy Library, `develop` branch.
 
-This is the `develop` branch for the Arduboy Library and holds the
-bleeding-edge release for the Arduboy project.
+# Arduboy: `develop` branch
 
+This is a development branch. The `develop` branch for the Arduboy Library
+holds the bleeding-edge release for the Arduboy project.
+
+## Stable Branch
 
 Please use the `stable` branch for the current stable build.
 

@@ -161,6 +161,7 @@ public:
 
   /**
    * Managed draw function for an Arduboy.
+   * \todo Thoroughly test this method for handling draws to the screen.
    * \param *f a pointer to a function to be called.
    * \return Returns a uint8_t for status. 0 for no errors.
    * \details
@@ -175,7 +176,6 @@ public:
    * \param x integer for an x position
    * \param y integer for a y position
    * \param color Default color for pixel is set to white.
-   * \todo Thoroughly test this method for handling draws to the screen.
    */
   void drawPixel(int x, int y, uint8_t color);
 
