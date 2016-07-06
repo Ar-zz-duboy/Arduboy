@@ -175,6 +175,7 @@ public:
    * \param x integer for an x position
    * \param y integer for a y position
    * \param color Default color for pixel is set to white.
+   * \todo Thoroughly test this method for handling draws to the screen.
    */
   void drawPixel(int x, int y, uint8_t color);
 
