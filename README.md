@@ -24,9 +24,7 @@ project.
 
 Install the library by cloning its repository.
 
-```
-$ git clone https://github.com/Arduboy/Arduboy.git
-```
+    $ git clone https://github.com/Arduboy/Arduboy.git
 
 #### Where to Install
 
@@ -56,7 +54,9 @@ will be in the folder set in this field.
 To use the Arduboy library in your own sketches, include the `Arduboy.h` header
 file. To do so, add the following line to the top of your `.ino` file.
 
+~~~~~~~~~~~~~~~{.cpp}
     #include "Arduboy.h"
+~~~~~~~~~~~~~~~
 
 You can have the Arduino IDE add `#include "Arduboy.h"` to your sketch 
 automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
@@ -82,8 +82,10 @@ Examples can be found in the Arduino IDE in the navigation menu under,
 To run this library on a development Arduboy board, edit `src/core/core.h` so 
 that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
 
+~~~~~~~~~~~~~~~{.cpp}
     //#define ARDUBOY_10   //< compile for the production Arduboy v1.0
     #define AB_DEVKIT    //< compile for the official dev kit
+~~~~~~~~~~~~~~~
 
 ### Sketches Already Including the Arduboy Library
 
@@ -95,13 +97,13 @@ differs from the system's Arduboy source.
 
 To compile sketches that have included copies of the Aruboy Library,
 
-Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
-This will only work in some cases.
-
-**OR**
-
-Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
-`#include "CustomArduboy.h"` to the `.ino` sketch file. 
+>Remove the local `Arduboy.cpp` and `Arduboy.h` files and try recompiling. 
+>This will only work in some cases.
+>
+>**OR**
+>
+>Rename `Arduboy.h` to `CustomArduboy.h` (or a similar name) and add
+>`#include "CustomArduboy.h"` to the `.ino` sketch file. 
 
 ## Using `Doxygen`
 
