@@ -1,9 +1,9 @@
-Arduboy Library: `develop`
+Arduboy Library: `ekem/develop`
 ===============
 
 Description of the Arduboy Library, `develop` branch.
 
-## Arduboy: `develop` branch
+## Arduboy: `ekem/develop` branch
 
 This is a development branch. The `develop` branch for the Arduboy Library
 holds the bleeding-edge release for the Arduboy project.
