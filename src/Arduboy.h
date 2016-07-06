@@ -1,6 +1,6 @@
 /**
  * \file Arduboy.h
- * \brief The Arduboy class.
+ * \brief The Arduboy class definition.
  *
  */
 

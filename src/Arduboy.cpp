@@ -13,7 +13,7 @@ uint8_t ArduboyBase::sBuffer[(HEIGHT * WIDTH) / 8];
 ArduboyBase::ArduboyBase()
 {
   // Constructor for ArduboyBase
- 
+
   // Initialize frame management
   setFrameRate(60);    // set default frame rate
   frameCount = 0;      // set frame count to 0
