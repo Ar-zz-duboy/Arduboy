@@ -70,7 +70,7 @@ public:
    *   if (pressed(LEFT_BUTTON + A_BUTTON))
    *
    */
-  boolean pressed(uint8_t buttons);
+  bool pressed(uint8_t buttons);
 
   /**
    * Returns true if the button mask passed in not pressed.
@@ -82,7 +82,7 @@ public:
    *  if (notPressed(LEFT_BUTTON))
    *
    */
-  boolean notPressed(uint8_t buttons);
+  bool notPressed(uint8_t buttons);
 
   /**
    * Initialize hardware, boot logo, boot utilities, etc.
@@ -425,7 +425,7 @@ public:
    */
   void drawChar(int16_t x,
                 int16_t y,
-                unsigned char c,
+                uint8_t c,
                 uint8_t color = WHITE,
                 uint8_t bg = BLACK,
                 uint8_t size = 1);
@@ -435,7 +435,7 @@ public:
    * \return Returns the basepointer to the Arduboy image buffer array 
    * sBuffer[].
    */
-  unsigned char* getBuffer();
+  uint8_t* getBuffer();
 
   /**
    * Seeds the random number generator with entropy from the temperature, 
@@ -492,7 +492,7 @@ public:
    * \param adc_bits byte to specificy adc bits
    * \return Return ADC as an unsigned 16 bit integer.
    */
-  uint16_t rawADC(byte adc_bits);
+  uint16_t rawADC(uint8_t adc_bits);
 
   /**
    * Provide system control during the boot sequence.
