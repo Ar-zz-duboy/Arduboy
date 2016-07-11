@@ -236,7 +236,7 @@ uint8_t ArduboyBase::draw(void (*f)())
   return 0;
 }
 
-void ArduboyBase::drawPixel(int x, int y, uint8_t color = WHITE)
+void ArduboyBase::drawPixel(int x, int y, uint8_t color)
 {
   #ifdef PIXEL_SAFE_MODE
   if (x < 0 || x > (WIDTH-1) || y < 0 || y > (HEIGHT-1))
