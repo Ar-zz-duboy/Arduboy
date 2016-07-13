@@ -70,7 +70,7 @@ public:
    *   if (pressed(LEFT_BUTTON + A_BUTTON))
    *
    */
-  boolean pressed(uint8_t buttons);
+  bool pressed(uint8_t buttons);
 
   /**
    * Returns true if the button mask passed in not pressed.
@@ -82,7 +82,7 @@ public:
    *  if (notPressed(LEFT_BUTTON))
    *
    */
-  boolean notPressed(uint8_t buttons);
+  bool notPressed(uint8_t buttons);
 
   /**
    * Initialize hardware, boot logo, boot utilities, etc.
@@ -177,7 +177,7 @@ public:
    * \param y integer for a y position
    * \param color Default color for pixel is set to white.
    */
-  void drawPixel(int x, int y, uint8_t color);
+  void drawPixel(int x, int y, uint8_t color = WHITE);
 
   /**
    * Get the value of a pixel from the screen buffer at a specified x and y 
@@ -193,12 +193,12 @@ public:
    * \param x0
    * \param y0
    * \param r
-   * \param color
+   * \param color Optional, default = WHITE
    * \details
    * Draws a circle in white or black. X and Y are the center point of the
    * circle.
    */
-  void drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color);
+  void drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color = WHITE);
 
   /**
    * Draws one or more "corners" of a circle.
@@ -206,7 +206,7 @@ public:
    * \param y0
    * \param r
    * \param cornername
-   * \param color
+   * \param color Optional, default = WHITE
    * \details
    * Helper function to draw the corners of a circle at a given x and y origin.
    */
@@ -214,16 +214,16 @@ public:
                         int16_t y0,
                         uint8_t r,
                         uint8_t cornername,
-                        uint8_t color);
+                        uint8_t color = WHITE);
 
   /**
    * Draws a filled-in circle.
    * \param x0
    * \param y0
    * \param r
-   * \param color
+   * \param color Optional, default = WHITE
    */
-  void fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color);
+  void fillCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color = WHITE);
 
    /**
     * Draws one or both vertical halves of a filled-in circle.
@@ -232,14 +232,14 @@ public:
     * \param r
     * \param cornername
     * \param delta
-    * \param color
+    * \param color Optional, default = WHITE
     */
   void fillCircleHelper(int16_t x0,
                         int16_t y0,
                         uint8_t r,
                         uint8_t cornername,
                         int16_t delta,
-                        uint8_t color);
+                        uint8_t color = WHITE);
 
   /**
    * Draws a line between two points.
@@ -247,10 +247,14 @@ public:
    * \param y0
    * \param x1
    * \param y1
-   * \param color
+   * \param color Optional, default = WHITE
    * \details Uses Bresenham's algorithm.
    */
-  void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color);
+  void drawLine(int16_t x0,
+                int16_t y0,
+                int16_t x1,
+                int16_t y1,
+                uint8_t color = WHITE);
 
   /**
    * Draws a rectangle of a width and height.
@@ -258,18 +262,22 @@ public:
    * \param y
    * \param w
    * \param h
-   * \param color
+   * \param color Optional, default = WHITE
    */
-  void drawRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color);
+  void drawRect(int16_t x,
+                int16_t y,
+                uint8_t w,
+                uint8_t h,
+                uint8_t color = WHITE);
 
   /**
    * Draws vertical line.
    * \param x
    * \param y
    * \param h
-   * \param color
+   * \param color Optional, default = WHITE
    */
-  void drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color);
+  void drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color = WHITE);
 
   /**
    * Draws a horizontal line.
@@ -278,7 +286,7 @@ public:
    * \param w
    * \param color
    */
-  void drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color);
+  void drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color = WHITE);
 
   /**
    * Draws a filled-in rectangle.
@@ -286,16 +294,20 @@ public:
    * \param y
    * \param w
    * \param h
-   * \param color
+   * \param color Optional, default = WHITE
    */
-  void fillRect(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color);
+  void fillRect(int16_t x,
+                int16_t y,
+                uint8_t w,
+                uint8_t h,
+                uint8_t color = WHITE);
 
   /**
    * Fills the screen buffer with white or black.
    * \fn fillScreen
-   * \param color
+   * \param color Optional, default = WHITE
    */
-  void fillScreen(uint8_t color);
+  void fillScreen(uint8_t color = WHITE);
 
   /**
    * Draws a rectangle with rounded edges.
@@ -304,14 +316,14 @@ public:
    * \param w
    * \param h
    * \param r
-   * \param color
+   * \param color Optional, default = WHITE
    */
   void drawRoundRect(int16_t x,
                      int16_t y,
                      uint8_t w,
                      uint8_t h,
                      uint8_t r,
-                     uint8_t color);
+                     uint8_t color = WHITE);
 
   /**
    * Draws a filled-in rectangle with rounded edges.
@@ -320,14 +332,14 @@ public:
    * \param w
    * \param h
    * \param r
-   * \param color
+   * \param color Optional, default = WHITE
    */
   void fillRoundRect(int16_t x,
                      int16_t y,
                      uint8_t w,
                      uint8_t h,
                      uint8_t r,
-                     uint8_t color);
+                     uint8_t color = WHITE);
 
   /**
    * Draws the outline of a triangle.
@@ -337,7 +349,7 @@ public:
    * \param y1
    * \param x2
    * \param y2
-   * \param color
+   * \param color Optional, default = WHITE
    */
   void drawTriangle(int16_t x0,
                     int16_t y0,
@@ -345,7 +357,7 @@ public:
                     int16_t y1,
                     int16_t x2,
                     int16_t y2,
-                    uint8_t color);
+                    uint8_t color = WHITE);
 
   /**
    * Draws a filled-in triangle.
@@ -355,7 +367,7 @@ public:
    * \param y1
    * \param x2
    * \param y2
-   * \param color
+   * \param color Optional, default = WHITE
    */
   void fillTriangle (int16_t x0,
                      int16_t y0,
@@ -363,7 +375,7 @@ public:
                      int16_t y1,
                      int16_t x2,
                      int16_t y2,
-                     uint8_t color);
+                     uint8_t color = WHITE);
 
   /**
    * Draws a bitmap from program memory to a specific X/Y
@@ -372,14 +384,14 @@ public:
    * \param *bitmap
    * \param w
    * \param h
-   * \param color
+   * \param color Optional, default = WHITE
    */
   void drawBitmap(int16_t x,
                   int16_t y,
                   const uint8_t *bitmap,
                   uint8_t w,
                   uint8_t h,
-                  uint8_t color);
+                  uint8_t color = WHITE);
 
   /**
    * Draws images that are bit-oriented horizontally.
@@ -388,7 +400,7 @@ public:
    * \param *bitmap
    * \param w
    * \param h
-   * \param color
+   * \param color Optional, default = WHITE
    * \details
    * This requires a lot of additional CPU power and will draw images slower
    * than drawBitmap, where the images are stored in a format that
@@ -400,30 +412,30 @@ public:
                         const uint8_t *bitmap,
                         uint8_t w,
                         uint8_t h,
-                        uint8_t color);
+                        uint8_t color = WHITE);
 
   /**
    * Draws an ASCII character at a point.
    * \param x
    * \param y
    * \param c
-   * \param color
-   * \param bg
-   * \param size
+   * \param color Optional, default = WHITE
+   * \param bg Optional, default = BLACK
+   * \param size Optional, default = 1
    */
   void drawChar(int16_t x,
                 int16_t y,
-                unsigned char c,
-                uint8_t color,
-                uint8_t bg,
-                uint8_t size);
+                uint8_t c,
+                uint8_t color = WHITE,
+                uint8_t bg = BLACK,
+                uint8_t size = 1);
 
   /**
    * Get a pointer to the display buffer.
    * \return Returns the basepointer to the Arduboy image buffer array 
    * sBuffer[].
    */
-  unsigned char* getBuffer();
+  uint8_t* getBuffer();
 
   /**
    * Seeds the random number generator with entropy from the temperature, 
@@ -480,7 +492,7 @@ public:
    * \param adc_bits byte to specificy adc bits
    * \return Return ADC as an unsigned 16 bit integer.
    */
-  uint16_t rawADC(byte adc_bits);
+  uint16_t rawADC(uint8_t adc_bits);
 
   /**
    * Provide system control during the boot sequence.
@@ -552,11 +564,14 @@ public:
 
   /**
    * Sets the text foreground color.
-   * \param color Pass a usigned byte to set as color.
+   * \param color Pass an unsigned byte to set as color.
    */
   void setTextColor(uint8_t color);
 
-  /// Sets the text background color
+  /**
+   * Sets the text background color.
+   * \param color Pass an unsigned byte to set as background color.
+   */
   void setTextBackground(uint8_t bg);
 
   /**
