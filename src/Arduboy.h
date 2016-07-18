@@ -144,9 +144,19 @@ public:
    */
   void flashlight(uint8_t on_button, uint8_t off_button);
 
-  /// Deprecitated function to clear an Arduboy display. Use clear() instead.
+  /// Deprecated function to clear an Arduboy display. Use clear() instead.
   void clearDisplay() 
       __attribute__((deprecated, warning("use clear() instead")));
+
+  /**
+   * Do the same as begin() except don't display the boot logo sequence or
+   * handle system control buttons.
+   * \deprecated This function has been retained for backwards compatibility.
+   * It should not be used for new development. Instead, use boot() and
+   * optionally add functions back in that begin() performs.
+   */
+  void beginNoLogo()
+      __attribute__((deprecated, warning("use boot() plus optional extra functions instead")));
 
   /**
    * Copies the contents of the screen buffer to the screen.

@@ -119,6 +119,20 @@ void ArduboyBase::bootLogo()
   digitalWrite(BLUE_LED, RGB_OFF);
 }
 
+// This function is deprecated.
+// It is retained for backwards compatibility.
+// New code should use boot() as a base.
+void ArduboyBase::beginNoLogo()
+{
+  boot();       // raw hardware
+  blank();      // blank the display
+
+  // start the flashlight
+  flashlight(UP_BUTTON, DOWN_BUTTON);
+
+  audio.begin();   // start the audio
+}
+
 /* Frame management */
 
 void ArduboyBase::setFrameRate(uint8_t rate)
