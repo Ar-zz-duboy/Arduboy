@@ -66,6 +66,8 @@ void ArduboyBase::systemButtons()
     sysCtrlSound(DOWN_BUTTON + B_BUTTON, RED_LED, 0);
     delay(200);
   }
+
+  digitalWrite(BLUE_LED, RGB_OFF);
 }
 
 void ArduboyBase::sysCtrlSound(uint8_t buttons, uint8_t led, uint8_t eeVal)
@@ -90,10 +92,13 @@ void ArduboyBase::bootLogo()
   for (int8_t y = -18; y <= 24; y++)
   {
     if (y == -4)
-      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF);
-
-    if (y == -4)
-      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF);
+    {
+      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF); // green LED on
+    }
+    else if (y == 24)
+    {
+      digitalWriteRGB(RGB_OFF, RGB_OFF, RGB_ON); // blue LED on
+    }
 
     clear();
     drawBitmap(20, y, arduboy_logo, 88, 16, WHITE);
