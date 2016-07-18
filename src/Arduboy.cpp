@@ -132,7 +132,7 @@ bool ArduboyBase::everyXFrames(uint8_t frames)
   return frameCount % frames == 0;
 }
 
-bool ArduboyBase::nextFrame()
+bool ArduboyBase::newFrame()
 {
   long now = millis();
   uint8_t remaining;
@@ -180,6 +180,33 @@ bool ArduboyBase::nextFrame()
   return post_render;
 }
 
+// This function is deprecated.
+// It should remain as is for backwards compatibility.
+// New code should use newFrame().
+bool ArduboyBase::nextFrame()
+{
+  long now = millis();
+  uint8_t remaining;
+
+  if (post_render) {
+    lastFrameDurationMs = now - lastFrameStart;
+    frameCount++;
+    post_render = false;
+  }
+
+  if (now < nextFrameStart) {
+    remaining = nextFrameStart - now;
+    if (remaining > 1)
+      idle();
+    return false;
+  }
+
+  nextFrameStart = now + eachFrameMillis;
+  lastFrameStart = now;
+  post_render = true;
+  return post_render;
+}
+
 int ArduboyBase::cpuLoad()
 {
   return lastFrameDurationMs*100 / eachFrameMillis;
@@ -221,17 +248,17 @@ void ArduboyBase::clearDisplay() // deprecated
 uint8_t ArduboyBase::draw(void (*f)())
 {
   // pause render until it's time for the next frame
-  if (!(this->nextFrame()))
+  if (!(newFrame()))
     return 1;
 
   // clear the buffer
-  this->clear();
+  clear();
 
   // call the function passed as paramter to draw
   (*f)();
 
   // draw the buffer
-  this->display();
+  display();
 
   return 0;
 }

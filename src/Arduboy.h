@@ -461,10 +461,23 @@ public:
   void setFrameRate(uint8_t rate);
 
   /**
-   * Returns 'true' if the system is ready to draw the next frame.
-   * \return Returns true if the Arduboy is ready to draw the next frame.
+   * Returns 'true' if the desired time to draw a new frame has elapsed.
+   * The time period is set using setFrameRate().
+   * \return Returns true if it's time to draw a new frame.
    */
-  bool nextFrame();
+  bool newFrame();
+
+  /**
+   * Returns 'true' if it's time to draw the next frame.
+   * \deprecated This functon has a bug which can result in the frame rate
+   * being slower than what is set, and vary depending on CPU load. It has been
+   * retained so that older sketches using it will continue to run at the same
+   * speed. New sketches should use newFrame(). It is recommended that sketches
+   * already using nextFrame() be modified to use newFrame() if possible.
+   * \return Returns true if it's time to draw the next frame.
+   */
+  bool nextFrame()
+      __attribute__((deprecated, warning("consider using newFrame() instead")));
 
   /**
    * Returns true if the current frame number is evenly divisible by the
