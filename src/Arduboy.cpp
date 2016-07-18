@@ -33,38 +33,28 @@ void ArduboyBase::begin()
 {
   boot();       // raw hardware
   blank();      // blank the display
-
-  // start the flashlight
-  flashlight(UP_BUTTON, DOWN_BUTTON);
-
+  flashlight(); // start the flashlight if the UP button is held
   systemButtons(); // check for the presence of any held system buttons
   bootLogo();      // display the boot logo
   audio.begin();   // start the audio
 }
 
-void ArduboyBase::flashlight(uint8_t on_button, uint8_t off_button)
+void ArduboyBase::flashlight()
 {
-  if (pressed(on_button)) flashlight(off_button);
-}
+  if(!pressed(UP_BUTTON))
+    return;
 
-void ArduboyBase::flashlight(uint8_t off_button)
-{
   // turn all pixels on
   sendLCDCommand(OLED_ALL_PIXELS_ON);
   // turn red, green and blue LEDS on for white light
   digitalWriteRGB(RGB_ON, RGB_ON, RGB_ON);
 
   // until the down button is pressed, stay in flashlight mode.
-  while (!pressed(off_button))
+  while (!pressed(DOWN_BUTTON))
     idle();
 
   digitalWriteRGB(RGB_OFF, RGB_OFF, RGB_OFF);
   sendLCDCommand(OLED_PIXELS_FROM_RAM);
-}
-
-void ArduboyBase::flashlight()
-{
-  flashlight(UP_BUTTON, DOWN_BUTTON);
 }
 
 void ArduboyBase::systemButtons()
@@ -126,10 +116,7 @@ void ArduboyBase::beginNoLogo()
 {
   boot();       // raw hardware
   blank();      // blank the display
-
-  // start the flashlight
-  flashlight(UP_BUTTON, DOWN_BUTTON);
-
+  flashlight(); // start the flashlight if the UP button is held
   audio.begin();   // start the audio
 }
 
