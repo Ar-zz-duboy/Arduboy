@@ -8,7 +8,7 @@
 #include "ab_logo.c"
 #include "glcdfont.c"
 
-uint8_t ArduboyBase::sBuffer[(HEIGHT * WIDTH) / 8];
+uint8_t ArduboyBase::sBuffer[];
 
 ArduboyBase::ArduboyBase()
 {
