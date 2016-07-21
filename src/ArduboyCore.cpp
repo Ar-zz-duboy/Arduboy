@@ -350,3 +350,8 @@ uint8_t ArduboyCore::buttonsState()
 
   return buttons;
 }
+
+uint8_t ArduboyCore::getInput() // deprecated
+{
+  return buttonsState();
+}
