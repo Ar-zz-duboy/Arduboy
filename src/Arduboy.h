@@ -102,6 +102,25 @@ public:
   void start() __attribute__((deprecated, warning("use begin() instead")));
 
   /**
+   * Flashlight mode handler.
+   * \details
+   * Flashlight mode is a boot up function that checks if the UP button is
+   * being held and, if so, turns the RGB LED on full white and lights all the
+   * screen pixels. When the DOWN button is pressed, flashlight mode exits and
+   * the sketch continues.
+   */
+  void flashlight();
+
+  /**
+   * Provide system control during the boot sequence.
+   * \details
+   * An opportunity to provide a level of system control is given during the
+   * boot sequence. Control is given to systemSetup() if specified buttons 
+   * are held during an Arduboy's startup.
+   */
+  void systemButtons();
+
+  /**
    * Scrolls in the Arduboy logo
    * \details
    * Scrolls the logo stored in memory for Arduboy down the screen. LEDs will
@@ -110,41 +129,23 @@ public:
   void bootLogo();
 
   /**
+   * Do the same as begin() except don't display the boot logo sequence or
+   * handle system control buttons.
+   * \deprecated This function has been retained for backwards compatibility.
+   * It should not be used for new development. Instead, use boot() and
+   * optionally add functions back in that begin() performs.
+   */
+  void beginNoLogo()
+      __attribute__((deprecated, warning("use boot() plus optional extra functions instead")));
+
+  /**
    * Clears display.
    * \details
    * Clear the image buffer for the controlled Arduboy.
    */
   void clear();
 
-  /**
-   * Provide flashlight mode, providing a default on and off button..
-   * \details
-   * The flashlight mode will places the programmble LED on an Arduboy to white
-   * and turn all of the pixels on the screen on. The default buttons provided
-   * to check before turning on the flashlight are UP_BUTTON and DOWN_BUTTON
-   * for on and off, respectivly.
-   */
-  void flashlight();
-
-  /**
-   * Flashlight mode, provide off button only.
-   * \param off_button The button to turn off flashlight mode.
-   */
-  void flashlight(uint8_t off_button);
-
-  /**
-   * Flashlight mode, provide on and off button.
-   * \param on_button uint8_t button to check before turning on flashlight.
-   * \param off_button uint8_t button to press to turn off flashlight.
-   * \details
-   * Hold a key when booting to enable, press a provided key to exit;
-   * or simply turn off your Arduboy.  Your sketches can also
-   * call this at any time.  It goes into a tight loop until the
-   * off_button is pressed.
-   */
-  void flashlight(uint8_t on_button, uint8_t off_button);
-
-  /// Deprecitated function to clear an Arduboy display. Use clear() instead.
+  /// Deprecated function to clear an Arduboy display. Use clear() instead.
   void clearDisplay() 
       __attribute__((deprecated, warning("use clear() instead")));
 
@@ -461,10 +462,23 @@ public:
   void setFrameRate(uint8_t rate);
 
   /**
-   * Returns 'true' if the system is ready to draw the next frame.
-   * \return Returns true if the Arduboy is ready to draw the next frame.
+   * Returns 'true' if the desired time to draw a new frame has elapsed.
+   * The time period is set using setFrameRate().
+   * \return Returns true if it's time to draw a new frame.
    */
-  bool nextFrame();
+  bool newFrame();
+
+  /**
+   * Returns 'true' if it's time to draw the next frame.
+   * \deprecated This functon has a bug which can result in the frame rate
+   * being slower than what is set, and vary depending on CPU load. It has been
+   * retained so that older sketches using it will continue to run at the same
+   * speed. New sketches should use newFrame(). It is recommended that sketches
+   * already using nextFrame() be modified to use newFrame() if possible.
+   * \return Returns true if it's time to draw the next frame.
+   */
+  bool nextFrame()
+      __attribute__((deprecated, warning("consider using newFrame() instead")));
 
   /**
    * Returns true if the current frame number is evenly divisible by the
@@ -493,15 +507,6 @@ public:
    * \return Return ADC as an unsigned 16 bit integer.
    */
   uint16_t rawADC(uint8_t adc_bits);
-
-  /**
-   * Provide system control during the boot sequence.
-   * \details
-   * An opportunity to provide a level of system control is given during the
-   * boot sequence. Control is given to systemSetup() if specified buttons 
-   * are held during an Arduboy's startup.
-   */
-  void systemButtons();
 
 protected:
 

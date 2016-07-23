@@ -8,7 +8,7 @@
 #include "ab_logo.c"
 #include "glcdfont.c"
 
-uint8_t ArduboyBase::sBuffer[(HEIGHT * WIDTH) / 8];
+uint8_t ArduboyBase::sBuffer[];
 
 ArduboyBase::ArduboyBase()
 {
@@ -33,38 +33,28 @@ void ArduboyBase::begin()
 {
   boot();       // raw hardware
   blank();      // blank the display
-
-  // start the flashlight
-  flashlight(UP_BUTTON, DOWN_BUTTON);
-
+  flashlight(); // start the flashlight if the UP button is held
   systemButtons(); // check for the presence of any held system buttons
   bootLogo();      // display the boot logo
   audio.begin();   // start the audio
 }
 
-void ArduboyBase::flashlight(uint8_t on_button, uint8_t off_button)
+void ArduboyBase::flashlight()
 {
-  if (pressed(on_button)) flashlight(off_button);
-}
+  if(!pressed(UP_BUTTON))
+    return;
 
-void ArduboyBase::flashlight(uint8_t off_button)
-{
   // turn all pixels on
   sendLCDCommand(OLED_ALL_PIXELS_ON);
   // turn red, green and blue LEDS on for white light
   digitalWriteRGB(RGB_ON, RGB_ON, RGB_ON);
 
   // until the down button is pressed, stay in flashlight mode.
-  while (!pressed(off_button))
+  while (!pressed(DOWN_BUTTON))
     idle();
 
   digitalWriteRGB(RGB_OFF, RGB_OFF, RGB_OFF);
   sendLCDCommand(OLED_PIXELS_FROM_RAM);
-}
-
-void ArduboyBase::flashlight()
-{
-  flashlight(UP_BUTTON, DOWN_BUTTON);
 }
 
 void ArduboyBase::systemButtons()
@@ -76,6 +66,8 @@ void ArduboyBase::systemButtons()
     sysCtrlSound(DOWN_BUTTON + B_BUTTON, RED_LED, 0);
     delay(200);
   }
+
+  digitalWrite(BLUE_LED, RGB_OFF);
 }
 
 void ArduboyBase::sysCtrlSound(uint8_t buttons, uint8_t led, uint8_t eeVal)
@@ -100,10 +92,13 @@ void ArduboyBase::bootLogo()
   for (int8_t y = -18; y <= 24; y++)
   {
     if (y == -4)
-      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF);
-
-    if (y == -4)
-      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF);
+    {
+      digitalWriteRGB(RGB_OFF, RGB_ON, RGB_OFF); // green LED on
+    }
+    else if (y == 24)
+    {
+      digitalWriteRGB(RGB_OFF, RGB_OFF, RGB_ON); // blue LED on
+    }
 
     clear();
     drawBitmap(20, y, arduboy_logo, 88, 16, WHITE);
@@ -119,6 +114,17 @@ void ArduboyBase::bootLogo()
   digitalWrite(BLUE_LED, RGB_OFF);
 }
 
+// This function is deprecated.
+// It is retained for backwards compatibility.
+// New code should use boot() as a base.
+void ArduboyBase::beginNoLogo()
+{
+  boot();       // raw hardware
+  blank();      // blank the display
+  flashlight(); // start the flashlight if the UP button is held
+  audio.begin();   // start the audio
+}
+
 /* Frame management */
 
 void ArduboyBase::setFrameRate(uint8_t rate)
@@ -132,7 +138,7 @@ bool ArduboyBase::everyXFrames(uint8_t frames)
   return frameCount % frames == 0;
 }
 
-bool ArduboyBase::nextFrame()
+bool ArduboyBase::newFrame()
 {
   long now = millis();
   uint8_t remaining;
@@ -180,6 +186,33 @@ bool ArduboyBase::nextFrame()
   return post_render;
 }
 
+// This function is deprecated.
+// It should remain as is for backwards compatibility.
+// New code should use newFrame().
+bool ArduboyBase::nextFrame()
+{
+  long now = millis();
+  uint8_t remaining;
+
+  if (post_render) {
+    lastFrameDurationMs = now - lastFrameStart;
+    frameCount++;
+    post_render = false;
+  }
+
+  if (now < nextFrameStart) {
+    remaining = nextFrameStart - now;
+    if (remaining > 1)
+      idle();
+    return false;
+  }
+
+  nextFrameStart = now + eachFrameMillis;
+  lastFrameStart = now;
+  post_render = true;
+  return post_render;
+}
+
 int ArduboyBase::cpuLoad()
 {
   return lastFrameDurationMs*100 / eachFrameMillis;
@@ -221,17 +254,17 @@ void ArduboyBase::clearDisplay() // deprecated
 uint8_t ArduboyBase::draw(void (*f)())
 {
   // pause render until it's time for the next frame
-  if (!(this->nextFrame()))
+  if (!(newFrame()))
     return 1;
 
   // clear the buffer
-  this->clear();
+  clear();
 
   // call the function passed as paramter to draw
   (*f)();
 
   // draw the buffer
-  this->display();
+  display();
 
   return 0;
 }
