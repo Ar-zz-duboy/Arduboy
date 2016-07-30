@@ -1,18 +1,18 @@
 Arduboy Library · `develop`
 ===============
 
-Description of the Arduboy Library, using the `develop` branch.
+Information and instructions on using the <b>`develop`</b> branch of the Arduboy Library.
 
 ## About
 
-This an open-source library providing function to an Arduboy.
+Arduboy is an open-source hardware platform allowing gamers to easily make and share games using C/C++. The **Arduboy Library** is an open-source library that provides a programming interface for making games and applications that run on an Arduboy. The Arduboy Library supports both the **production** and **development** Arduboy units.
 
 ### Using the `develop` Branch
 
-This is a development branch. 
+This is a development branch and considered highly unstable. Do not use this branch for your game or application.
 
 #### Branches
-A list of imporant Arduboy branches.
+A list of important Arduboy branches.
 
 <b>`stable`</b>
 
