@@ -251,7 +251,7 @@ void ArduboyBase::clearDisplay() // deprecated
   clear();
 }
 
-uint8_t ArduboyBase::draw(void (*f)())
+uint8_t ArduboyBase::perform(void (*f)())
 {
   // pause render until it's time for the next frame
   if (!(newFrame()))

@@ -169,7 +169,7 @@ public:
    * drawn, returns if not. The function passed a parameter is executed along
    * with any cleanup routine.
    */
-  uint8_t draw(void (*f)());
+  uint8_t perform(void (*f)());
 
   /**
    * Sets a pixel in the screen buffer to on or off. Default is on (white).

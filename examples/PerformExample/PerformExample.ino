@@ -14,12 +14,12 @@ void setup() {
 }
 
 void loop() {
-  // call the draw routine from the arduboy reference
-  arduboy.draw(draw);
+  // perform the action() function specified below.
+  arduboy.perform(action);
 }
 
-// function to pass to the Arduboy draw routine
-void draw() {
+// function to pass to the Arduboy perform routine in loop()
+void action() {
   arduboy.setCursor(4, 9);
   arduboy.print(F("Hello, world!"));
 }

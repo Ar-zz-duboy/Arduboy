@@ -14,12 +14,12 @@ This is a development branch.
 #### Branches
 A list of imporant Arduboy branches.
 
-**`stable`**
+<b>`stable`</b>
 
 Please use the `stable` branch for the current stable build. If you are unsure
 which branch to use for your game, then this is the branch you are looking for.
 
-**`develop`**
+<b>`develop`</b>
 
 The `develop` branch for the Arduboy Library holds the bleeding-edge release
 for the Arduboy project.
