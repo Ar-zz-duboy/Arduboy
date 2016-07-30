@@ -99,7 +99,7 @@ public:
   void begin();
 
   /// Depreciated function. Use begin instead.
-  void start() __attribute__((deprecated, warning("use begin() instead")));
+  void start() __attribute__((deprecated("use begin() instead")));
 
   /**
    * Flashlight mode handler.
@@ -136,7 +136,7 @@ public:
    * optionally add functions back in that begin() performs.
    */
   void beginNoLogo()
-      __attribute__((deprecated, warning("use boot() plus optional extra functions instead")));
+      __attribute__((deprecated("use boot() plus optional extra functions instead")));
 
   /**
    * Clears display.
@@ -146,8 +146,7 @@ public:
   void clear();
 
   /// Deprecated function to clear an Arduboy display. Use clear() instead.
-  void clearDisplay() 
-      __attribute__((deprecated, warning("use clear() instead")));
+  void clearDisplay() __attribute__((deprecated("use clear() instead")));
 
   /**
    * Copies the contents of the screen buffer to the screen.
@@ -478,7 +477,7 @@ public:
    * \return Returns true if it's time to draw the next frame.
    */
   bool nextFrame()
-      __attribute__((deprecated, warning("consider using newFrame() instead")));
+      __attribute__((deprecated("consider using newFrame() instead")));
 
   /**
    * Returns true if the current frame number is evenly divisible by the

@@ -209,6 +209,10 @@ public:
    */
   uint8_t static buttonsState();
 
+  /// Deprecated. Use buttonsState() instead.
+  uint8_t static getInput()
+      __attribute__((deprecated("use buttonsState() instead")));
+
   /**
    * Paints 8 pixels (vertically) from a single byte. 1 is on, 0 is off.
    * \param pixels uint8_t
