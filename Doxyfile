@@ -4,10 +4,10 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "Arduboy API Reference"
-PROJECT_NUMBER         = 1.2.0
-PROJECT_BRIEF          = "https://github.com/Arduboy/Arduboy.git"
-PROJECT_LOGO           = ./extras/assets/arduboy_logo.png
+PROJECT_NAME           = "Arduboy Library"
+PROJECT_NUMBER         =
+PROJECT_BRIEF          =
+PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = ./doxygen
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = YES
