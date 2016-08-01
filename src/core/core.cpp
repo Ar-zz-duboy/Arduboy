@@ -227,20 +227,26 @@ void ArduboyCore::paintScreen(const unsigned char *image)
 // will be used by any buffer based subclass
 void ArduboyCore::paintScreen(unsigned char image[])
 {
-  for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
-  {
-    // SPI.transfer(image[i]);
+  uint8_t c;
+  int i = 0;
 
-    // we need to burn 18 cycles between sets of SPDR
-    // 4 clock cycles
-    SPDR = image[i];
-    // 7 clock cycles
-    asm volatile(
-      "mul __zero_reg__, __zero_reg__ \n" // 2 cycles
-      "mul __zero_reg__, __zero_reg__ \n" // 2 cycles
-      "mul __zero_reg__, __zero_reg__ \n" // 2 cycles
-      );
+  SPDR = image[i++]; // set the first SPI data byte to get things started
+
+  // the code to iterate the loop and get the next byte from the buffer is
+  // executed while the previous byte is being sent out by the SPI controller
+  while (i < (HEIGHT * WIDTH) / 8)
+  {
+    // get the next byte. It's put in a local variable so it can be sent as
+    // as soon as possible after the sending of the previous byte has completed
+    c = image[i++];
+
+    while (!(SPSR & _BV(SPIF))) { } // wait for the previous byte to be sent
+
+    // put the next byte in the SPI data register. The SPI controller will
+    // clock it out while the loop continues and gets the next byte ready
+    SPDR = c;
   }
+  while (!(SPSR & _BV(SPIF))) { } // wait for the last byte to be sent
 }
 
 void ArduboyCore::blank()
