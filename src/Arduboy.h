@@ -6,6 +6,14 @@
 #include <Print.h>
 #include <limits.h>
 
+/// Library version.
+/**
+ * A version number, 'x.y.z', is stored in the form xxyyzz,
+ * where ((x * 10000) + (y * 100) + (z)),
+ * resulting in 'xxxyyzz', with no leading zeros.
+ */
+#define ARDUBOY_LIB_VER 10101 // 1.1.1
+
 // EEPROM settings
 #define EEPROM_VERSION 0
 #define EEPROM_BRIGHTNESS 1
