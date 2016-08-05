@@ -1,28 +1,19 @@
-Arduboy Library · `stable`
+Arduboy Library · `1.1.1`
 ===============
 
-Information and instructions on using the <b>`stable`</b> branch of the Arduboy Library.
+Welcome to Arduboy! This is release `1.1.1` of the Arduboy Library.
 
 ## About
 
 Arduboy is an open-source hardware platform allowing gamers to easily make and share games using C/C++. The **Arduboy Library** is an open-source library that provides a programming interface for making games and applications that run on an Arduboy. The Arduboy Library supports both the **production** and **development** Arduboy units.
 
-### Using the `stable` Branch
+### Contributing to the Arduboy Library
 
-This is the `stable` branch and is the most up-to-date and stable release of the Arduboy Library. This branch is used to tag the releases pushed to the Arduino IDE. 
+The Github url for this project is https://github.com/Arduboy/Arduboy.
 
-Please use this branch for your projects.
+Using `git` and Github, anyone can contribute to the Arduboy library. The source found using the Arduino _Library Manager_ can be found on the [`stable`](https://github.com/Arduboy/Arduboy/tree/stable) branch. For "bleeding-edge" work on the library, see the [`develop`](https://github.com/Arduboy/Arduboy/tree/develop) branch of the Arduboy repository.
 
-#### Other Branches
-The following list provides details on all important branches from the Arduboy project.
-
-<b>`stable`</b> Please use the `stable` branch for the current stable build. If you are unsure
-which branch to use for your game, then this is the branch you are looking for.
-
-<b>`develop`</b> The `develop` branch for the Arduboy Library holds the bleeding-edge release
-for the Arduboy project.
-
-## Using the Aruboy Library
+## Using the Arduboy Library
 
 To start using the Arduboy Library in your applications, the library must be
 available to your own project's source. The most reliable method for including
