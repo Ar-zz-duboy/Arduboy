@@ -2,9 +2,10 @@
 
 - Kevin "Arduboy" Bates (@Arduboy)
 - arduboychris (@arduboychris)
-- Ross (@rogosher)
-- Andrew (@ace-dent)
 - Josh Goebel (@yyyc514)
+- Scott Allen (@MLXXXp)
+- Ross Shoger (@rogosher)
+- Andrew (@ace-dent)
 
 
 # Included code from other open source projects

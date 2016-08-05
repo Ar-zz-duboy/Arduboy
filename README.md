@@ -16,27 +16,36 @@ Please use this branch for your projects.
 #### Branches
 A list of important Arduboy branches.
 
-<b>`stable`</b>
-
-Please use the `stable` branch for the current stable build. If you are unsure
+<b>`stable`</b> Please use the `stable` branch for the current stable build. If you are unsure
 which branch to use for your game, then this is the branch you are looking for.
 
-<b>`develop`</b>
-
-The `develop` branch for the Arduboy Library holds the bleeding-edge release
+<b>`develop`</b> The `develop` branch for the Arduboy Library holds the bleeding-edge release
 for the Arduboy project.
 
-### Using the Aruboy Library
+## Using the Aruboy Library
 
-To use the Arduboy library, it must be installed and then included in your
-project. An Arduboy or Leonardo must board must be selected as a target board.
-Compile and upload the source to an Arduboy.
+To start using the Arduboy Library in your applications, the library must be
+available to your own project's source. The most reliable method for including
+the latest stable release of the Aruboy Library in your project is to use the
+Arduino IDE and its _Library Manager_.
 
-## Install
+### Install Using Arduino IDE
 
-Install the library by cloning its repository.
+Using the Arudino IDE, under the menu item, `Sketch > Include Library`, can be
+found `Manage Libraries`. This will open the Arudino IDE's _Library Manager_.
+Using this dialog the Arduboy Library can be search for and installed to be
+made available to your projects. See the following **Include** section, or add
+`#include <Arduboy.h>` to beginning of your project's source.
 
-    $ git clone https://github.com/Arduboy/Arduboy.git
+### Manually Installing
+
+Install the library by cloning the `stable` branch of the Arduboy repository.
+
+    $ git clone -b stable https://github.com/Arduboy/Arduboy.git
+
+The Arduboy Library can also be installed by downloading and unpacking a
+[release package](https://github.com/Arduboy/Arduboy/releases) into your
+system's Arduino `libraries` folder.
 
 ### Where to Install
 
@@ -81,7 +90,18 @@ automatically by using the navigation menu `Sketch > Include Library > Arduboy`.
 
 ## Board Selection
 
-Select the **Leonardo** board as the target platform.
+Select the **Leonardo** board as the target platform, or use the following
+instructions to add the Arduboy and Arduboy Devkit to the Arduino IDE.
+
+### Add Arduboy Hardware to Arduino IDE
+
+In the Arudino IDE select, `File > Preferences`. In the *Settings* tab there
+will be a field titled *Additional Boards Manager URLs:*, put the following in
+this field:
+
+    https://arduboy.github.io/board-support/package_arduboy_index.json
+
+See this [guide] for more detailed instructions.
 
 ## Arduboy Examples
 
@@ -105,13 +125,12 @@ that `#define AB_DEVKIT` is uncommented and `#define ARDUBOY_10` is comment out.
     #define AB_DEVKIT    //< compile for the official dev kit
 ~~~~~~~~~~~~~~~
 
-## Sketches Already Including the Arduboy Library
+## Custom Arduboy Library Source
 
-Sketches that include copies of the Arduboy library may not compile if the
-Arduboy library has been installed system wide. In these cases the Arduino 
-compiler will try and link the system Arduboy library source with the local 
-header file, which can cause compilation errors if the local library source 
-differs from the system's Arduboy source.
+If you find that a modified version of the Arduboy Library has been used to
+build a game, and you have already installed a release version of the Aruboy
+Library, then several options are available to allow you to compile and run the
+application without altering the Arduino IDE's libraries.
 
 Use one of the following options to compile sketches that have included copies
 of the Aruboy Library,
