@@ -13,8 +13,8 @@ This is the `stable` branch and is the most up-to-date and stable release of the
 
 Please use this branch for your projects.
 
-#### Branches
-A list of important Arduboy branches.
+#### Other Branches
+The following list provides details on all important branches from the Arduboy project.
 
 <b>`stable`</b> Please use the `stable` branch for the current stable build. If you are unsure
 which branch to use for your game, then this is the branch you are looking for.
@@ -29,15 +29,21 @@ available to your own project's source. The most reliable method for including
 the latest stable release of the Aruboy Library in your project is to use the
 Arduino IDE and its _Library Manager_.
 
-### Install Using Arduino IDE
+After the Arduboy Library is installed, it must be included for use in your project's source.
+
+### Install
+
+The Arduboy Library can be installed on your system in manys: through the Arduino IDE, using `git` to clone the library, or manually download and install the library. This section outlines the most common methods, and the Arduboy Library must only be installed once. Please use the first method _Install Using the Arduino IDE_ if you are unsure.
+
+#### Install Using the Arduino IDE
 
 Using the Arudino IDE, under the menu item, `Sketch > Include Library`, can be
 found `Manage Libraries`. This will open the Arudino IDE's _Library Manager_.
 Using this dialog the Arduboy Library can be search for and installed to be
 made available to your projects. See the following **Include** section, or add
-`#include <Arduboy.h>` to beginning of your project's source.
+`#include <Arduboy.h>` to beginning of your project's source to start using the library.
 
-### Manually Installing
+#### Manually Installing
 
 Install the library by cloning the `stable` branch of the Arduboy repository.
 
@@ -47,13 +53,13 @@ The Arduboy Library can also be installed by downloading and unpacking a
 [release package](https://github.com/Arduboy/Arduboy/releases) into your
 system's Arduino `libraries` folder.
 
-### Where to Install
+#### Locating The Arduino `libraries/` Folder
 
 The library should be installed into your user's home Arduino `libraries`
 directory. Refer to the following list for the location of the Arduino
 `libraries` folder.
 
-#### Arduino Library Locations by OS
+##### Arduino Library Locations by OS
 
 Arduino library locations listed by operating system (OS).
 
@@ -69,7 +75,7 @@ Arduino library locations listed by operating system (OS).
 
     C:\Users\username\My Documents\Arduino\libraries
 
-#### Find the Location of Arduino `libraries\`
+##### Use the Arduino IDE to Find or Change the Location of `libraries/`
 
 If you don't find the `libraries` folder in one of the above locations, you can
 determine its location using the navigation menu `File > Preferences`. In the
@@ -78,8 +84,8 @@ will be in the folder set in this field.
 
 ## Include
 
-To use the Arduboy library in your own sketches, include the `Arduboy.h` header
-file. To do so, add the following line to the top of your `.ino` file.
+To start using the Arduboy library in your own sketches, the  `Arduboy.h` header
+must be included in your project. To do so, add the following line to the top of your `.ino` file.
 
 ~~~~~~~~~~~~~~~{.cpp}
     #include "Arduboy.h"
@@ -101,7 +107,7 @@ this field:
 
     https://arduboy.github.io/board-support/package_arduboy_index.json
 
-See this [guide] for more detailed instructions.
+See this [guide](http://community.arduboy.com/t/quickly-add-the-arduboy-arduboy-devkit-to-the-arduino-ide/1069) for more detailed instructions.
 
 ## Arduboy Examples
 
