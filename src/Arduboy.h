@@ -159,6 +159,16 @@ public:
    */
   void display();
 
+ /**
+   * Perform the equivalent of display() followed by clear().
+   * \details
+   * The contents of the screen buffer are displayed and the screen buffer
+   * is cleared to zeros. The operations are performed in the same loop
+   * so will execute faster that if display() and then clear() were called
+   * separately.
+   */
+  void displayAndClear();
+
   /**
    * Managed draw function for an Arduboy.
    * \todo Thoroughly test this method for handling draws to the screen.

@@ -813,7 +813,12 @@ void ArduboyBase::drawChar
 void ArduboyBase::display()
 {
   // copy data to draw to buffer
-  this->paintScreen(sBuffer);
+  paintScreen(sBuffer);
+}
+
+void ArduboyBase::displayAndClear()
+{
+  paintScreenAndClearImage(sBuffer);
 }
 
 uint8_t* ArduboyBase::getBuffer()

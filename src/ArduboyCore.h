@@ -265,6 +265,18 @@ public:
   void static paintScreen(uint8_t image[]);
 
   /**
+   * Paints an entire image directly to hardware (from RAM) and zeros
+   * the contents of the image
+   * \param image[]
+   * \see paintScreen()
+   * \details
+   * Performs the same function as paintScreen() but also clears the image
+   * buffer in the same loop. This is faster than displaying the image and
+   * then clearing it separately in another function.
+   */
+  void static paintScreenAndClearImage(uint8_t image[]);
+
+  /**
    * Paints a blank (black) screen to the screen
    */
   void static blank();

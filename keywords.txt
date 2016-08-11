@@ -23,6 +23,7 @@ clear	KEYWORD2
 cpuLoad	KEYWORD2
 digitalWriteRGB	KEYWORD2
 display	KEYWORD2
+displayAndClear	KEYWORD2
 drawBitmap	KEYWORD2
 drawChar	KEYWORD2
 drawCircle	KEYWORD2
@@ -57,6 +58,7 @@ off	KEYWORD2
 on	KEYWORD2
 paint8Pixels	KEYWORD2
 paintScreen	KEYWORD2
+paintScreenAndClearImage	KEYWORD2
 pressed	KEYWORD2
 saveOnOff	KEYWORD2
 setCursor	KEYWORD2
