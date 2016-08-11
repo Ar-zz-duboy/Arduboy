@@ -315,9 +315,9 @@ public:
   /**
    * Fills the screen buffer with white or black.
    * \fn fillScreen
-   * \param color Optional, default = WHITE
+   * \param color Optional, default = BLACK
    */
-  void fillScreen(uint8_t color = WHITE);
+  void fillScreen(uint8_t color = BLACK);
 
   /**
    * Draws a rectangle with rounded edges.
