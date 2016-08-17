@@ -716,17 +716,17 @@ void ArduboyBase::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap,
           {
             if (color == WHITE)
             {
-              this->sBuffer[ (bRow*WIDTH) + x + iCol ] |=
+              sBuffer[ (bRow*WIDTH) + x + iCol ] |=
                 pgm_read_byte(bitmap + (a * w) + iCol) << yOffset;
             }
             else if (color == BLACK)
             {
-              this->sBuffer[ (bRow*WIDTH) + x + iCol ] &=
+              sBuffer[ (bRow*WIDTH) + x + iCol ] &=
                 ~(pgm_read_byte(bitmap + (a * w) + iCol) << yOffset);
             }
             else
             {
-              this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^=
+              sBuffer[ (bRow*WIDTH) + x + iCol ] ^=
                 pgm_read_byte(bitmap + (a * w) + iCol) << yOffset;
             }
           }
@@ -734,17 +734,17 @@ void ArduboyBase::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap,
           {
             if (color == WHITE) 
             {
-              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |= 
+              sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |=
                 pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset);
             }
             else if (color == BLACK) 
             {
-              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &=
+              sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &=
                 ~(pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset));
             }
             else
             {
-              this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^=
+              sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^=
                 pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset);
             }
           }
@@ -813,7 +813,12 @@ void ArduboyBase::drawChar
 void ArduboyBase::display()
 {
   // copy data to draw to buffer
-  this->paintScreen(sBuffer);
+  paintScreen(sBuffer);
+}
+
+void ArduboyBase::displayAndClear()
+{
+  paintScreenAndClearImage(sBuffer);
 }
 
 uint8_t* ArduboyBase::getBuffer()
