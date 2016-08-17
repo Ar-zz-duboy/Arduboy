@@ -11,6 +11,11 @@ Arduboy is an open-source hardware platform allowing gamers to easily make and s
 
 This is a development branch and considered highly unstable. Do not use this branch for your game or application.
 
+### Testing
+
+The included `Makefile` can be used to compile and test modifications to the library. See `test/scripts/arduino.sh` for a system boostrap; the variables in the `Makefile` will need to be adjusted to match your system.
+
+
 #### Branches
 A list of important Arduboy branches.
 

@@ -11,7 +11,10 @@ work
 *.eep
 
 doxygen/
+
 *.bak
+
+bin/
 
 # Ignore OS bookkeeping
 .DS_Store
