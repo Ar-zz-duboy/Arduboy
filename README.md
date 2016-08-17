@@ -34,7 +34,7 @@ Compile and upload the source to an Arduboy.
 
 Install the library by cloning its repository.
 
-    $ git clone https://github.com/Arduboy/Arduboy.git
+    $ git clone -b develop https://github.com/Arduboy/Arduboy.git
 
 ### Where to Install
 
