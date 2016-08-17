@@ -3,8 +3,6 @@
  * \brief Implements a test of the draw routine from the ArduboyBase class.
  */
 
-#include <SPI.h>
-#include <EEPROM.h>
 #include "Arduboy.h"
 
 // make an instance of arduboy used for many functions
