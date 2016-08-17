@@ -63,7 +63,7 @@ Arduino library locations listed by operating system (OS).
 
     C:\Users\username\My Documents\Arduino\libraries
 
-#### Find the Location of Arduino `libraries\`
+#### Find the Location of Arduino `libraries/`
 
 If you don't find the `libraries` folder in one of the above locations, you can
 determine its location using the navigation menu `File > Preferences`. In the
