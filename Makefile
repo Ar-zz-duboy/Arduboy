@@ -35,9 +35,9 @@ ARDMK_DIR = /var/tmp/Arduboy/Arduino-Makefile
 # Windows
 # Provide a relative path to the Arduino project files
 ##############################################################################
-# make a relative path with cygwin
+# get a path from cygpath
 cygpath_relative = $(shell cygpath -m -a ${1})
-# make two cygwin path's relative
+# make two paths relative respecting cygwin paths
 cygwin_make_relative = $(shell realpath \
                        --relative-to=$(call cygpath_relative,$(1)) \
                        $(call cygpath_relative,$(ARDUINO_DIR)))
