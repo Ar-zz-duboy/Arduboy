@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# common.sh
-# Common definitions for test bootstrap. Adapted from the Arduino-Makefile
-# project.
 
 set -e
 BOOTSTRAP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -137,7 +134,6 @@ if [ -z $COMMON_SOURCED ]; then
 
     DEPENDENCIES_FOLDER="/var/tmp/Arduboy"
     mkdir -p $DEPENDENCIES_FOLDER
-    echo $DEPENDENCIES_FOLDER
 
     if ! command -v make >/dev/null 2>&1; then
         if [ $OS == "cygwin" ]; then
@@ -153,7 +149,7 @@ if [ -z $COMMON_SOURCED ]; then
         fi
     fi
 
-    if [ $DISTRO == "Ubuntu" ] && [ $ARCH == "x86_64" ]; then
+    if [ "$DISTRO" == "Ubuntu" ] && [ "$ARCH" == "x86_64" ]; then
         _install "libc6-i386"
         _install "lib32gcc1"
     fi
@@ -171,7 +167,6 @@ if [ -z $COMMON_SOURCED ]; then
 
     if ! command -v pip >/dev/null 2>&1; then
         echo "Installing Pip..."
-
         if ! command -v easy_install >/dev/null 2>&1; then
             _install "python-setuptools"
         fi
