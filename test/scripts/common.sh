@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# common.sh
+# Common definitions for test bootstrap. Adapted from the Arduino-Makefile
+# project.
 
 set -e
 BOOTSTRAP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -94,6 +97,8 @@ if [ -z $COMMON_SOURCED ]; then
                 echo "Missing $1 - install it using your distro's package manager or build from source"
                 _wait
             else
+
+ekem@copper /cygdrive/c/Cygwin/bin
                 if [ $DISTRO == "arch" ]; then
                     $SUDO_CMD pacman -S $1
                 elif [ $DISTRO == "Ubuntu" ]; then
@@ -168,6 +173,7 @@ if [ -z $COMMON_SOURCED ]; then
 
     if ! command -v pip >/dev/null 2>&1; then
         echo "Installing Pip..."
+
         if ! command -v easy_install >/dev/null 2>&1; then
             _install "python-setuptools"
         fi

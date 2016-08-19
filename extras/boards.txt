@@ -1,0 +1,61 @@
+# Board definitions for Arduboy 1.0 and the Devkit
+
+##############################################################
+
+arduboy.name=Arduboy
+
+arduboy.upload.tool=arduino:avrdude
+arduboy.upload.protocol=avr109
+arduboy.upload.maximum_size=28672
+arduboy.upload.maximum_data_size=2560
+arduboy.upload.speed=57600
+arduboy.upload.disable_flushing=true
+arduboy.upload.use_1200bps_touch=true
+arduboy.upload.wait_for_upload_port=true
+
+arduboy.bootloader.tool=arduino:avrdude
+arduboy.bootloader.low_fuses=0xff
+arduboy.bootloader.high_fuses=0xd8
+arduboy.bootloader.extended_fuses=0xcb
+arduboy.bootloader.unlock_bits=0x3F
+arduboy.bootloader.lock_bits=0x2F
+
+arduboy.build.mcu=atmega32u4
+arduboy.build.f_cpu=16000000L
+arduboy.build.vid=0x2341
+arduboy.build.pid=0x8036
+arduboy.build.usb_product="Arduboy"
+arduboy.build.board=AVR_ARDUBOY
+arduboy.build.core=arduino:arduino
+arduboy.build.variant=arduino:leonardo
+arduboy.build.extra_flags=-DARDUBOY_10 {build.usb_flags}
+
+##############################################################
+
+arduboy_devkit.name=Arduboy DevKit
+
+arduboy_devkit.upload.tool=arduino:avrdude
+arduboy_devkit.upload.protocol=avr109
+arduboy_devkit.upload.maximum_size=28672
+arduboy_devkit.upload.maximum_data_size=2560
+arduboy_devkit.upload.speed=57600
+arduboy_devkit.upload.disable_flushing=true
+arduboy_devkit.upload.use_1200bps_touch=true
+arduboy_devkit.upload.wait_for_upload_port=true
+
+arduboy_devkit.bootloader.tool=arduino:avrdude
+arduboy_devkit.bootloader.low_fuses=0xff
+arduboy_devkit.bootloader.high_fuses=0xd8
+arduboy_devkit.bootloader.extended_fuses=0xcb
+arduboy_devkit.bootloader.unlock_bits=0x3F
+arduboy_devkit.bootloader.lock_bits=0x2F
+
+arduboy_devkit.build.mcu=atmega32u4
+arduboy_devkit.build.f_cpu=16000000L
+arduboy_devkit.build.vid=0x2341
+arduboy_devkit.build.pid=0x8036
+arduboy_devkit.build.usb_product="Arduboy DevKit"
+arduboy_devkit.build.board=AVR_ARDUBOY_DEVKIT
+arduboy_devkit.build.core=arduino:arduino
+arduboy_devkit.build.variant=arduino:leonardo
+arduboy_devkit.build.extra_flags=-DAB_DEVKIT {build.usb_flags}

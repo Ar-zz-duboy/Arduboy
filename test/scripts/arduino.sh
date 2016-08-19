@@ -32,7 +32,6 @@ if [ -z "$ARDUINO_DIR" ] || ! test -e $ARDUINO_DIR || [ $OS == "cygwin" ]; then
     if ! test -d $ARDUINO_BASENAME
     then
         echo "Installing Arduino to local folder..."
-	echo "$ARDUINO_FILE"
         $EXTRACT_COMMAND $ARDUINO_FILE
         echo "Arduino installed"
     fi
