@@ -97,8 +97,6 @@ if [ -z $COMMON_SOURCED ]; then
                 echo "Missing $1 - install it using your distro's package manager or build from source"
                 _wait
             else
-
-ekem@copper /cygdrive/c/Cygwin/bin
                 if [ $DISTRO == "arch" ]; then
                     $SUDO_CMD pacman -S $1
                 elif [ $DISTRO == "Ubuntu" ]; then
