@@ -876,6 +876,7 @@ size_t Arduboy::write(uint8_t c)
       write('\n');
     }
   }
+  return 1;
 }
 
 void Arduboy::setCursor(int16_t x, int16_t y)
