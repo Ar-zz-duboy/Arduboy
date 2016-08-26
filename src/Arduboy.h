@@ -29,6 +29,7 @@
 #define EEPROM_STORAGE_SPACE_START 16
 
 #include "ArduboyAudio.h"
+#include "deprecated/ArduboyTunes.h"
 
 /// Definition for PIXEL_SAFE_MODE.
 #define PIXEL_SAFE_MODE
@@ -60,6 +61,13 @@ public:
    * \details Class used to offer a general API for creating audio on an Arduboy
    */
   ArduboyAudio audio;
+
+  /**
+   * The ArduboyTunes class is deprecated. It provides dummy functions which
+   * produce no sound. It has been retained to allow existing sketches to
+   * compile without errors.
+   */
+  ArduboyTunes tunes;
 
   /**
    * Returns true if buttons in button_mask are pressed.
