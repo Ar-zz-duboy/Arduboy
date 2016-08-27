@@ -257,24 +257,14 @@ public:
 
   /**
    * Paints an entire image directly to hardware (from RAM)
-   * \param image[]
+   * \param image A pointer to an array containing the image to be displayed.
+   * \param clear if `true` the array in RAM will be cleared to zeros upon
+   * return from this function. If `false` the RAM buffer will remain unchanged.
    * \see paint8Pixels()
    * \details
    * Each byte will be 8 vertical pixels, painted in the same order.
    */
-  void static paintScreen(uint8_t image[]);
-
-  /**
-   * Paints an entire image directly to hardware (from RAM) and zeros
-   * the contents of the image
-   * \param image[]
-   * \see paintScreen()
-   * \details
-   * Performs the same function as paintScreen() but also clears the image
-   * buffer in the same loop. This is faster than displaying the image and
-   * then clearing it separately in another function.
-   */
-  void static paintScreenAndClearImage(uint8_t image[]);
+  void static paintScreen(uint8_t image[], bool clear = false);
 
   /**
    * Paints a blank (black) screen to the screen
