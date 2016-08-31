@@ -29,6 +29,7 @@
 #define EEPROM_STORAGE_SPACE_START 16
 
 #include "ArduboyAudio.h"
+#include "deprecated/ArduboyTunes.h"
 
 /// Definition for PIXEL_SAFE_MODE.
 #define PIXEL_SAFE_MODE
@@ -39,6 +40,10 @@
 #define WHITE  1 // pixel on
 /// Value for black pixel (off).
 #define BLACK  0 // pixel off
+
+/// Value to be passed to `display()` to clear the screen buffer.
+/// E.g. `display(CLEAR_BUFFER);`
+#define CLEAR_BUFFER true
 
 /// Compare Vcc to 1.1 bandgap.
 #define ADC_VOLTAGE (_BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1))
@@ -60,6 +65,13 @@ public:
    * \details Class used to offer a general API for creating audio on an Arduboy
    */
   ArduboyAudio audio;
+
+  /**
+   * The ArduboyTunes class is deprecated. It provides dummy functions which
+   * produce no sound. It has been retained to allow existing sketches to
+   * compile without errors.
+   */
+  ArduboyTunes tunes;
 
   /**
    * Returns true if buttons in button_mask are pressed.
@@ -159,15 +171,24 @@ public:
    */
   void display();
 
- /**
-   * Perform the equivalent of display() followed by clear().
+  /**
+   * Copies the contents of the screen buffer to the screen. The screen buffer
+   * can optionally be cleared.
+   * \see display() clear()
+   * \param clear If `true` the screen buffer will be cleared to zero.
+   * The defined value `CLEAR_BUFFER` can be used instead of `true` to make
+   * it more meaningful.
    * \details
-   * The contents of the screen buffer are displayed and the screen buffer
-   * is cleared to zeros. The operations are performed in the same loop
-   * so will execute faster that if display() and then clear() were called
-   * separately.
+   * \parblock
+   * Operation is the same as calling `display()` without parameters except 
+   * additionally the screen buffer will be cleared if the parameter evaluates
+   * to `true` (The defined value `CLEAR_BUFFER` can be used for this).
+   *
+   * Using `display(CLEAR_BUFFER)` is faster and produces less code than
+   * calling `display()` followed by `clear()`.
+   * \endparblock
    */
-  void displayAndClear();
+  void display(bool clear);
 
   /**
    * Managed draw function for an Arduboy.
