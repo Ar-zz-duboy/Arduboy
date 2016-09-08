@@ -20,8 +20,8 @@
  *       in some places. With the DevKit, only the first part plays.
  */
 
-#include <Arduboy2.h>
-#include <ArduboyPlaytune.h>
+#include <Arduboy.h>
+#include <ArduboyTunes.h>
 
 const byte PROGMEM score [] = {
   // Sinfonia No.12 in A major BWV.798 J.S.Bach
@@ -178,7 +178,7 @@ const byte PROGMEM score [] = {
   0x80, 0x81, 0x90,0x45, 0,91, 0,136, 0x80, 0x82, 0x90,0x45, 0x91,0x2D, 7,83, 0x80, 0x81, 0xf0};
 
 Arduboy arduboy;
-ArduboyPlaytune tunes(arduboy.audio.enabled);
+ArduboyTunes tunes(arduboy.audio.enabled);
 
 void setup()
 {

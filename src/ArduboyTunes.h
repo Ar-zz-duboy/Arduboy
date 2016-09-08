@@ -26,7 +26,8 @@
 class ArduboyTunes
 {
  public:
-
+  ArduboyTunes();
+  ArduboyTunes(bool);
   /**
    * Assign a timer to an output pin.
    * \deprecated Use an exteral library for sound.

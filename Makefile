@@ -15,7 +15,31 @@
 # Upload a compiled hex:
 #  make upload
 
+
 print_output = $(info $(1))
+
+# Use the PerformExample.ino file as our source to build
+TARGET = PerformExample
+
+LOCAL_INO_SRCS := ./examples/$(TARGET)/$(TARGET).ino
+
+# another option, not yet enabled
+# LOCAL_INO_SRCS := $(wildcard *.ino) $(wildcard examples/*/*.ino)
+
+# Get all examples in 'examples/'
+EXAMPLES = $(sort $(dir $(wildcard ./examples/*/)))
+
+define arduboy_message
+
+Arduboy Library
+-------------------------
+Other Arduboy Examples:
+
+endef
+
+#$(info $(arduboy_message))
+
+#$(foreach example,$(EXAMPLES:./examples/%/=%),$(info  - $(example)))
 
 # set PROJECT_DIR to the location of the Arduboy library
 # example:
@@ -30,7 +54,6 @@ ARDUINO_DIR = /var/tmp/Arduboy/arduino-nightly
 #  https://github.com/sudar/Arduino-Makefile
 ARDMK_DIR = /var/tmp/Arduboy/Arduino-Makefile
 
-
 ##############################################################################
 # Windows
 # Provide a relative path to the Arduino project files
@@ -44,7 +67,6 @@ cygwin_make_relative = $(shell realpath \
 
 ifeq ($(OS),Windows_NT)
     ARDUINO_DIR := $(call cygwin_make_relative,$(PROJECT_DIR),$(ARDUINO_DIR))
-    $(call print_output,$(ARDUINO_DIR))
 endif
 
 # use the Arduboy boards.txt
@@ -52,9 +74,6 @@ BOARDS_TXT = extras/boards.txt
 
 # set our board to arduboy
 BOARD_TAG = arduboy
-
-# baudrate for serial connection
-MONITOR_BAUDRATE = 115200
 
 # port to attempt.
 #  example:
@@ -64,8 +83,6 @@ MONITOR_BAUDRATE = 115200
 #
 MONITOR_PORT = *
 
-# Use the PerformExample.ino file as our source to build
-LOCAL_INO_SRCS = examples/PerformExample/PerformExample.ino
 
 # Set the user library path one directory higher than our current working
 # directory. This allows the Arduboy folder to be added to our source.
@@ -89,12 +106,12 @@ CORE = arduino
 # Ensure we are using the leonardo variant
 VARIANT = leonardo
 
-
 ##############################################################################
 # Explictiy include VID and PID in CPPFLAGS. Arduino Makefile workaround.
 # TODO The makefile should take these from boards.txt, but may not be including
 # them in CPPFLAGS. Related to BOARD_TAG?
 ##############################################################################
+
 USB_VID = 0x2341
 USB_PID = 0x8039
 

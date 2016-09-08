@@ -29,7 +29,7 @@
 #define EEPROM_STORAGE_SPACE_START 16
 
 #include "ArduboyAudio.h"
-#include "deprecated/ArduboyTunes.h"
+#include "ArduboyTunes.h"
 
 /// Definition for PIXEL_SAFE_MODE.
 #define PIXEL_SAFE_MODE
