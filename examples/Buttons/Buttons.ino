@@ -44,7 +44,6 @@ byte y;
 // the bottom of the screen.
 #define Y_MAX (HEIGHT - CHAR_HEIGHT)
 
-
 // This function runs once in your game.
 // use it for anything that needs to be set only once in your game.
 void setup() {

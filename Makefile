@@ -27,15 +27,7 @@ LOCAL_INO_SRCS := ./examples/$(TARGET)/$(TARGET).ino
 # LOCAL_INO_SRCS := $(wildcard *.ino) $(wildcard examples/*/*.ino)
 
 # Get all examples in 'examples/'
-EXAMPLES = $(sort $(dir $(wildcard ./examples/*/)))
-
-define arduboy_message
-
-Arduboy Library
--------------------------
-Other Arduboy Examples:
-
-endef
+#EXAMPLES = $(sort $(dir $(wildcard ./examples/*/)))
 
 #$(info $(arduboy_message))
 
@@ -92,7 +84,8 @@ USER_LIB_PATH := ..
 ARDUINO_LIBS = Arduboy SPI EEPROM
 
 # Required CXXFLAGS
-CXXFLAGS_STD = -std=gnu++11 -fno-threadsafe-statics
+#CXXFLAGS_STD = -c -g -Os -std=gnu++11 -fno-threadsafe-statics -fpermissive \
+#	       -fno-exceptions -ffunction-sections -fdata-sections -MMD -flto
 
 # Get the current working directory
 CURRENT_DIR = $(shell basename $(CURDIR))

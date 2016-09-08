@@ -52,6 +52,17 @@ byte bottomBrick;
 
 byte tick;
 
+void enterHighScore(byte);
+bool displayHighScores(byte);
+void drawBall();
+void drawPaddle();
+void drawGameOver();
+void drawLives();
+void newLevel();
+bool titleScreen();
+void pause();
+void Score();
+
 /// Wrap the Arduino tone function
 void playTone(unsigned int frequency, unsigned long duration)
 {
@@ -217,7 +228,7 @@ void moveBall()
     }
 
     //Bounce off paddle
-    if (xb + 1 >= xPaddle && xb <=x Paddle + 12 && yb + 2 >= 63 && yb <= 64)
+    if (xb + 1 >= xPaddle && xb <= xPaddle + 12 && yb + 2 >= 63 && yb <= 64)
     {
       dy = -dy;
       dx = ((xb - (xPaddle + 6)) / 3); //Applies spin on the ball
@@ -484,14 +495,14 @@ boolean displayHighScores(byte file)
   arduboy.display();
 }
 
-boolean titleScreen()
+bool titleScreen()
 {
   //Clears the screen
   arduboy.clear();
   arduboy.setCursor(16,22);
-  arduboy.setSize(2);
+  arduboy.setTextSize(2);
   arduboy.print("ARAKNOID");
-  arduboy.setSize(1);
+  arduboy.setTextSize(1);
   arduboy.display();
 
   if (pollFireButton(25))
@@ -512,9 +523,9 @@ boolean titleScreen()
     //Removes "Press FIRE"
     arduboy.clear();
     arduboy.setCursor(16,22);
-    arduboy.setSize(2);
+    arduboy.setTextSize(2);
     arduboy.print("ARAKNOID");
-    arduboy.setSize(1);
+    arduboy.setTextSize(1);
     arduboy.display();
 
     arduboy.display();
