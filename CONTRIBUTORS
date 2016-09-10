@@ -1,0 +1,40 @@
+Note
+====
+
+This file contains information about the people who have contributed to the
+Arduboy library.
+
+The first list, Maintainers, is list of the people who are permitted to make
+changes to various parts of the Arduboy library and associated libraries.
+
+Please do not contact the people in this file directly to report
+problems with the Arduboy library or Arduboy hardware.
+
+For general information about the Arduboy project, please visit:
+
+  https://arduboy.com
+
+To report problems, please visit:
+
+  http://community.arduboy.com/
+
+Maintainers
+===========
+
+	                        Library Maintainers
+
+Ross Shoger                                <ross@arduboy.com>
+Scott Allen                                <https://github.com/mlxxxp>
+Josh Goebel                                <https://github.com/yyyc514>
+
+Contributors
+===========
+
+	                        Write After Approval
+
+Kevin Bates                                <kevin@arduboy.com>
+Chris Martinez                             <https://github.com/arduboychris>
+
+	                        Various Contributors
+
+Andrew                                     <https://github.com/ace-dent>
