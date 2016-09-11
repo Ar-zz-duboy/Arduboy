@@ -483,6 +483,9 @@ void ArduboyBase::drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color)
 
 void ArduboyBase::drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
+  // Creating a signed 16 bit copy of w to allow for negative value checking
+  int16_t signed_w = w;
+
   // Do bounds/limit checks
   if (y < 0 || y >= HEIGHT)
     return;
@@ -490,17 +493,20 @@ void ArduboyBase::drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color)
   // make sure we don't try to draw below 0
   if (x < 0)
   {
-    w += x;
+	  signed_w += x;
     x = 0;
   }
 
   // make sure we don't go off the edge of the display
-  if ((x + w) > WIDTH)
-    w = (WIDTH - x);
+  if ((x + signed_w) > WIDTH)
+	  signed_w = (WIDTH - x);
 
   // if our width is now negative, punt
-  if (w <= 0)
+  if (signed_w <= 0)
     return;
+
+  // Copying value back to orignal uint8
+  w = signed_w;
 
   // buffer pointer plus row offset + x offset
   register uint8_t *pBuf = sBuffer + ((y/8) * WIDTH) + x;
