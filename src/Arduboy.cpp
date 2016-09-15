@@ -269,7 +269,7 @@ uint8_t ArduboyBase::perform(void (*f)())
   return 0;
 }
 
-void ArduboyBase::drawPixel(int x, int y, uint8_t color)
+void ArduboyBase::drawPixel(int16_t x, int16_t y, uint8_t color)
 {
   #ifdef PIXEL_SAFE_MODE
   if (x < 0 || x > (WIDTH-1) || y < 0 || y > (HEIGHT-1))
@@ -483,44 +483,50 @@ void ArduboyBase::drawFastVLine(int16_t x, int16_t y, uint8_t h, uint8_t color)
 
 void ArduboyBase::drawFastHLine(int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
-  // Do bounds/limit checks
+  int16_t xEnd; // last x point + 1
+
+  // Do y bounds checks
   if (y < 0 || y >= HEIGHT)
     return;
 
-  // make sure we don't try to draw below 0
-  if (x < 0)
-  {
-    w += x;
-    x = 0;
-  }
+  xEnd = x + w;
 
-  // make sure we don't go off the edge of the display
-  if ((x + w) > WIDTH)
-    w = (WIDTH - x);
-
-  // if our width is now negative, punt
-  if (w <= 0)
+  // Check if the entire line is not on the display
+  if (xEnd <= 0 || x >= WIDTH)
     return;
 
+  // Don't start before the left edge
+  if (x < 0)
+    x = 0;
+
+  // Don't end past the right edge
+  if (xEnd > WIDTH)
+    xEnd = WIDTH;
+
+  // calculate actual width (even if unchanged)
+  w = xEnd - x;
+
   // buffer pointer plus row offset + x offset
-  register uint8_t *pBuf = sBuffer + ((y/8) * WIDTH) + x;
+  register uint8_t *pBuf = sBuffer + ((y / 8) * WIDTH) + x;
 
   // pixel mask
-  register uint8_t mask = 1 << (y&7);
+  register uint8_t mask = 1 << (y & 7);
 
   switch (color)
   {
     case WHITE:
-      while (w--) {
+      while (w--)
+      {
         *pBuf++ |= mask;
-      };
+      }
       break;
 
     case BLACK:
       mask = ~mask;
-      while (w--) {
+      while (w--)
+      {
         *pBuf++ &= mask;
-      };
+      }
       break;
   }
 }
