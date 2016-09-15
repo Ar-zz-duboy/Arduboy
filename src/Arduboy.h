@@ -208,7 +208,7 @@ public:
    * \param y integer for a y position
    * \param color Default color for pixel is set to white.
    */
-  void drawPixel(int x, int y, uint8_t color = WHITE);
+  void drawPixel(int16_t x, int16_t y, uint8_t color = WHITE);
 
   /**
    * Get the value of a pixel from the screen buffer at a specified x and y 
