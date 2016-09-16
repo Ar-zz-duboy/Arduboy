@@ -492,23 +492,11 @@ public:
   void setFrameRate(uint8_t rate);
 
   /**
-   * Returns 'true' if the desired time to draw a new frame has elapsed.
+   * Returns 'true' if the desired time to draw the next frame has elapsed.
    * The time period is set using setFrameRate().
-   * \return Returns true if it's time to draw a new frame.
-   */
-  bool newFrame();
-
-  /**
-   * Returns 'true' if it's time to draw the next frame.
-   * \deprecated This functon has a bug which can result in the frame rate
-   * being slower than what is set, and vary depending on CPU load. It has been
-   * retained so that older sketches using it will continue to run at the same
-   * speed. New sketches should use newFrame(). It is recommended that sketches
-   * already using nextFrame() be modified to use newFrame() if possible.
    * \return Returns true if it's time to draw the next frame.
    */
-  bool nextFrame()
-      __attribute__((deprecated("consider using newFrame() instead")));
+  bool nextFrame();
 
   /**
    * Returns true if the current frame number is evenly divisible by the
@@ -546,9 +534,6 @@ protected:
   /// The Arduboy screen buffer.
   static uint8_t sBuffer[(HEIGHT * WIDTH) / 8];
 
-  /// Framerate to update image buffer at.
-  uint8_t frameRate;
-
   /// Current count of frames.
   uint16_t frameCount;
 
@@ -556,10 +541,10 @@ protected:
   uint8_t eachFrameMillis;
 
   /// Time of the frame last started.
-  long lastFrameStart;
+  unsigned long lastFrameStart;
 
   /// Time to start next frame.
-  long nextFrameStart;
+  unsigned long nextFrameStart;
 
   /// Flag to enable or disable post render processes.
   bool post_render;
