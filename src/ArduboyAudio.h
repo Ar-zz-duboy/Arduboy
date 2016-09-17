@@ -12,7 +12,6 @@
 class ArduboyAudio
 {
 public:
-
   /**
    * Run begin routines for ArduboyAudio.
    */
@@ -39,7 +38,6 @@ public:
   bool static enabled();
 
 protected:
-
   /**
    * Boolean flag to determine if audio is enabled.
    */

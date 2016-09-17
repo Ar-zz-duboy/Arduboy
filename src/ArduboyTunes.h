@@ -7,6 +7,7 @@
 #define ARDUBOY_TUNES_H
 
 #include <Arduino.h>
+#include "ArduboyTones.h"
 
 /**
  * \class ArduboyTunes ArduboyTunes.h
@@ -23,52 +24,51 @@
  * used to generate sound and not `playScore()`, then the ArduboyTones library
  * could also be considered.
  */
-class ArduboyTunes
+
+//typedef ArduboyTunes ArduboyTones
+
+class ArduboyTunes : public ArduboyTones
 {
- public:
+public:
   ArduboyTunes();
-  ArduboyTunes(bool);
+  
+  ArduboyTunes(bool());
   /**
    * Assign a timer to an output pin.
    * \deprecated Use an exteral library for sound.
    */
   void initChannel(uint8_t pin)
-    __attribute__((deprecated("Use an exteral library for sound")));
+    __attribute__((deprecated("Will produce no sound.")));
 
   /**
    * Start playing a polyphonic score.
    * \deprecated Will produce no sound. Use an external library. 
    */
   void playScore(const uint8_t *score)
-    __attribute__((deprecated("Will produce no sound. Use an external library")));
+    __attribute__((deprecated("Will produce no sound.")));
 
   /**
    * Stop playing the score.
    * \deprecated Use an exteral library for sound.
    */
   void stopScore()
-    __attribute__((deprecated("Use an exteral library for sound")));
+    __attribute__((deprecated("Will produce no sound.")));
 
   /**
    * Check if a score is playing.
    * \deprecated Use an exteral library for sound.
    */
   bool playing()
-    __attribute__((deprecated("Use an exteral library for sound")));
+    __attribute__((deprecated("Will produce no sound.")));
 
   /**
    * Stop all timers.
    * \deprecated Use an exteral library for sound.
    */
   void closeChannels()
-    __attribute__((deprecated("Use an exteral library for sound")));
-
-  /**
-   * Play a tone.
-   * \deprecated Will produce no sound. Use an external library. 
-   */
-  void tone(unsigned int frequency, unsigned long duration)
-    __attribute__((deprecated("Will produce no sound. Use an external library")));
+    __attribute__((deprecated("Will produce no sound.")));
+	
+  void tone(unsigned int frequency, unsigned long duration);
 };
 
 #endif

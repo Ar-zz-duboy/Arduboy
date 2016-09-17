@@ -7,9 +7,9 @@ ArduboyTunes::ArduboyTunes()
     // constructor
 }
 
-ArduboyTunes::ArduboyTunes(bool)
+ArduboyTunes::ArduboyTunes(bool (*f)())
 {
-    // accept bool for constructor
+    // constructor
 }
 
 void ArduboyTunes::initChannel(uint8_t pin)
