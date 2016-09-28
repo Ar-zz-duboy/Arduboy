@@ -175,7 +175,7 @@ void ArduboyCore::bootOLED()
   LCDCommandMode();
   // run our customized boot-up command sequence against the
   // OLED to initialize it properly for Arduboy
-  for (int8_t i = 0; i < sizeof(lcdBootProgram); i++)
+  for (uint8_t i = 0; i < sizeof(lcdBootProgram); i++)
     SPI.transfer(pgm_read_byte(lcdBootProgram + i));
 
   LCDDataMode();

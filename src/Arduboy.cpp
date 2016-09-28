@@ -129,8 +129,7 @@ void ArduboyBase::beginNoLogo()
 
 void ArduboyBase::setFrameRate(uint8_t rate)
 {
-  frameRate = rate;
-  eachFrameMillis = 1000/rate;
+  eachFrameMillis = 1000 / rate;
 }
 
 bool ArduboyBase::everyXFrames(uint8_t frames)
@@ -138,10 +137,9 @@ bool ArduboyBase::everyXFrames(uint8_t frames)
   return frameCount % frames == 0;
 }
 
-bool ArduboyBase::newFrame()
+bool ArduboyBase::nextFrame()
 {
-  long now = millis();
-  uint8_t remaining;
+  unsigned long now = millis();
 
   // post render
   if (post_render)
@@ -154,63 +152,18 @@ bool ArduboyBase::newFrame()
   // if it's not time for the next frame yet
   if (now < nextFrameStart)
   {
-    remaining = nextFrameStart - now;
     // if we have more than 1ms to spare, lets sleep
     // we should be woken up by timer0 every 1ms, so this should be ok
-    if (remaining > 1)
+    if ((uint8_t)(nextFrameStart - now) > 1)
       idle();
     return false;
   }
 
   // pre-render
-
-  // next frame should start from last frame start + frame duration
-  nextFrameStart = lastFrameStart + eachFrameMillis;
-  // If we're running CPU at 100%+ (too slow to complete each loop within
-  // the frame duration) then it's possible that we get "behind"... Say we
-  // took 5ms too long, resulting in nextFrameStart being 5ms in the PAST.
-  // In that case we simply schedule the next frame to start immediately.
-  //
-  // If we were to let the nextFrameStart slide further and further into
-  // the past AND eventually the CPU usage dropped then frame management
-  // would try to "catch up" (by speeding up the game) to make up for all
-  // that lost time.  That would not be good.  We allow frames to take too
-  // long (what choice do we have?), but we do not allow super-fast frames
-  // to make up for slow frames in the past.
-  if (nextFrameStart < now)
-    nextFrameStart = now;
-
-  lastFrameStart = now;
-
-  post_render = true;
-  return post_render;
-}
-
-// This function is deprecated.
-// It should remain as is for backwards compatibility.
-// New code should use newFrame().
-bool ArduboyBase::nextFrame()
-{
-  long now = millis();
-  uint8_t remaining;
-
-  if (post_render) {
-    lastFrameDurationMs = now - lastFrameStart;
-    frameCount++;
-    post_render = false;
-  }
-
-  if (now < nextFrameStart) {
-    remaining = nextFrameStart - now;
-    if (remaining > 1)
-      idle();
-    return false;
-  }
-
   nextFrameStart = now + eachFrameMillis;
   lastFrameStart = now;
   post_render = true;
-  return post_render;
+  return true;
 }
 
 int ArduboyBase::cpuLoad()
@@ -254,7 +207,7 @@ void ArduboyBase::clearDisplay() // deprecated
 uint8_t ArduboyBase::perform(void (*f)())
 {
   // pause render until it's time for the next frame
-  if (!(newFrame()))
+  if (!(nextFrame()))
     return 1;
 
   // clear the buffer

@@ -5,7 +5,7 @@
 #define FONT5X7_H
 
 // standard ascii 5x7 font
-const static uint8_t font[] PROGMEM =
+static const uint8_t font[] PROGMEM =
 {
     0x00, 0x00, 0x00, 0x00, 0x00,
     0x3E, 0x5B, 0x4F, 0x5B, 0x3E,

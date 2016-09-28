@@ -51,7 +51,7 @@ height	KEYWORD2
 idle	KEYWORD2
 initRandomSeed	KEYWORD2
 invert	KEYWORD2
-newFrame	KEYWORD2
+nextFrame	KEYWORD2
 notPressed	KEYWORD2
 off	KEYWORD2
 on	KEYWORD2
