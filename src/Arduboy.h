@@ -590,7 +590,7 @@ public:
 
   /**
    * Sets the text background color.
-   * \param color Pass an unsigned byte to set as background color.
+   * \param bg Pass an unsigned byte to set as background color.
    */
   void setTextBackground(uint8_t bg);
 
