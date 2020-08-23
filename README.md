@@ -1,6 +1,15 @@
 Arduboy Library
 ===============
 
+## Deprecation Notice
+
+**This library is no longer being maintained.**
+
+It is recommended that new development use the
+[Arduboy2 Library](https://github.com/MLXXXp/Arduboy2).
+
+----------
+
 Welcome to [Arduboy](https://www.arduboy.com)! This `README` will provide an 
 introduction to the Arduboy platform and the Arduboy Library.
 
