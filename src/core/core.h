@@ -35,12 +35,21 @@
 
 #ifdef ARDUBOY_10
 
-#define CS 12
+#if defined AB_ALTERNATE_WIRING //Pro Micro Alternative OLED CS & RST pins
+  #define CS 1
+  #define RST 2
+#else
+  #define CS 12
+  #define RST 6
+#endif
 #define DC 4
-#define RST 6
 
 #define RED_LED 10
-#define GREEN_LED 11
+#if defined AB_ALTERNATE_WIRING  //Pro Micro Alternative GREEN LED pin
+  #define GREEN_LED 3
+#else
+  #define GREEN_LED 11
+#endif
 #define BLUE_LED 9
 #define TX_LED 30
 #define RX_LED 17
@@ -62,13 +71,18 @@
 #define B_BUTTON _BV(2)
 
 #define PIN_SPEAKER_1 5
-#define PIN_SPEAKER_2 13
-
 #define PIN_SPEAKER_1_PORT &PORTC
-#define PIN_SPEAKER_2_PORT &PORTC
-
 #define PIN_SPEAKER_1_BITMASK _BV(6)
-#define PIN_SPEAKER_2_BITMASK _BV(7)
+
+#if defined AB_ALTERNATE_WIRING  //Pro Micro alternative for 2nd speaker pin
+  #define PIN_SPEAKER_2 6
+  #define PIN_SPEAKER_2_PORT &PORTD
+  #define PIN_SPEAKER_2_BITMASK _BV(7)
+#else
+  #define PIN_SPEAKER_2 13
+  #define PIN_SPEAKER_2_PORT &PORTC
+  #define PIN_SPEAKER_2_BITMASK _BV(7)
+#endif
 
 #elif defined(AB_DEVKIT)
 
@@ -110,16 +124,22 @@
 
 #endif
 
-// OLED hardware (SSD1306)
+#define OLED_PIXELS_INVERTED 0xA7 // All pixels inverted (Same for SH1106)
+#define OLED_PIXELS_NORMAL 0xA6 // All pixels normal (Same for SH1106)    
 
-#define OLED_PIXELS_INVERTED 0xA7 // All pixels inverted
-#define OLED_PIXELS_NORMAL 0xA6 // All pixels normal
+#define OLED_ALL_PIXELS_ON 0xA5 // all pixels on (Same for SH1106)
+#define OLED_PIXELS_FROM_RAM 0xA4 // pixels mapped to display RAM contents (Same for SH1106)
 
-#define OLED_ALL_PIXELS_ON 0xA5 // all pixels on
-#define OLED_PIXELS_FROM_RAM 0xA4 // pixels mapped to display RAM contents
+#define OLED_VERTICAL_FLIPPED 0xC0 // reversed COM scan direction (Same for SH1106)
+#define OLED_VERTICAL_NORMAL 0xC8 // normal COM scan direction (Same for SH1106)
 
-#define OLED_VERTICAL_FLIPPED 0xC0 // reversed COM scan direction
-#define OLED_VERTICAL_NORMAL 0xC8 // normal COM scan direction
+#define OLED_SET_PAGE_ADDRESS      0xB0 // (Same for SH1106)
+#if defined OLED_SH1106
+  #define OLED_SET_COLUMN_ADDRESS_LO 0x02 //SH1106: 1st pixel starts on column 2
+#else
+  #define OLED_SET_COLUMN_ADDRESS_LO 0x00 
+#endif
+#define OLED_SET_COLUMN_ADDRESS_HI 0x10 //(Same for SH1106)
 
 // -----
 
@@ -290,7 +310,7 @@ protected:
 
 
 private:
-    volatile static uint8_t *mosiport, *csport, *dcport;
+    volatile static uint8_t *mosiport, /* *csport, */ *dcport;
     uint8_t static mosipinmask, cspinmask, dcpinmask;
 
 };

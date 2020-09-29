@@ -2,7 +2,7 @@
 
 // need to redeclare these here since we declare them static in .h
 volatile uint8_t *ArduboyCore::mosiport, 
-  *ArduboyCore::csport, *ArduboyCore::dcport;
+  /* *ArduboyCore::csport, */ *ArduboyCore::dcport;
 uint8_t ArduboyCore::mosipinmask, 
   ArduboyCore::cspinmask, ArduboyCore::dcpinmask;
 
@@ -31,9 +31,9 @@ const uint8_t PROGMEM lcdBootProgram[] = {
   // Display Off
   // 0xAE,     
 
-  // Set Display Clock Divisor v = 0xF0
+  // Set Display Clock Divisor v = 0xF0 (Same for SH1106)
   // default is 0x80
-  0xD5, 0xF0,
+  0xD5, 0xF0, 
 
   // Set Multiplex Ratio v = 0x3F
   // 0xA8, 0x3F,   
@@ -46,44 +46,53 @@ const uint8_t PROGMEM lcdBootProgram[] = {
 
   // Charge Pump Setting v = enable (0x14)
   // default is disabled
+#if !defined OLED_SH1106  
   0x8D, 0x14,   
-
-  // Set Segment Re-map (A0) | (b0001)
+#endif
+  // Set Segment Re-map (A0) | (b0001) (same for SH1106)
   // default is (b0000)
   0xA1,     
 
-  // Set COM Output Scan Direction
+  // Set COM Output Scan Direction (same for SH1106)
   0xC8,     
 
-  // Set COM Pins v
+  // Set COM Pins v (same for SH1106)
   // 0xDA, 0x12,   
 
-  // Set Contrast v = 0xCF
+  // Set Contrast v = 0xCF (same for SH1106)
   0x81, 0xCF,   
 
-  // Set Precharge = 0xF1
+  // Set Precharge = 0xF1 (same for SH1106)
   0xD9, 0xF1,
     
-  // Set VCom Detect
+  // Set VCom Detect (same for SH1106)
   // 0xDB, 0x40,   
 
-  // Entire Display ON
+  // Entire Display ON (same for SH1106)
   // 0xA4,     
 
-  // Set normal/inverse display
+  // Set normal/inverse display (same for SH1106)
   // 0xA6,  
 
-  // Display On
+  // Display On (same for SH1106)
   0xAF,     
 
-  // set display mode = horizontal addressing mode (0x00)
+#if defined OLED_SH1106
+  //Set column address for left most pixel (required for SH1106)
+  OLED_SET_COLUMN_ADDRESS_LO
+#else
+  // set display mode = horizontal addressing mode (0x00) (unsupported on SH1106)
   0x20, 0x00,  
 
-  // set col address range 
+  // set col address range (unsupported on SH1106)
   // 0x21, 0x00, COLUMN_ADDRESS_END,
 
-  // set page address range
+  // set page address range (unsupported on SH1106)
   // 0x22, 0x00, PAGE_ADDRESS_END
+#endif
+#if defined OLED_SSD1309 //required for SSD1309
+  0x21, 0x00, COLUMN_ADDRESS_END
+#endif
 };
 
 
@@ -142,7 +151,8 @@ void ArduboyCore::bootPins()
 void ArduboyCore::bootLCD()
 {
   // setup the ports we need to talk to the OLED
-  csport = portOutputRegister(digitalPinToPort(CS));
+  //csport = portOutputRegister(digitalPinToPort(CS));
+  *portOutputRegister(digitalPinToPort(CS)) &= ~cspinmask;
   cspinmask = digitalPinToBitMask(CS);
   dcport = portOutputRegister(digitalPinToPort(DC));
   dcpinmask = digitalPinToBitMask(DC);
@@ -161,14 +171,14 @@ void ArduboyCore::bootLCD()
 void ArduboyCore::LCDDataMode()
 {
   *dcport |= dcpinmask;
-  *csport &= ~cspinmask;
+  // *csport &= ~cspinmask; 
 }
 
 void ArduboyCore::LCDCommandMode()
 {
-  *csport |= cspinmask;
+  // *csport |= cspinmask;
   *dcport &= ~dcpinmask;
-  *csport &= ~cspinmask;
+  // *csport &= ~cspinmask; CS set once at bootLCD
 }
 
 
@@ -216,17 +226,50 @@ void ArduboyCore::paint8Pixels(uint8_t pixels)
 }
 
 void ArduboyCore::paintScreen(const unsigned char *image)
-{
+{ 
+#if defined OLED_SH1106	
+  for (uint8_t i = 0; i < HEIGHT / 8; i++)
+  {
+  	LCDCommandMode();
+  	SPDR = (OLED_SET_PAGE_ADDRESS + i);
+	while (!(SPSR & _BV(SPIF)));
+  	SPDR = (OLED_SET_COLUMN_ADDRESS_HI); // we only need to reset hi nibble to 0
+	while (!(SPSR & _BV(SPIF)));
+  	LCDDataMode();
+  	for (uint8_t j = WIDTH; j > 0; j--)
+      {
+  		SPDR = pgm_read_byte(*(image++));
+		while (!(SPSR & _BV(SPIF)));
+      }
+  }
+#else
   for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
   {
     SPI.transfer(pgm_read_byte(image + i));
   }
+#endif
 }
 
 // paint from a memory buffer, this should be FAST as it's likely what
 // will be used by any buffer based subclass
 void ArduboyCore::paintScreen(unsigned char image[])
 {
+#if defined OLED_SH1106
+  for (uint8_t i = 0; i < HEIGHT / 8; i++)
+  {
+  	LCDCommandMode();
+  	SPDR = (OLED_SET_PAGE_ADDRESS + i);
+	while (!(SPSR & _BV(SPIF)));
+  	SPDR = (OLED_SET_COLUMN_ADDRESS_HI); // we only need to reset hi nibble to 0
+	while (!(SPSR & _BV(SPIF)));
+  	LCDDataMode();
+  	for (uint8_t j = WIDTH; j > 0; j--)
+      {
+  		SPDR = *(image++);
+		while (!(SPSR & _BV(SPIF)));
+      }
+  }
+#else
   uint8_t c;
   int i = 0;
 
@@ -247,12 +290,30 @@ void ArduboyCore::paintScreen(unsigned char image[])
     SPDR = c;
   }
   while (!(SPSR & _BV(SPIF))) { } // wait for the last byte to be sent
+#endif
 }
+
 
 void ArduboyCore::blank()
 {
+#if defined OLED_SH1106
+  for (uint8_t i = 0; i < HEIGHT / 8; i++)
+  {
+    LCDCommandMode();
+    SPI.transfer(OLED_SET_PAGE_ADDRESS + i);
+    SPI.transfer(OLED_SET_COLUMN_ADDRESS_HI); // we only need to set hi nibble to 0
+    LCDDataMode();
+  
+  	for (uint8_t j = WIDTH; j > 0; j--)
+      {
+  		SPDR = 0x00;
+		while (!(SPSR & _BV(SPIF)));
+      }
+  }
+#else
   for (int i = 0; i < (HEIGHT*WIDTH)/8; i++)
     SPI.transfer(0x00);
+#endif
 }
 
 void ArduboyCore::sendLCDCommand(uint8_t command)
@@ -323,16 +384,21 @@ uint8_t ArduboyCore::buttonsState()
   // down, left, up
   buttons = ((~PINB) & B01110000);
   // right button
-  buttons = buttons | (((~PINC) & B01000000) >> 4);
+  //buttons = buttons | (((~PINC) & B01000000) >> 4);
+  if ((PINC & B01000000) == 0) buttons |= 0x04; //compiles to shorter and faster code
   // A and B
-  buttons = buttons | (((~PINF) & B11000000) >> 6);
+  //buttons = buttons | (((~PINF) & B11000000) >> 6);
+  if ((PINF & B10000000) == 0) buttons |= 0x02; //compiles to shorter and faster code
+  if ((PINF & B01000000) == 0) buttons |= 0x01; 
 #elif defined(ARDUBOY_10)
   // down, up, left right
   buttons = ((~PINF) & B11110000);
   // A (left)
-  buttons = buttons | (((~PINE) & B01000000) >> 3);
+  //buttons = buttons | (((~PINE) & B01000000) >> 3);
+  if ((PINE & B01000000) == 0) {buttons |= 0x08;} //compiles to shorter and faster code
   // B (right)
-  buttons = buttons | (((~PINB) & B00010000) >> 2);
+  //buttons = buttons | (((~PINB) & B00010000) >> 2);
+  if ((PINB & B00010000) == 0) {buttons |= 0x04;} //compiles to shorter and faster code
 #endif
   
   return buttons;
