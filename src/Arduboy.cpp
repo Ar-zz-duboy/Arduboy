@@ -193,7 +193,7 @@ uint8_t Arduboy::getPixel(uint8_t x, uint8_t y)
 {
   uint8_t row = y / 8;
   uint8_t bit_position = y % 8;
-  return (sBuffer[(row*WIDTH) + x] & _BV(bit_position)) >> bit_position;
+  return (sBuffer[(row*WIDTH) + x] & _BV(bit_position)) ? 1 : 0;
 }
 
 void Arduboy::drawCircle(int16_t x0, int16_t y0, uint8_t r, uint8_t color)
@@ -385,8 +385,10 @@ void Arduboy::drawRect
 void Arduboy::drawFastVLine
 (int16_t x, int16_t y, uint8_t h, uint8_t color)
 {
-  int end = y+h;
-  for (int a = max(0,y); a < min(end,HEIGHT); a++)
+  uint8_t y2 = min(y+h,HEIGHT);
+
+  // 16 bit because that's what drawPixel needs and it compiles smaller
+  for (uint16_t a = max(0,y); a < y2; a++)
   {
     drawPixel(x,a,color);
   }
@@ -395,8 +397,9 @@ void Arduboy::drawFastVLine
 void Arduboy::drawFastHLine
 (int16_t x, int16_t y, uint8_t w, uint8_t color)
 {
-  int end = x+w;
-  for (int a = max(0,x); a < min(end,WIDTH); a++)
+  uint8_t x2 = min(x+w,WIDTH);
+  // 16 bit because that's what drawPixel needs and it compiles smaller
+  for (uint16_t a = max(0,x); a < x2; a++)
   {
     drawPixel(a,y,color);
   }
@@ -406,7 +409,9 @@ void Arduboy::fillRect
 (int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t color)
 {
   // stupidest version - update in subclasses if desired!
-  for (int16_t i=x; i<x+w; i++)
+  uint8_t x2 = min(x+w,WIDTH);
+  // 16 bit because that's what drawFastVLine needs and it compiles smaller
+  for (uint16_t i = max(0,x); i<x2; i++)
   {
     drawFastVLine(i, y, h, color);
   }
@@ -591,35 +596,51 @@ void Arduboy::drawBitmap
 (int16_t x, int16_t y, const uint8_t *bitmap, uint8_t w, uint8_t h, 
  uint8_t color)
 {
-  // no need to dar at all of we're offscreen
+  // no need to draw at all of we're completely offscreen
   if (x+w < 0 || x > WIDTH-1 || y+h < 0 || y > HEIGHT-1)
     return;
 
-  int yOffset = abs(y) % 8;
-  int sRow = y / 8;
-  if (y < 0) {
+  int8_t yOffset = abs(y) % 8;
+  int8_t sRow = y / 8;
+
+  if (y < 0 && yOffset) {
     sRow--;
     yOffset = 8 - yOffset;
   }
-  int rows = h/8;
-  if (h%8!=0) rows++;
-  for (int a = 0; a < rows; a++) {
-    int bRow = sRow + a;
-    if (bRow > (HEIGHT/8)-1) break;
-    if (bRow > -2) {
-      for (int iCol = 0; iCol<w; iCol++) {
-        if (iCol + x > (WIDTH-1)) break;
-        if (iCol + x >= 0) {
-          if (bRow >= 0) {
-            if      (color == WHITE) this->sBuffer[ (bRow*WIDTH) + x + iCol ] |= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
-            else if (color == BLACK) this->sBuffer[ (bRow*WIDTH) + x + iCol ] &= ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
-            else                     this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^= pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
-          }
-          if (yOffset && bRow<(HEIGHT/8)-1 && bRow > -2) {
-            if      (color == WHITE) this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |= pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
-            else if (color == BLACK) this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &= ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
-            else                     this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^= pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
-          }
+
+  int8_t rows = (h+7)/8; // round up
+
+  for (uint8_t a = 0; a < rows; a++) {
+    int8_t bRow = sRow + a;
+    if (bRow > (HEIGHT/8)-1) { break; }
+    if (bRow < -1) { break; }
+
+    for (uint8_t iCol = 0; iCol<w; iCol++) {
+      if (iCol + x > (WIDTH-1)) { break; }
+      if (iCol + x < 0) { break; }
+
+      if (bRow >= 0) {
+        if (color == WHITE) {
+          this->sBuffer[ (bRow*WIDTH) + x + iCol ] |=
+            pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
+        } else if (color == BLACK) {
+          this->sBuffer[ (bRow*WIDTH) + x + iCol ] &=
+            ~(pgm_read_byte(bitmap+(a*w)+iCol) << yOffset);
+        } else {
+          this->sBuffer[ (bRow*WIDTH) + x + iCol ] ^=
+            pgm_read_byte(bitmap+(a*w)+iCol) << yOffset;
+        }
+      }
+      if (yOffset && bRow<(HEIGHT/8)-1) {
+        if (color == WHITE) {
+          this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] |=
+            pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
+        } else if (color == BLACK) {
+          this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] &=
+            ~(pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset));
+        } else {
+          this->sBuffer[ ((bRow+1)*WIDTH) + x + iCol ] ^=
+            pgm_read_byte(bitmap+(a*w)+iCol) >> (8-yOffset);
         }
       }
     }
